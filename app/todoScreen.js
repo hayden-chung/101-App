@@ -2,20 +2,14 @@ import React, {useState} from 'react';
 import { KeyboardAvoidingView, StyleSheet, Text, View, TextInput, TouchableOpacity, Keyboard, ScrollView} from 'react-native';
 import colors from '../assets/colors';
 import Task from '../components/task';
+import {addTask} from '../components/TaskControls';
 
 const ToDoScreen = () => {
 
   const [task, setTask] = useState([null, false]);
   const [taskItems, setTaskItems] = useState([]);
+  console.log(task, taskItems, setTaskItems, setTask);
 
-  const addTask = () => {
-    //Keyboard.dismiss();
-    console.log(task)
-    setTaskItems([...taskItems, task]);
-    setTask([null, false]);
-    console.log(taskItems)
-    console.log([...taskItems])
-  }
 
   const completedTask = (index) => {
     taskItems[index][1] =!taskItems[index][1];
@@ -54,7 +48,7 @@ const ToDoScreen = () => {
       >
         <TextInput style={styles.input} placeholder={'Write a Task'} value={task[0]} onChangeText={text => setTask([text, false])}/>
 
-        <TouchableOpacity onPress={() => addTask()}>
+        <TouchableOpacity onPress={() => {const { task: updatedTask, taskItems: updatedTaskItems } = addTask(task, taskItems, setTaskItems, setTask)}}>
           <View style={styles.addWrapper}>
             <Text style={styles.addText}>+</Text>
           </View>

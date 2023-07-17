@@ -1,9 +1,7 @@
-import React, {useState} from 'react';
-import { KeyboardAvoidingView, StyleSheet, Text, View, TextInput, TouchableOpacity, Keyboard, ScrollView} from 'react-native';
+import { StyleSheet, View} from 'react-native';
 
 import colors from './assets/colors';
-import Task from './components/task';
-import ToDoScreen from './app/todo';
+import ToDoScreen from './app/todoScreen';
 
 export default function App() {
 

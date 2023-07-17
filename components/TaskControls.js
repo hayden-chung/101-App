@@ -1,8 +1,7 @@
-import {setTaskItems, setTask, taskItems} from '../app/todo';
-
-export const addTask = (task, setTaskItems, setTask) => {
+export const addTask = (task, taskItems, setTaskItems, setTask) => {
     setTaskItems([...taskItems, task]);
     setTask([null, false]);
+    return { task: [null, false], taskItems: [...taskItems, task] };
 };
 
 export const completedTask = (index) => {
