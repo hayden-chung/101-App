@@ -4,16 +4,15 @@ import colors from '../assets/colors';
 import Task from '../components/task';
 import {addTask} from '../components/TaskControls';
 
-const ToDoScreen = () => {
+const ToDoScreen = () => { // when user clicks on todo button, navigate to this function
 
-  const [task, setTask] = useState([null, false]);
-  const [taskItems, setTaskItems] = useState([]);
+  const [task, setTask] = useState([null, false]); // useState is a hook that allows you to state variables in functional components. In this case: task = [null, false] (null = taskname, false = state of task completion)
+  const [taskItems, setTaskItems] = useState([]); // taskItems = []
   console.log(task, taskItems, setTaskItems, setTask);
 
-
-  const completedTask = (index) => {
-    taskItems[index][1] =!taskItems[index][1];
-    setTaskItems([...taskItems]);
+  const completedTask = (index) => { // when task is pressed, 
+    taskItems[index][1] =!taskItems[index][1]; // inverse the boolean state (if false --> true, if true --> false)
+    setTaskItems([...taskItems]); // update the task array 
     console.log(taskItems);
   }
 
@@ -25,18 +24,17 @@ const ToDoScreen = () => {
   }
   
   return (
-    <View style={styles.container}>
-      <View style={styles.taskWrapper}>
-        <Text style={styles.taskTitle}>Today's Tasks</Text>
+    <View style={styles.container}> {/* container of screen */}
+      <View style={styles.taskWrapper}> {/* */}
+        <Text style={styles.taskTitle}>Today's Tasks</Text> {/* title of screen */}
 
-        <ScrollView style={styles.items}>
-          {taskItems.map((item, index) => { 
-            return (
-              <TouchableOpacity key={index} onPress={() => completedTask(index)}>
-                <Task text={item} taskState={taskItems[index][1]} />
+        <ScrollView style={styles.taskItems}> {/* list of tasks (enable scrolling using ScrollView) */}
+          {taskItems.map((item, index) => { {/* loop over the list of taksItems */}
+            return ( 
+              <TouchableOpacity key={index} onPress={() => completedTask(index)}> {/* if task is pressed change checkbox state */}
+                <Task text={item} taskState={taskItems[index][1]} /> {/* display task. input parameters 'text' (task text) and 'taskState' (checkbox) */}
               </TouchableOpacity>
             )
-          
           })}
         </ScrollView>
 
@@ -71,7 +69,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 24,
   },
-  items: {
+  taskItems: {
     marginTop: 20,
     marginBottom: 150,
   }, 
