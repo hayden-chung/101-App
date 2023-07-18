@@ -26,18 +26,13 @@ const ToDoScreen = () => { // when user clicks on todo button, navigate to this 
   return (
     <View style={styles.container}> 
       <View style={styles.taskWrapper}> 
-        {/* title of screen */}
         <Text style={styles.taskTitle}>Today's Tasks</Text> 
-        {/* enable scrolling using ScrollView */}
+
         <ScrollView style={styles.taskItems}> 
-        {/* iterate over taskItems array using map() function */}
           {taskItems.map((item, index) => { 
-            {/* each task is wrapped in touchable opacity to make items responsive  */}
-            {/* if task is pressed change checkbox state */}
             return ( 
               <TouchableOpacity key={index} onPress={() => completedTask(index)}> 
-                {/* Task component displays task item. Parameters 'text' (task text) and 'taskState' (checkbox)*/}
-                <Task text={item[0]} taskState={taskItems[index][1]} /> 
+                <Task text={'test text'} taskState={taskItems[index][1]} /> 
               </TouchableOpacity>
             )
           })}
@@ -50,7 +45,6 @@ const ToDoScreen = () => { // when user clicks on todo button, navigate to this 
       style={styles.writeTaskWrapper}
       >
         <TextInput style={styles.input} placeholder={'Write a Task'} value={task[0]} onChangeText={text => setTask([text, false])}/> 
-        {/* text input box. placeholder = when box is empty. value = string value when enter button pressed. onChangeText = when textbox changes,   */}
 
         <TouchableOpacity onPress={() => {const { task: updatedTask, taskItems: updatedTaskItems } = addTask(task, taskItems, setTaskItems, setTask)}}>
           <View style={styles.addWrapper}>

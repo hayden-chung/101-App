@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
     checkbox: {
         paddingRight: 10,
     },
-    itemtext:{
+    taskText:{
         maxWidth: '80%',
     },
     circular: {
