@@ -2,12 +2,11 @@ import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-const Task = ({text, taskState}) => {
-    console.log(taskState);
+const Task = ({text, taskStatus}) => {
   return (
     <View style={styles.item}>
         <View style={styles.itemLeft}>
-            {taskState ? (
+            {taskStatus ? (
                 <Ionicons name="checkbox-sharp" size={28} color="black" style={styles.checkbox} />
             ) : (
                 <Ionicons name="checkbox-outline" size={28} color="black" style={styles.checkbox}/>
@@ -15,7 +14,6 @@ const Task = ({text, taskState}) => {
             
             <Text style={styles.taskText}>{text}</Text>
         </View>
-        <View style={styles.circular}></View>
     </View>
   );
 }
@@ -35,26 +33,11 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         flexWrap: 'wrap',
     },
-    square: {
-        width: 24, 
-        height: 24,
-        backgroundColor: '#55BCF6',
-        opacity: 0.4,
-        borderRadius: 5,
-        marginRight: 15,
-    },
     checkbox: {
-        paddingRight: 10,
+        marginRight: 15,
     },
     taskText:{
         maxWidth: '80%',
-    },
-    circular: {
-        width: 12,
-        height: 12,
-        borderColor: '#55BCF6',
-        borderWidth: 2,
-        borderRadius: 5,
     },
 
 });

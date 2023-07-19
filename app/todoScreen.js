@@ -1,32 +1,19 @@
 import React, {useState} from 'react';
 import { KeyboardAvoidingView, StyleSheet, Text, View, TextInput, TouchableOpacity, Keyboard, ScrollView} from 'react-native';
 import colors from '../assets/colors';
-import Task from '../components/task';
-import {addTask} from '../components/TaskControls';
+import Task from '../components/todo/task';
+import {addTask, completedTask, deleteTask} from '../components/todo/TaskControls'; // import taskControl functions
 
 const ToDoScreen = () => { // when user clicks on todo button, navigate to this function
 
   const [task, setTask] = useState([null, false]); // useState is a hook that allows you to state variables in functional components. In this case: task = [null, false] (null = taskname, false = state of task completion)
   const [taskItems, setTaskItems] = useState([]); // taskItems = []
-  console.log(task, taskItems, setTaskItems, setTask);
 
-  const completedTask = (index) => { // when task is pressed, 
-    taskItems[index][1] =!taskItems[index][1]; // inverse the boolean state (if false --> true, if true --> false)
-    setTaskItems([...taskItems]); // update the task array 
-    console.log(taskItems);
-  }
 
-  const deleteTask = (index) => {
-    taskItems.splice(index, 1);
-    console.log('beforesplice', taskItems)
-    setTaskItems([...taskItems]);
-    console.log('afteersplice', taskItems);
-  }
-  
   return (
     <View style={styles.container}> 
       <View style={styles.taskWrapper}> 
-        {/* title of screen */}
+        {/* TITLE of screen */}
         <Text style={styles.taskTitle}>Today's Tasks</Text> 
         {/* enable scrolling using ScrollView */}
         <ScrollView style={styles.taskItems}> 
@@ -34,8 +21,8 @@ const ToDoScreen = () => { // when user clicks on todo button, navigate to this 
           {taskItems.map((item, index) => { 
             {/* each task is wrapped in touchable opacity to make items responsive  */}
             {/* if task is pressed change checkbox state */}
-            return ( 
-              <TouchableOpacity key={index} onPress={() => completedTask(index)}> 
+            return (
+              <TouchableOpacity key={index} onPress={() => completedTask(index, taskItems, setTaskItems)} onLongPress={() => deleteTask(index, taskItems, setTaskItems)}> 
                 {/* Task component displays task item. Parameters 'text' (task text) and 'taskState' (checkbox)*/}
                 <Task text={item[0]} taskState={taskItems[index][1]} /> 
               </TouchableOpacity>
@@ -44,15 +31,18 @@ const ToDoScreen = () => { // when user clicks on todo button, navigate to this 
         </ScrollView>
 
       </View>
-
+      
+      {/* prevent task box and add button from hiding when keyboard appears */}
       <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? "padding" : "height"}
       style={styles.writeTaskWrapper}
       >
-        <TextInput style={styles.input} placeholder={'Write a Task'} value={task[0]} onChangeText={text => setTask([text, false])}/> 
         {/* text input box. placeholder = when box is empty. value = string value when enter button pressed. onChangeText = when textbox changes,   */}
+        <TextInput style={styles.input} placeholder={'Write a Task'} value={task[0]} onChangeText={text => setTask([text, false])}/> 
 
+        {/* Touchable opacity to add task */}
         <TouchableOpacity onPress={() => {const { task: updatedTask, taskItems: updatedTaskItems } = addTask(task, taskItems, setTaskItems, setTask)}}>
+          {/* ADD BUTTON */}
           <View style={styles.addWrapper}>
             <Text style={styles.addText}>+</Text>
           </View>
@@ -64,7 +54,7 @@ const ToDoScreen = () => { // when user clicks on todo button, navigate to this 
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 1, 
     backgroundColor: colors.background,
   },
   taskWrapper: {
