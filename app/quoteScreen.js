@@ -20,8 +20,6 @@ const QuoteScreen = () => {
         setchooseData(data);
     }
 
-    console.log(quoteList);
-
     return (
     <SafeAreaView style={styles.container}>
         <View style={styles.wrapper}>
@@ -43,6 +41,7 @@ const QuoteScreen = () => {
                     <SimpleModal 
                     changeModalVisible={changeModalVisible}
                     setData={setData}
+
                     />
                 </Modal>
 

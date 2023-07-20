@@ -17,10 +17,8 @@ export const SimpleModal = (props) => {
     closeModal = (bool, data) => {
         props.changeModalVisible(bool);
         props.setData(data);
-        return (
-            {quote: quote}
-        )
     }
+    console.log('update', quote);
     
     return ( 
         <TouchableOpacity
