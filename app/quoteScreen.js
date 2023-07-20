@@ -4,45 +4,49 @@ import colors from '../assets/colors';
 import Quote from '../components/motivationalQuotes/quotes';
 import { quoteToggle } from '../components/motivationalQuotes/quoteControl';
 import { SimpleModal } from '../components/motivationalQuotes/quoteControl';
+import { MaterialIcons } from '@expo/vector-icons'; 
 
 const QuoteScreen = () => { 
 
-    const [quoteList, setQuoteList] = useState([['5.	“You’ve gotta dance like there’s nobody watching, love like you’ll never be hilliam W. Purkey 1', false], ['quote 2', false], ['quote 3', false], ['quote 4', false]]);
-    const [quote, setQuote] = useState([null, false]);
+    const [quoteList, setQuoteList] = useState([['5.	“You’ve gotta dance like there’s nobody watching, love like you’ll never be hilliam W. Purkey 1', 'awdawd', false], ['quote 2', 'awdaw', false], ['quote 3', 'awda', false], ['quote 4', 'awdawd', false]]);
 
-    const[isModalVisible, setIsModalVisible] = useState(false);
-    const [chooseData, setchooseData] = useState();
-    const changeModalVisible = (bool) => {
-        setIsModalVisible(bool);
-    }
 
-    const setData = (data) => {
-        setchooseData(data);
-    }
+    // ----------- Modal Screen (for add quote) ----------- //
+    const [isModalVisible, setIsModalVisible] = useState(false); // modal display (true/false)
+    // const [chooseData, setchooseData] = useState();
 
+    // const changeModalVisible = (bool) => {
+    //     setIsModalVisible(bool);
+    // }
+    // const setData = (data) => {
+    //     setchooseData(data);
+    // }
+    // ---------------------------------------------------- //
     return (
     <SafeAreaView style={styles.container}>
         <View style={styles.wrapper}>
             <View style={styles.header}>
-                <Text style={styles.quoteTitle}>MY QUOTES</Text>
+                <Text style={styles.quoteTitle}>QUOTE LIST</Text>
 
-                <TouchableOpacity
-                onPress={() => changeModalVisible(true)}>
-                    <View style={styles.addWrapper}>
-                        <Text style={styles.addQuote}>+</Text>
-                    </View>
+                <TouchableOpacity onPress={() => setIsModalVisible(true)}>
+                    <MaterialIcons name="playlist-add" size={35} color="black" style={styles.addQuote}/>
                 </TouchableOpacity>
+                
                 <Modal
                 transparent={true}
-                animationType='fade'
-                visible={isModalVisible}
-                nRequestCLose={() => changeModalVisible(false)}
+                animationType='fade' // fade animation
+                visible={isModalVisible} // visible = true
+                onRequestClose={() => setIsModalVisible(false)}
                 >
-                    <SimpleModal 
-                    changeModalVisible={changeModalVisible}
-                    setData={setData}
+                    <TouchableOpacity onPress={() => setIsModalVisible(false)} style={styles.modalBackDrop} activityOpacity={1}>
 
-                    />
+                        <SimpleModal 
+                        setIsModalVisible={setIsModalVisible} // display modal (true/false)
+                        setQuoteList={setQuoteList} // set quote list
+                        quoteList={quoteList} // quote list
+                        />
+
+                    </TouchableOpacity>
                 </Modal>
 
             </View>
@@ -52,8 +56,8 @@ const QuoteScreen = () => {
                         data={quoteList}
                         showsVerticalScrollIndicator={false} // hide scroll bar
                         renderItem={({item, index}) => 
-                        <TouchableOpacity onPress={() => {const { quoteList: updatedQuoteList} = quoteToggle(index, quoteList, setQuoteList)}}>
-                            <Quote quote={item[0]} quoteStatus={item[1]} />
+                        <TouchableOpacity onPress={() => {const { quoteList: updatedQuoteList} = quoteToggle(index, quoteList, setQuoteList); console.log(quoteList);}}>
+                            <Quote item={item}/>
                         </TouchableOpacity>
                     }
                     />
@@ -66,43 +70,51 @@ const QuoteScreen = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1, 
-        backgroundColor: colors.background,
-      },
+        backgroundColor: 'white',
+    },
+    wrapper: { // main wrapper
+        paddingTop: 60,
+        paddingHorizontal: 22,
+    }, 
     header: {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent:'space-between',
-        backgroundColor: 'tomato',
+        backgroundColor: 'white',
         paddingBottom: 20,
+        paddingHorizontal: 10,
     },
     quoteTitle: { // header title
         fontWeight: 'bold',
         fontSize: 24,
-        paddingLeft: 20,
     },
-    addWrapper: { // add quote button
-        marginRight: 10,
-        paddingHorizontal: 15,
-        paddingVertical: 9,
-        borderRadius: 10,
-        borderWidth: 5,
-        borderBottomColor: 'black',
-        backgroundColor: 'green',
-        alignItems: 'flex-end',
-
-    },
-    wrapper: { // main wrapper
-        paddingTop: 80,
-        paddingHorizontal: 20,
-    }, 
     quoteWrapper: { 
-        maxHeight: '80%',
+        height: '75%',
         paddingVertical : 20,
         paddingHorizontal: 20,
         borderRadius: 10,
-        backgroundColor: 'red',
+        backgroundColor: '#E8EAED',
+    },
+    addWrapper: { // add quote button
+        paddingHorizontal: 12,
+        paddingVertical: 1,
+        borderRadius: 10,
+        borderWidth: 4,
+        borderBottomColor: 'black',
+        backgroundColor: 'white',
+        alignItems: 'flex-end',
     },
     addQuote: {
+        borderRadius: 10,
+        borderWidth: 3,
+        paddingLeft: 8,
+        paddingRight: 1,
+        paddingTop: 6,
+        paddingBottom: 0,
+    },
+    modalBackDrop: {
+        flex: 1, 
+        backgroundColor: 'rgba(0, 0, 0, 0.60)',
     },
 });
 
