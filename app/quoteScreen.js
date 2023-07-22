@@ -1,67 +1,81 @@
 import React, {useState} from 'react';
-import { KeyboardAvoidingView, StyleSheet, Text, View, TextInput, TouchableOpacity, Keyboard, ScrollView, FlatList, SafeAreaView, Modal} from 'react-native';
+import { KeyboardAvoidingView, StyleSheet, Text, View, TextInput, TouchableOpacity, Keyboard, ScrollView, FlatList, SafeAreaView, Modal, Alert} from 'react-native';
 import colors from '../assets/colors';
 import Quote from '../components/motivationalQuotes/quotes';
 import { quoteToggle } from '../components/motivationalQuotes/quoteControl';
-import { SimpleModal } from '../components/motivationalQuotes/quoteControl';
+import { AddQuoteModal } from '../components/motivationalQuotes/quoteControl';
 import { MaterialIcons } from '@expo/vector-icons'; 
+import { EditDeleteModal } from '../components/motivationalQuotes/edit&delete';
 
 const QuoteScreen = () => { 
 
-    const [quoteList, setQuoteList] = useState([['5.	“You’ve gotta dance like there’s nobody watching, love like you’ll never be hilliam W. Purkey 1', 'awdawd', false], ['quote 2', 'awdaw', false], ['quote 3', 'awda', false], ['quote 4', 'awdawd', false]]);
+    const [quoteList, setQuoteList] = useState([['5.	“You’ve gotta dance like there’s nobody watching, love like you’ll never be', 'hilliam W. Purkey 1', false], ['quote 2', 'author 2', false], ['quote 3', 'author 3', false], ['quote 4', 'author 4', false]]);
 
+    const [isQuoteModalVisible, addQuoteModalVisible] = useState(false); // modal display (true/false)
+    const [isEditDeleteModalVisible, EditDeleteModalVisible] = useState([false, null]); // modal display (true/false), index no. for when editing or deleting
 
-    // ----------- Modal Screen (for add quote) ----------- //
-    const [isModalVisible, setIsModalVisible] = useState(false); // modal display (true/false)
-    // const [chooseData, setchooseData] = useState();
-
-    // const changeModalVisible = (bool) => {
-    //     setIsModalVisible(bool);
-    // }
-    // const setData = (data) => {
-    //     setchooseData(data);
-    // }
-    // ---------------------------------------------------- //
     return (
     <SafeAreaView style={styles.container}>
         <View style={styles.wrapper}>
             <View style={styles.header}>
                 <Text style={styles.quoteTitle}>QUOTE LIST</Text>
 
-                <TouchableOpacity onPress={() => setIsModalVisible(true)}>
+                {/* Add Quote Button */}
+                <TouchableOpacity onPress={() => addQuoteModalVisible(true)}> 
                     <MaterialIcons name="playlist-add" size={35} color="black" style={styles.addQuote}/>
                 </TouchableOpacity>
                 
+                {/* Add Quote Modal */}
                 <Modal
-                transparent={true}
-                animationType='fade' // fade animation
-                visible={isModalVisible} // visible = true
-                onRequestClose={() => setIsModalVisible(false)}
-                >
-                    <TouchableOpacity onPress={() => setIsModalVisible(false)} style={styles.modalBackDrop} activityOpacity={1}>
+                    transparent ={true}
+                    animationType='fade' // fade animation
+                    visible={isQuoteModalVisible} // modal is visible (true)
+                    onRequestClose={() => addQuoteModalVisible(false)} // when backbutton tapped, close modal
+                    >
 
-                        <SimpleModal 
-                        setIsModalVisible={setIsModalVisible} // display modal (true/false)
+                    {/* modalBackDrop = darker background */}
+                    <View style={styles.modalBackDrop}> 
+                        <AddQuoteModal 
+                        addQuoteModalVisible={addQuoteModalVisible} // display modal (true/false)
                         setQuoteList={setQuoteList} // set quote list
                         quoteList={quoteList} // quote list
                         />
-
-                    </TouchableOpacity>
+                    </View>
                 </Modal>
+
+
+
 
             </View>
 
             <View style={styles.quoteWrapper}>
-                    <FlatList
-                        data={quoteList}
-                        showsVerticalScrollIndicator={false} // hide scroll bar
-                        renderItem={({item, index}) => 
-                        <TouchableOpacity onPress={() => {const { quoteList: updatedQuoteList} = quoteToggle(index, quoteList, setQuoteList); console.log(quoteList);}}>
-                            <Quote item={item}/>
-                        </TouchableOpacity>
-                    }
-                    />
+                <FlatList
+                    data={quoteList}
+                    showsVerticalScrollIndicator={false} // hide scroll bar
+                    renderItem={({item, index}) => 
+                    <TouchableOpacity onPress={() => {const { quoteList: updatedQuoteList} = quoteToggle(index, quoteList, setQuoteList); console.log('short press')}} onLongPress={() => {EditDeleteModalVisible ([true, index]);}}>
+                        <Quote item={item}/>
+                    </TouchableOpacity>
+                }/>
             </View>
+
+            {/* Edit & Delete Quote Modal */}
+            <Modal
+                transparent ={true}
+                animationType='fade' // fade animation
+                visible={isEditDeleteModalVisible[0]} // modal is visible (true)
+                onRequestClose={() => EditDeleteModalVisible([false, null])} // when backbutton tapped, close modal
+            >
+                <View style={styles.modalBackDrop}>
+                    <EditDeleteModal 
+                    isEditDeleteModalVisible={isEditDeleteModalVisible}
+                    EditDeleteModalVisible={EditDeleteModalVisible}
+                    quoteList = {quoteList}
+                    setQuoteList = {setQuoteList}
+                    />
+                </View>
+            </Modal>
+
         </View>
     </SafeAreaView>
     );
@@ -90,10 +104,10 @@ const styles = StyleSheet.create({
     },
     quoteWrapper: { 
         height: '75%',
-        paddingVertical : 20,
-        paddingHorizontal: 20,
         borderRadius: 10,
+        borderWidth: 5, 
         backgroundColor: '#E8EAED',
+        borderColor: '#E8EAED',
     },
     addWrapper: { // add quote button
         paddingHorizontal: 12,

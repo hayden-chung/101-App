@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Dimensions, TextInput } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Dimensions, TextInput, Alert } from 'react-native';
 
 export const quoteToggle = (index, quoteList, setQuoteList) => { // when task is pressed, 
     quoteList[index][2] =!quoteList[index][2]; // inverse the boolean state (if false --> true, if true --> false)
@@ -7,20 +7,29 @@ export const quoteToggle = (index, quoteList, setQuoteList) => { // when task is
     return { quoteList: quoteList}; // return values to update
 };
 
+// ------------------------ MODAL SCREEN --------------------------------//
 const WIDTH = Dimensions.get('window').width;
 const HEIGHT_MODAL = (Dimensions.get('window').height)/2;
 
-export const SimpleModal = (props) => {
+export const AddQuoteModal = (props) => {
 
-    const [quote, setQuote] = useState([null, 'Unknown', false]); // [quote, author, checked/unchecked]
+    const [quote, setQuote] = useState(['', '', false]); // [quote, author, checked/unchecked]
 
-    closeModal = (bool, add) => { // add = add quote to list? (boolean)
-        
+    const CheckEmptyText = () => {
+        if (quote[1].trim().length == 0) { // quote[1] = author
+            quote[1] = 'Unknown';
+        }
+        console.log(quote);
+    }
+
+    const closeModal = (add) => { // add = add quote to list? (boolean)
+        CheckEmptyText(quote)
+        console.log("added:", quote)
         if (add) { // if add is true, add the quote to the list
             props.setQuoteList([...props.quoteList, quote])
         }
-
-        props.setIsModalVisible(bool); // set to false as mode should not be visible now
+        console.log(props.quoteList)
+        props.addQuoteModalVisible(false); // set to false as mode should not be visible now
     }
     
     return ( 
@@ -36,7 +45,6 @@ export const SimpleModal = (props) => {
                     <Text style={[styles.modalTitle, {fontSize: 20}]}>Add Quote</Text>
                     <Text style={styles.textInputHeaderQuote}>Quote:</Text>
                     <TextInput style={styles.textInput} placeholder={'Enter your quote:'} value={quote[0]} onChangeText={quoteText => setQuote([quoteText, quote[1], false])} />  
-                    {/* <TextInput style={styles.input} placeholder={'Write a Task'} value={task[0]} onChangeText={modalButtonText => setTask([modalButtonText, false])}/>  */}
                 </View>
 
                 <View style={styles.modalTextContainer}>
@@ -45,18 +53,17 @@ export const SimpleModal = (props) => {
                         style={styles.textInput} 
                         placeholder={'Author:'} 
                         value={quote[1]} 
-                        onChangeText={(authorText) => {
+                        onChangeText={authorText => {
                             authorText.trim() !== '' ? authorText: 'Unknown';
                             setQuote([quote[0], authorText, false])
                         }} 
                     />  
-                    {/* <TextInput style={styles.input} placeholder={'Write a Task'} value={task[0]} onChangeText={modalButtonText => setTask([modalButtonText, false])}/>  */}
                 </View>
 
                 <View style={styles.buttonsView}>
                     <TouchableOpacity 
                         style={styles.touchableOpacity}
-                        onPress={() => closeModal(false, false)}
+                        onPress={() => closeModal(false)}
                     >
                         <Text style={[styles.modalButtonText, {color: 'blue'}]}>
                             Cancel
@@ -65,7 +72,7 @@ export const SimpleModal = (props) => {
                     </TouchableOpacity>
                     <TouchableOpacity 
                         style={styles.touchableOpacity}
-                        onPress={() => closeModal(false, true)}
+                        onPress={() => closeModal(true)}
                     >
                         <Text style={[styles.modalButtonText, {color: 'blue',}]}>
                             Add

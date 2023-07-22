@@ -2,9 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons'; 
 
-const Quote = ({item}) => {
-    console.log(item)
-    console.log(item[1])
+const Quote = ({item}) => { // item = quote item [quote, author, selected/unselected]
     return (
         <View style={styles.item}>
             <View style={styles.checkcircle}>
@@ -26,7 +24,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         padding: 10,
-        borderRadius: 10, 
+        borderRadius: 5, 
         backgroundColor: 'white',
         marginBottom: 5,
     },
