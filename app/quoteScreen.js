@@ -3,7 +3,7 @@ import { KeyboardAvoidingView, StyleSheet, Text, View, TextInput, TouchableOpaci
 import colors from '../assets/colors';
 import Quote from '../components/motivationalQuotes/quotes';
 import { quoteToggle } from '../components/motivationalQuotes/quoteControl';
-import { AddQuoteModal } from '../components/motivationalQuotes/quoteControl';
+import { QuoteModal } from '../components/motivationalQuotes/quoteControl';
 import { MaterialIcons } from '@expo/vector-icons'; 
 import { EditDeleteModal } from '../components/motivationalQuotes/edit&delete';
 
@@ -11,8 +11,8 @@ const QuoteScreen = () => {
 
     const [quoteList, setQuoteList] = useState([['5.	“You’ve gotta dance like there’s nobody watching, love like you’ll never be', 'hilliam W. Purkey 1', false], ['quote 2', 'author 2', false], ['quote 3', 'author 3', false], ['quote 4', 'author 4', false]]);
 
-    const [isQuoteModalVisible, addQuoteModalVisible] = useState(false); // modal display (true/false)
-    const [isEditDeleteModalVisible, EditDeleteModalVisible] = useState([false, null]); // modal display (true/false), index no. for when editing or deleting
+    const [isQuoteModalVisible, quoteModalVisible] = useState([false, false]); // [modal display (true/false), edit? (true/false)]
+    const [isEditDeleteModalVisible, EditDeleteModalVisible] = useState([false, null]); // [edit/delete modal display (true/false), quote index no.]
 
     return (
     <SafeAreaView style={styles.container}>
@@ -21,7 +21,7 @@ const QuoteScreen = () => {
                 <Text style={styles.quoteTitle}>QUOTE LIST</Text>
 
                 {/* Add Quote Button */}
-                <TouchableOpacity onPress={() => addQuoteModalVisible(true)}> 
+                <TouchableOpacity onPress={() => quoteModalVisible([true, false])}>
                     <MaterialIcons name="playlist-add" size={35} color="black" style={styles.addQuote}/>
                 </TouchableOpacity>
                 
@@ -29,16 +29,18 @@ const QuoteScreen = () => {
                 <Modal
                     transparent ={true}
                     animationType='fade' // fade animation
-                    visible={isQuoteModalVisible} // modal is visible (true)
-                    onRequestClose={() => addQuoteModalVisible(false)} // when backbutton tapped, close modal
+                    visible={isQuoteModalVisible[0]} // modal is visible (true)
+                    onRequestClose={() => quoteModalVisible([false, false])} // when backbutton tapped, close modal
                     >
 
                     {/* modalBackDrop = darker background */}
                     <View style={styles.modalBackDrop}> 
-                        <AddQuoteModal 
-                        addQuoteModalVisible={addQuoteModalVisible} // display modal (true/false)
+                        <QuoteModal 
+                        isQuoteModalVisible={isQuoteModalVisible} 
+                        quoteModalVisible={quoteModalVisible} // display modal (true/false)
                         setQuoteList={setQuoteList} // set quote list
                         quoteList={quoteList} // quote list
+                        isEditDeleteModalVisible = {isEditDeleteModalVisible} // [1] = index number of quote incase of editing quote. 
                         />
                     </View>
                 </Modal>
@@ -64,10 +66,12 @@ const QuoteScreen = () => {
                 transparent ={true}
                 animationType='fade' // fade animation
                 visible={isEditDeleteModalVisible[0]} // modal is visible (true)
-                onRequestClose={() => EditDeleteModalVisible([false, null])} // when backbutton tapped, close modal
+                onRequestClose={() => EditDeleteModalVisible([false, isEditDeleteModalVisible[1]])} // when backbutton tapped, close modal
             >
                 <View style={styles.modalBackDrop}>
                     <EditDeleteModal 
+                    quoteModalVisible = {quoteModalVisible}
+                    isQuoteModalVisible = {isQuoteModalVisible}
                     isEditDeleteModalVisible={isEditDeleteModalVisible}
                     EditDeleteModalVisible={EditDeleteModalVisible}
                     quoteList = {quoteList}

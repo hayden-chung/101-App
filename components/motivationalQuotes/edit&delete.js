@@ -10,12 +10,18 @@ const HEIGHT_MODAL = (Dimensions.get('window').height)/7;
 export const EditDeleteModal = (props) => { // edit and delete quotes
 
     const closeModal = () => { 
-        props.EditDeleteModalVisible([false, null]); // set to false as mode should not be visible now
+        props.EditDeleteModalVisible([false, props.isEditDeleteModalVisible[1]]); // set to false as mode should not be visible now
     }
 
     const deleteQuote = () => { //  delete a quote from quoteList
         props.quoteList.splice(props.isEditDeleteModalVisible[1], 1); // remove the quote from the array (1 = number of items to remove)
         props.setQuoteList([...props.quoteList]); // update the taskItems array 
+        closeModal()
+    };
+
+    const editQuote = () => { // edit a quote
+        props.quoteModalVisible([true, true]); // quoteModal = true ==> display
+        console.log('editQuote function', props.isEditDeleteModalVisible);
         closeModal()
     };
     
@@ -29,7 +35,7 @@ export const EditDeleteModal = (props) => { // edit and delete quotes
 
                     <TouchableOpacity 
                         style={styles.editButton}
-                        onPress={() => closeModal()}
+                        onPress={() => editQuote()}
                     >
                         <Text style={[styles.modalButtonText, {color: 'black'}]}>
                             Edit
@@ -100,5 +106,5 @@ const styles= StyleSheet.create({
         flex: 1, 
         paddingHorizontal: 30,
         alignItems: 'center',
-    }
+    },
 })
