@@ -6,10 +6,13 @@ import { quoteToggle } from '../components/motivationalQuotes/quoteControl';
 import { QuoteModal } from '../components/motivationalQuotes/quoteControl';
 import { MaterialIcons } from '@expo/vector-icons'; 
 import { EditDeleteModal } from '../components/motivationalQuotes/edit&delete';
+import {defaultQuotes} from '../assets/defaultQuotes';
+
 
 const QuoteScreen = () => { 
 
-    const [quoteList, setQuoteList] = useState([['5.	“You’ve gotta dance like there’s nobody watching, love like you’ll never be', 'hilliam W. Purkey 1', false], ['quote 2', 'author 2', false], ['quote 3', 'author 3', false], ['quote 4', 'author 4', false]]);
+    const [quoteList, setQuoteList] = useState(defaultQuotes);
+    
 
     const [isQuoteModalVisible, quoteModalVisible] = useState([false, false]); // [modal display (true/false), edit? (true/false)]
     const [isEditDeleteModalVisible, EditDeleteModalVisible] = useState([false, null]); // [edit/delete modal display (true/false), quote index no.]
