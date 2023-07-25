@@ -1,28 +1,23 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
-import { RadarChart } from 'react-native-svg-charts';
+import { StyleSheet, View, Text, Image, Dimensions} from 'react-native';
 
-const data = [
-  {
-    data: [0.7, 0.8, 0.9, 0.67, 0.8],
-    meta: { color: 'blue' },
-  },
-  {
-    data: [0.6, 0.85, 0.5, 0.6, 0.7],
-    meta: { color: 'red' },
-  },
-];
-
-const captions = ['Battery Capacity', 'Design', 'Usefulness', 'Speed', 'Weight'];
+const SCREEN_WIDTH = (Dimensions.get('window').width);
+const SCREEN_HEIGHT = (Dimensions.get('window').height);
 
 const WellbeingScreen = () => {
+
+  const size = 1;
+
   return (
     <View style={styles.container}>
-      <RadarChart
-        data={data}
-        captions={captions}
-        size={450}
-      />
+      <View style={styles.triangle}/>
+      <View style={styles.chartWrapper}>
+        <Image 
+          source={require('../assets/radarchart.png')}
+          style={styles.radarChart} 
+        />
+      </View>
+      
     </View>
   );
 };
@@ -30,10 +25,40 @@ const WellbeingScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
-    alignItems: 'center',
+    flexDirection: 'row',
     justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'green',
   },
+  triangle: {
+    bottom: 0,
+    marginBottom: SCREEN_HEIGHT/1.33,
+    position: 'absolute',
+    width: 0,
+    height: 0, 
+    borderBottomWidth: 58, 
+    borderBottomColor: 'yellow',
+    borderLeftWidth: 32,
+    borderLeftColor: "transparent",
+    borderRightWidth: 32,
+    borderRightColor: "transparent",
+    transform: [{rotate: "180deg"}],
+  },
+  chartWrapper: {
+    position: 'absolute',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    zIndex: 1, // display on the top layer (over other objects)
+  },
+  radarChart:{
+      position: 'absolute',
+      resizeMode: 'contain',
+      width: SCREEN_WIDTH/1.1,
+      height:  SCREEN_HEIGHT/2.2,
+      marginTop: SCREEN_HEIGHT/10,
+  },
+
 });
+
 
 export default WellbeingScreen;
