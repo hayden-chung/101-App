@@ -1,26 +1,57 @@
 import React from 'react';
-import { StyleSheet, View, Text, Image, Dimensions} from 'react-native';
+import { StyleSheet, View, Text, Image, Dimensions, SafeAreaView} from 'react-native';
+import {
+  LineChart,
+  BarChart,
+  PieChart,
+  ProgressChart,
+  ContributionGraph,
+  StackedBarChart
+} from 'react-native-chart-kit'
 
-const SCREEN_WIDTH = (Dimensions.get('window').width);
-const SCREEN_HEIGHT = (Dimensions.get('window').height);
+const screenWidth = (Dimensions.get('window').width);
+
+const barData = { 
+  labels: ['Work', 'Exercise & Nutrition', 'relaxation', 'relationships', 'Sleep', 'Personal Development'], // for x axis 
+  datasets: [
+    {
+      data: [2, 9, 3, 8, 10, 4],
+    },
+  ],
+};
+
 
 const WellbeingScreen = () => {
 
-  const size = 1;
 
   return (
-    <View style={styles.container}>
-      <View style={styles.triangle}/>
+    <SafeAreaView style={styles.container}>
       <View style={styles.chartWrapper}>
-        <Image 
-          source={require('../assets/radarchart.png')}
-          style={styles.radarChart} 
+        <BarChart
+          // style={graphStyle}
+          data={barData}
+          width={screenWidth}
+          height={220}
+          yAxisLabel={''} // to put in fron of y axis labels (e.g. '$')
+          verticalLabelRotation={-20}
+          fromZero={true} // start y label from 0
+
+          chartConfig={{ // Chart Design 
+            backgroundColor: '#e26a00', 
+            backgroundGradientFrom: '#fb8c00', // starting color of gradient (from left)
+            backgroundGradientTo: '#ffa726', // ending gradient (to right)
+            decimalPlaces: 2, // optional, defaults to 2dp
+            color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+            style: {
+              borderRadius: 16
+            }
+          }}
         />
       </View>
-      
-    </View>
+    </SafeAreaView>
   );
 };
+
 
 const styles = StyleSheet.create({
   container: {
@@ -30,34 +61,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'green',
   },
-  triangle: {
-    bottom: 0,
-    marginBottom: SCREEN_HEIGHT/1.33,
-    position: 'absolute',
-    width: 0,
-    height: 0, 
-    borderBottomWidth: 58, 
-    borderBottomColor: 'yellow',
-    borderLeftWidth: 32,
-    borderLeftColor: "transparent",
-    borderRightWidth: 32,
-    borderRightColor: "transparent",
-    transform: [{rotate: "180deg"}],
-  },
   chartWrapper: {
-    position: 'absolute',
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-    zIndex: 1, // display on the top layer (over other objects)
   },
-  radarChart:{
-      position: 'absolute',
-      resizeMode: 'contain',
-      width: SCREEN_WIDTH/1.1,
-      height:  SCREEN_HEIGHT/2.2,
-      marginTop: SCREEN_HEIGHT/10,
-  },
-
 });
 
 
