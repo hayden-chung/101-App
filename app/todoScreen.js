@@ -1,14 +1,14 @@
 import React, {useState} from 'react';
 import { KeyboardAvoidingView, StyleSheet, Text, View, TextInput, TouchableOpacity, Keyboard, ScrollView} from 'react-native';
 import colors from '../assets/colors';
-import Task from '../components/todo/task';
-import {addTask, completedTask, deleteTask} from '../components/todo/TaskControls'; // import taskControl functions
+import Task from '../components/todo/Task';
+import {addTask, completedTask, deleteTask} from '../components/todo/taskControls'; // import taskControl functions
 
-const ToDoScreen = () => { // when user clicks on todo button, navigate to this function
+const ToDoScreen = () => { // when user clicks on todo button, navigate to this main function of the to-do screen
 
   const [task, setTask] = useState([null, false]); // useState is a hook that allows you to state variables in functional components. In this case: task = [null, false] (null = taskname, false = state of task completion)
   const [taskItems, setTaskItems] = useState([]); // taskItems = []
-
+  console.log(taskItems);
   return (
     <View style={styles.container}> 
       <View style={styles.taskWrapper}> 
@@ -23,7 +23,7 @@ const ToDoScreen = () => { // when user clicks on todo button, navigate to this 
             return (
               <TouchableOpacity key={index} onPress={() => completedTask(index, taskItems, setTaskItems)} onLongPress={() => deleteTask(index, taskItems, setTaskItems)}> 
                 {/* Task component displays task item. Parameters 'text' (task text) and 'taskState' (checkbox)*/}
-                <Task text={item[0]} taskState={taskItems[index][1]} /> 
+                <Task text={item[0]} taskStatus={taskItems[index][1]} /> 
               </TouchableOpacity>
             )
           })}
@@ -43,7 +43,7 @@ const ToDoScreen = () => { // when user clicks on todo button, navigate to this 
         <TouchableOpacity onPress={() => {const { task: updatedTask, taskItems: updatedTaskItems } = addTask(task, taskItems, setTaskItems, setTask)}}>
           {/* ADD BUTTON */}
           <View style={styles.addWrapper}>
-            <Text style={styles.addText}>+</Text>
+            <Text>+</Text>
           </View>
         </TouchableOpacity>
       </KeyboardAvoidingView>

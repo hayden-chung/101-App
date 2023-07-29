@@ -1,11 +1,11 @@
 import React, {useState} from 'react';
 import { KeyboardAvoidingView, StyleSheet, Text, View, TextInput, TouchableOpacity, Keyboard, ScrollView, FlatList, SafeAreaView, Modal, Alert} from 'react-native';
 import colors from '../assets/colors';
-import Quote from '../components/motivationalQuotes/quotes';
+import Quote from '../components/motivationalQuotes/Quote';
 import { quoteToggle } from '../components/motivationalQuotes/quoteControl';
 import { QuoteModal } from '../components/motivationalQuotes/quoteControl';
 import { MaterialIcons } from '@expo/vector-icons'; 
-import { EditDeleteModal } from '../components/motivationalQuotes/edit&delete';
+import { EditDeleteQuoteModal } from '../components/motivationalQuotes/edit&deleteQuoteModal';
 import {defaultQuotes} from '../assets/defaultQuotes';
 
 
@@ -72,7 +72,7 @@ const QuoteScreen = () => {
                 onRequestClose={() => EditDeleteModalVisible([false, isEditDeleteModalVisible[1]])} // when backbutton tapped, close modal
             >
                 <View style={styles.modalBackDrop}>
-                    <EditDeleteModal 
+                    <EditDeleteQuoteModal 
                     quoteModalVisible = {quoteModalVisible}
                     isQuoteModalVisible = {isQuoteModalVisible}
                     isEditDeleteModalVisible={isEditDeleteModalVisible}

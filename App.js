@@ -4,12 +4,12 @@ import colors from './assets/colors';
 import ToDoScreen from './app/todoScreen';
 import HomeScreen from './app/homeScreen';
 import QuoteScreen from './app/quoteScreen';
-import WellbeingScreen from './app/wellbeingScreen'
+import WellBeingScreen from './app/wellbeingScreen'
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <WellbeingScreen />
+      <WellBeingScreen />
     </View>
   );
 }

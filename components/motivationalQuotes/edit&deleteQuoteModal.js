@@ -7,7 +7,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 const WIDTH_MODAL = (Dimensions.get('window').width)/1.8;
 const HEIGHT_MODAL = (Dimensions.get('window').height)/7;
 
-export const EditDeleteModal = (props) => { // edit and delete quotes
+export const EditDeleteQuoteModal = (props) => { // edit and delete quotes
 
     const closeModal = () => { 
         props.EditDeleteModalVisible([false, props.isEditDeleteModalVisible[1]]); // set to false as mode should not be visible now
