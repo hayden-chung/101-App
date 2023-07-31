@@ -30,13 +30,12 @@ const QuoteScreen = () => {
                 
                 {/* Add Quote Modal */}
                 <Modal
-                    transparent ={true}
-                    animationType='fade' // fade animation
-                    visible={isQuoteModalVisible[0]} // modal is visible (true)
+                    transparent ={true} // covers screen completely but allows transparency in empty areas. 
+                    animationType='fade' // fade animation when appearing/disappearing.
+                    visible={isQuoteModalVisible[0]} // modal is visible (true/false)
                     onRequestClose={() => quoteModalVisible([false, false])} // when backbutton tapped, close modal
                     >
-
-                    {/* modalBackDrop = darker background */}
+                        
                     <View style={styles.modalBackDrop}> 
                         <QuoteModal 
                         isQuoteModalVisible={isQuoteModalVisible} 
@@ -47,10 +46,6 @@ const QuoteScreen = () => {
                         />
                     </View>
                 </Modal>
-
-
-
-
             </View>
 
             <View style={styles.quoteWrapper}>

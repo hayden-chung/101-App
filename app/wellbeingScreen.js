@@ -1,10 +1,12 @@
 import React, {useState} from 'react';
 import { StyleSheet, View, Text, Image, Dimensions, SafeAreaView, TouchableOpacity, Modal} from 'react-native';
 import {BarChart, PieChart, ContributionGraph} from 'react-native-chart-kit'; // charts from third party library.
+import dimensions from '../assets/dimensions'
 import { Ionicons } from '@expo/vector-icons';
-import {NewWellbeingChart} from '../components/wellbeing/newWellbeingChartModal';
+import { MaterialIcons } from '@expo/vector-icons';
+import {NewWellbeingChartModal} from '../components/wellbeing/newWellbeingChartModal';
 
-const screenWidth = (Dimensions.get('window').width); // width of screen.
+
 
 const barData = { 
   labels: ['Work', 'Exercise & Nutrition', 'relaxation', 'relationships', 'Sleep', 'Personal Development'], // 6 aspects of wellbeing for x axis.
@@ -13,7 +15,7 @@ const barData = {
 
 const WellBeingScreen = () => { // main function for wellbeing screen 
 
-  const [isNewChartModalVisible, newChartModal] = useState(false);
+  const [isNewChartModalVisible, newChartModalVisible] = useState(false);
 
   return (
     // SafeAreaView renders content within the visible boundaries of the device (iOS only).
@@ -21,7 +23,7 @@ const WellBeingScreen = () => { // main function for wellbeing screen
 
         <View style={styles.header}>
           {/*  update wellbeing chart */}
-          <TouchableOpacity onPress={() => {newChartModal(true)}}>
+          <TouchableOpacity onPress={() => {newChartModalVisible(true)}}>
             <Ionicons name="add" size={35} color="black" style={styles.updateWrapper}/>
           </TouchableOpacity>
 
@@ -29,9 +31,12 @@ const WellBeingScreen = () => { // main function for wellbeing screen
             transparent ={true} // covers screen completely but allows transparency in empty areas. 
             animationType='fade' // fade animation when appearing/disappearing.
             visible={isNewChartModalVisible} // modal is visible (true/false)
-            onRequestClose={() => newChartModal(false)} // when backbutton tapped, close modal (set showNewChartModal to false)
-          >
-
+            onRequestClose={() => newChartModalVisible(false)} // when backbutton tapped, close modal (set showNewChartModal to false)
+            >
+              
+            <NewWellbeingChartModal
+              newChartModalVisible = {newChartModalVisible}
+            />
 
           </Modal>
         </View>
@@ -41,7 +46,7 @@ const WellBeingScreen = () => { // main function for wellbeing screen
           <BarChart
             // style={graphStyle}
             data={barData}
-            width={screenWidth}
+            width={dimensions.SCREEN_WIDTH}
             height={220}
             yAxisLabel={''} // to put in fron of y axis labels (e.g. '$')
             verticalLabelRotation={-20}

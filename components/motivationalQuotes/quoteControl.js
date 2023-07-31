@@ -17,24 +17,22 @@ export const QuoteModal = (props) => {
     const initialQuote = props.isQuoteModalVisible[1] ? props.quoteList[quoteIndex] : ['', '', false] // grab list if editing is true, else make new empty list
     const [quote, setQuote] = useState(initialQuote); // [quote, author, checked/unchecked]
 
-    const CheckEmptyText = () => {
-        if (quote[1].trim().length == 0) { // quote[1] = author
-            quote[1] = 'Unknown';
+    const CheckEmptyText = () => { // Check if text input box is empty.
+        if (quote[1].trim().length == 0) { // when all whitespaces are removed (trim) and string length == 0, this means string is empty. (quote[1] = author)
+            quote[1] = 'Unknown'; // replace empty string with 'Unkown'.
         }
     }
 
-    const closeModal = (update) => { // update = add/edit quote (boolean)
-        CheckEmptyText(quote) // check if author is empty
-        if (update) { // if add is true, add the quote to the list
-            if (props.isQuoteModalVisible[1]) {
-                props.quoteList[quoteIndex] = quote
-                console.log(props.quoteList)
-            } else {
+    const closeModal = (update) => { // update = add/edit quote (boolean).
+        CheckEmptyText(quote) // check if author is empty.
+        if (update) { // if udpate is true, add the quote to the list.
+            if (props.isQuoteModalVisible[1]) { // if isQuoteModalVisible[1] is true --> edit quote.
+                props.quoteList[quoteIndex] = quote // edit (update) exisitng string value (quote).
+            } else { // if isQuoteModalVisible[1] is false --> add new quote to list.
                 props.setQuoteList([...props.quoteList, quote]) // add quote
             }
-            
         }
-        props.quoteModalVisible([false, false]); // set to false as mode should not be visible now
+        props.quoteModalVisible([false, false]); // set [0] to false as modal should not be visible now.
     }
     
     return ( 
@@ -45,7 +43,6 @@ export const QuoteModal = (props) => {
 
             {/* Popup Modal Screen */}
             <View style={styles.modal}> 
-                {/*  */}
                 <View style={styles.modalTextContainer}>
                     <Text style={[styles.modalTitle, {fontSize: 20}]}>{props.isQuoteModalVisible[1] ? 'Edit Quote': 'Add Quote'}</Text>
                     <Text style={styles.textInputHeaderQuote}>Quote:</Text>
@@ -73,8 +70,8 @@ export const QuoteModal = (props) => {
                         <Text style={[styles.modalButtonText, {color: 'blue'}]}>
                             Cancel
                         </Text>
-
                     </TouchableOpacity>
+
                     <TouchableOpacity 
                         style={styles.touchableOpacity}
                         onPress={() => closeModal(true)}
@@ -82,7 +79,6 @@ export const QuoteModal = (props) => {
                         <Text style={[styles.modalButtonText, {color: 'blue',}]}>
                             {props.isQuoteModalVisible[1] ? 'Ok': 'Add'}
                         </Text>
-
                     </TouchableOpacity>
                 </View>
             </View>
