@@ -9,7 +9,7 @@ import WellBeingScreen from './app/wellbeingScreen'
 export default function App() {
   return (
     <View style={styles.container}>
-      <WellBeingScreen />
+      <QuoteScreen />
     </View>
   );
 }

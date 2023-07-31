@@ -14,7 +14,7 @@ const HEIGHT_MODAL = (Dimensions.get('window').height)/2;
 export const QuoteModal = (props) => {
 
     const quoteIndex = props.isEditDeleteModalVisible[1]
-    const initialQuote = props.isQuoteModalVisible[1] ? props.quoteList[quoteIndex] : ['', '', false] // grab list if editing is true, else make new empty list
+    const initialQuote = props.isQuoteModalVisible[1] ? props.quoteList[quoteIndex] : ['', '', false] // grab list if [editing] is true as quote string already exists, else make new empty list for new quote.
     const [quote, setQuote] = useState(initialQuote); // [quote, author, checked/unchecked]
 
     const CheckEmptyText = () => { // Check if text input box is empty.
@@ -23,12 +23,12 @@ export const QuoteModal = (props) => {
         }
     }
 
-    const closeModal = (update) => { // update = add/edit quote (boolean).
-        CheckEmptyText(quote) // check if author is empty.
-        if (update) { // if udpate is true, add the quote to the list.
-            if (props.isQuoteModalVisible[1]) { // if isQuoteModalVisible[1] is true --> edit quote.
+    const closeModal = (update) => {                // update = add/edit quote (boolean).
+        CheckEmptyText(quote)                       // check if author is empty.
+        if (update) {                               // if udpate is true, add the quote to the list.
+            if (props.isQuoteModalVisible[1]) {     // if isQuoteModalVisible[1] is true --> edit quote.
                 props.quoteList[quoteIndex] = quote // edit (update) exisitng string value (quote).
-            } else { // if isQuoteModalVisible[1] is false --> add new quote to list.
+            } else {                                            // if isQuoteModalVisible[1] is false --> add new quote to list.
                 props.setQuoteList([...props.quoteList, quote]) // add quote
             }
         }

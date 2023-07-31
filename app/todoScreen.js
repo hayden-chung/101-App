@@ -8,20 +8,26 @@ const ToDoScreen = () => { // when user clicks on todo button, navigate to this 
 
   const [task, setTask] = useState([null, false]); // useState is a hook that allows you to state variables in functional components. In this case: task = [null, false] (null = taskname, false = state of task completion)
   const [taskItems, setTaskItems] = useState([]); // taskItems = []
-  console.log(taskItems);
+
   return (
     <View style={styles.container}> 
       <View style={styles.taskWrapper}> 
+
         {/* TITLE of screen */}
         <Text style={styles.taskTitle}>Today's Tasks</Text> 
+
         {/* enable scrolling using ScrollView */}
         <ScrollView style={styles.taskItems}> 
+
         {/* iterate over taskItems array using map() function */}
           {taskItems.map((item, index) => { 
-            {/* each task is wrapped in touchable opacity to make items responsive  */}
-            {/* if task is pressed change checkbox state */}
+
+            {/* each task is wrapped in touchable opacity to make items responsive */}
             return (
-              <TouchableOpacity key={index} onPress={() => completedTask(index, taskItems, setTaskItems)} onLongPress={() => deleteTask(index, taskItems, setTaskItems)}> 
+              <TouchableOpacity 
+                key={index} // send index number of quote list to display particular quote item
+                onPress={() => completedTask(index, taskItems, setTaskItems)} // when quote pressed, change completed state (compelted/not completed)
+                onLongPress={() => deleteTask(index, taskItems, setTaskItems)}> 
                 {/* Task component displays task item. Parameters 'text' (task text) and 'taskState' (checkbox)*/}
                 <Task text={item[0]} taskStatus={taskItems[index][1]} /> 
               </TouchableOpacity>

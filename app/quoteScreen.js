@@ -11,7 +11,7 @@ import {defaultQuotes} from '../assets/defaultQuotes';
 
 const QuoteScreen = () => { 
 
-    const [quoteList, setQuoteList] = useState(defaultQuotes);
+    const [quoteList, setQuoteList] = useState(defaultQuotes); // List of quotes
     
 
     const [isQuoteModalVisible, quoteModalVisible] = useState([false, false]); // [modal display (true/false), edit? (true/false)]
@@ -21,28 +21,29 @@ const QuoteScreen = () => {
     <SafeAreaView style={styles.container}>
         <View style={styles.wrapper}>
             <View style={styles.header}>
-                <Text style={styles.quoteTitle}>QUOTE LIST</Text>
+                <Text style={styles.quoteTitle}>QUOTE LIST</Text> 
 
-                {/* Add Quote Button */}
+                {/* Add Quote Button. When button pressed, open modal by setting variable to 'true' */}
                 <TouchableOpacity onPress={() => quoteModalVisible([true, false])}>
                     <MaterialIcons name="playlist-add" size={35} color="black" style={styles.addQuote}/>
                 </TouchableOpacity>
                 
                 {/* Add Quote Modal */}
                 <Modal
-                    transparent ={true} // covers screen completely but allows transparency in empty areas. 
-                    animationType='fade' // fade animation when appearing/disappearing.
+                    transparent ={true} // covers screen completely but allows transparency in empty areas outside of modal.
+                    animationType='fade' // fade animation when modal appears/disappears.
                     visible={isQuoteModalVisible[0]} // modal is visible (true/false)
-                    onRequestClose={() => quoteModalVisible([false, false])} // when backbutton tapped, close modal
+                    onRequestClose={() => quoteModalVisible([false, false])} // when backbutton on phone tapped, close modal
                     >
-                        
+                    
+
                     <View style={styles.modalBackDrop}> 
-                        <QuoteModal 
-                        isQuoteModalVisible={isQuoteModalVisible} 
-                        quoteModalVisible={quoteModalVisible} // display modal (true/false)
-                        setQuoteList={setQuoteList} // set quote list
-                        quoteList={quoteList} // quote list
-                        isEditDeleteModalVisible = {isEditDeleteModalVisible} // [1] = index number of quote incase of editing quote. 
+                        <QuoteModal // while modal is true, use quote modal component.
+                        isQuoteModalVisible={isQuoteModalVisible}               // [modal display (true/false), edit? (true/false)]
+                        quoteModalVisible={quoteModalVisible}                   // display modal (true/false)
+                        setQuoteList={setQuoteList}                             // set quote list
+                        quoteList={quoteList}                                   // quote list
+                        isEditDeleteModalVisible = {isEditDeleteModalVisible}   // isEditDeleteModalVisible[1] = index number of quote incase of editing quote. 
                         />
                     </View>
                 </Modal>
@@ -50,10 +51,14 @@ const QuoteScreen = () => {
 
             <View style={styles.quoteWrapper}>
                 <FlatList
-                    data={quoteList}
-                    showsVerticalScrollIndicator={false} // hide scroll bar
-                    renderItem={({item, index}) => 
-                    <TouchableOpacity onPress={() => {const { quoteList: updatedQuoteList} = quoteToggle(index, quoteList, setQuoteList); console.log('short press')}} onLongPress={() => {EditDeleteModalVisible ([true, index]);}}>
+                    data={quoteList}                     // data being inputted for flatlist to access.
+                    showsVerticalScrollIndicator={false} // hide scroll bar.
+                    renderItem={({item, index}) =>       // quote item in the list array and index of it. 
+                    <TouchableOpacity 
+                        onPress={() => {const {quoteList: updatedQuoteList} = quoteToggle(index, quoteList, setQuoteList)}} // when quote pressed, change between selected/unselected.
+                        onLongPress={() => {EditDeleteModalVisible ([true, index]);}} // when quote is long pressed, set modal to appear ([0] = true).
+                        >
+                        {/* Quote Item */}
                         <Quote item={item}/>
                     </TouchableOpacity>
                 }/>
@@ -68,12 +73,12 @@ const QuoteScreen = () => {
             >
                 <View style={styles.modalBackDrop}>
                     <EditDeleteQuoteModal 
-                    quoteModalVisible = {quoteModalVisible}
-                    isQuoteModalVisible = {isQuoteModalVisible}
-                    isEditDeleteModalVisible={isEditDeleteModalVisible}
-                    EditDeleteModalVisible={EditDeleteModalVisible}
-                    quoteList = {quoteList}
-                    setQuoteList = {setQuoteList}
+                    quoteModalVisible = {quoteModalVisible}             // send function so when user presses on edit button, the quote modal appears to edit. 
+                    isQuoteModalVisible = {isQuoteModalVisible}         // quote modal is visible and edit is true
+                    isEditDeleteModalVisible={isEditDeleteModalVisible} // edit/delete modal visible (true/false) and quote index.
+                    EditDeleteModalVisible={EditDeleteModalVisible}     // send function so modal visible can be set back to false to close. 
+                    quoteList = {quoteList}                             // send quoteList to modify.
+                    setQuoteList = {setQuoteList}                       // send setQuoteList to re-set.
                     />
                 </View>
             </Modal>
@@ -128,9 +133,9 @@ const styles = StyleSheet.create({
         paddingTop: 6,
         paddingBottom: 0,
     },
-    modalBackDrop: {
+    modalBackDrop: { // for empty areas (outside of modal)
         flex: 1, 
-        backgroundColor: 'rgba(0, 0, 0, 0.60)',
+        backgroundColor: 'rgba(0, 0, 0, 0.60)', // set opacity to 0.6
     },
 });
 
