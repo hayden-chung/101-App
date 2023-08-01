@@ -5,12 +5,7 @@ import dimensions from '../assets/dimensions'
 import { Ionicons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import {NewWellbeingChartModal} from '../components/wellbeing/newWellbeingChartModal';
-
-
-
-const barData = { 
-  labels: ['Work', 'Exercise & Nutrition', 'relaxation', 'relationships', 'Sleep', 'Personal Development'], // 6 aspects of wellbeing for x axis.
-  datasets: [{ data: [2, 9, 3, 8, 10, 4] }]}; // aspect rating out of 10. 6 values for the 6 aspects 
+import {wellbeingData} from '../assets/wellbeingData';
 
 
 const WellBeingScreen = () => { // main function for wellbeing screen 
@@ -36,6 +31,7 @@ const WellBeingScreen = () => { // main function for wellbeing screen
               
             <NewWellbeingChartModal
               newChartModalVisible = {newChartModalVisible}
+              wellbeingData={wellbeingData}
             />
 
           </Modal>
@@ -45,7 +41,7 @@ const WellBeingScreen = () => { // main function for wellbeing screen
         <View style={styles.chartWrapper}>
           <BarChart
             // style={graphStyle}
-            data={barData}
+            data={wellbeingData}
             width={dimensions.SCREEN_WIDTH}
             height={220}
             yAxisLabel={''} // to put in fron of y axis labels (e.g. '$')
@@ -55,8 +51,8 @@ const WellBeingScreen = () => { // main function for wellbeing screen
             chartConfig={{ // Chart Design 
               backgroundColor: '#e26a00', 
               backgroundGradientFrom: '#fb8c00', // starting color of gradient (from left)
-              backgroundGradientTo: '#ffa726', // ending gradient (to right)
-              decimalPlaces: 2, // optional, defaults to 2dp
+              backgroundGradientTo: '#ffa726',   // ending gradient (to right)
+              decimalPlaces: 2,                  // optional, defaults to 2dp
               color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
               style: {
                 borderRadius: 16
