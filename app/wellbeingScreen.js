@@ -1,14 +1,14 @@
 import React, {useState} from 'react';
 import { StyleSheet, View, Text, Image, Dimensions, SafeAreaView, TouchableOpacity, Modal} from 'react-native';
 import {BarChart, PieChart, ContributionGraph} from 'react-native-chart-kit'; // charts from third party library.
-import dimensions from '../assets/dimensions'
+import dimensions from '../assets/dimensions';
 import { Ionicons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import {NewWellbeingChartModal} from '../components/wellbeing/newWellbeingChartModal';
 import {wellbeingData} from '../assets/wellbeingData';
 
 
-const WellBeingScreen = () => { // main function for wellbeing screen 
+const WellBeingScreen = () => { // main function for wellbeing screen  
 
   const [isNewChartModalVisible, newChartModalVisible] = useState(false);
 

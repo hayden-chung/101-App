@@ -2,6 +2,9 @@ import React, {useState, useEffect} from 'react';
 import { StyleSheet, Text, View, Dimensions, TextInput, Alert, TouchableOpacity} from 'react-native';
 import Slider from '@react-native-community/slider';
 import { AntDesign } from '@expo/vector-icons';
+import NextButton from './modalNextButton';
+import {wellbeingData, updateDataHistory} from '../../assets/wellbeingData';
+
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = (Dimensions.get('window').height);
@@ -16,26 +19,30 @@ export const NewWellbeingChartModal = (props) => {
         const updatedRating = [...wellbeingRating] // settings a temporary cloned variable array (updatedRating) is a safe way to ensure state management 
         updatedRating[pageNumber] = value 
         updateWellbeingRating(updatedRating)
-        console.log(wellbeingRating)
       };
-
-    // ----------- Change Page in Modal ------------ //
-    const changePage = (direction) => { // when right button pressed. 
-        if (direction === 'right' && pageNumber < props.wellbeingData.labels.length-1) { // If left button pressed & If page number is not larger or equal than the number of aspects (6). (props.wellbeingData.labels.length = 6 and index number starts from 0 so subtract 1)
-                changePageNumber(pageNumber+1) // to next page
-                console.log('right button pressed')
-
-        } else if (direction === 'left' && pageNumber > 0) { // If right button pressed & If page number is larger than 0 (as it cannot go below this), change page number by -1 to go to previous page. 
-            changePageNumber(pageNumber-1) // to previous page
-            console.log('left button pressed')
-        }
-    };
 
     // ------------- Close Modal Function ------------- //
     const closeModal = () => {             // update = add/edit quote (boolean)
         props.newChartModalVisible(false); // set to false as modal should not be visible now.
-    }
+    };
 
+    // ----------- Change Page in Modal ------------ //
+    const changePage = (direction) => {                             // when right button pressed. 
+        if (direction === 'right') {                                // If right button pressed
+            if (pageNumber < props.wellbeingData.labels.length-1) { // If page number is not larger than the number of aspects (6). (props.wellbeingData.labels.length = 6 and index number starts from 0 so subtract 1) 
+                changePageNumber(pageNumber+1)                      // to next page
+            } else if (pageNumber === 5) {                          // if pg number is 6 (5 for index number)
+                console.log(dataHistory)
+                updateDataHistory(...dataHistory, wellbeingRating)
+                console.log(dataHistory)
+                wellbeingData.datasets[0].data = wellbeingRating    // update graph data
+                closeModal()                                        // close modal (and update graph)
+            }
+            
+        } else if (direction === 'left' && pageNumber > 0) {        // If left button pressed & If page number is larger than 0 (as it cannot go below this), change page number by -1 to go to previous page. 
+            changePageNumber(pageNumber-1)                          // to previous page
+        }
+    };
 
     return ( 
         // ------------------------------- MODAL SCREEN ------------------------------- //
@@ -86,13 +93,16 @@ export const NewWellbeingChartModal = (props) => {
                 
                 {/* Next/Previous Buttons */}
                 <View style={styles.buttonsView}>
-                    <TouchableOpacity style={styles.nextPreviousButton}>
-                        <AntDesign name="arrowleft" size={30} color="orange" onPress={() => changePage('left')}/>
+                    <TouchableOpacity style={styles.previousButton} onPress={() => changePage('left')}>
+                        <AntDesign name="arrowleft" size={30} color="black" />
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.nextPreviousButton} onPress={() => changePage('right')}>
-                        <AntDesign name="arrowright" size={30} color="orange" />
-                    </TouchableOpacity>
+
+                    <NextButton 
+                        changePage={changePage}
+                        pagePercentage={((pageNumber+1) * (100/6))}
+                    />
+
                 </View>
             </View>
         </TouchableOpacity>
@@ -144,21 +154,27 @@ const styles= StyleSheet.create({
         paddingLeft: 5,
         // backgroundColor: 'red',
     },
-    buttonsView: {
+    buttonsView: { 
         flexDirection: 'row',
         justifyContent: 'space-between',
-        marginHorizontal: 10,
-        marginBottom: 10,
-    }, 
-    nextPreviousButton: {
-        paddingVertical: 10, 
         alignItems: 'center',
-        width: 50, 
-        height: 50,
-        borderRadius: 30,
+        marginHorizontal: 10, 
+        marginBottom: 10,
+        // backgroundColor: 'green',
+    }, 
+    previousButton: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: SCREEN_HEIGHT/18, 
+        height: SCREEN_HEIGHT/18,
+        borderRadius: 500, // just give the border value any high number as there is a max limit which at that point creates a circle and that's what we want. 
         backgroundColor: 'white',
-        borderColor: 'orange',
+        borderColor: 'black',
         borderWidth: 2.5,
+        alignSelf: 'flex-end',
+    },
+    finishedButton: {
+
     },
     sliderContainer: {
         flexDirection: 'column',
