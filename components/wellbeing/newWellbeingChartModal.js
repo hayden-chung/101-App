@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, Dimensions, TextInput, Alert, TouchableOpacity}
 import Slider from '@react-native-community/slider';
 import { AntDesign } from '@expo/vector-icons';
 import NextButton from './modalNextButton';
+import {updateWellbeingDataStorage} from '../../assets/wellbeingData';
 
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
@@ -32,6 +33,8 @@ export const NewWellbeingChartModal = (props) => {
                 changePageNumber(pageNumber+1)                      // to next page
             } else if (pageNumber === 5) {                          // if pg number is 6 (5 for index number)
                 // updateDataHistory(...dataHistory, wellbeingRating)
+
+                updateWellbeingDataStorage(wellbeingRating);
                 props.wellbeingData.datasets[0].data = wellbeingRating    // update graph data
                 closeModal()                                        // close modal (and update graph)
             }
@@ -93,7 +96,6 @@ export const NewWellbeingChartModal = (props) => {
                     <TouchableOpacity style={styles.previousButton} onPress={() => changePage('left')}>
                         <AntDesign name="arrowleft" size={30} color="black" />
                     </TouchableOpacity>
-
 
                     <NextButton 
                         changePage={changePage}
