@@ -3,7 +3,6 @@ import { StyleSheet, Text, View, Dimensions, TextInput, Alert, TouchableOpacity}
 import Slider from '@react-native-community/slider';
 import { AntDesign } from '@expo/vector-icons';
 import NextButton from './modalNextButton';
-import {wellbeingData, updateDataHistory} from '../../assets/wellbeingData';
 
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
@@ -32,10 +31,8 @@ export const NewWellbeingChartModal = (props) => {
             if (pageNumber < props.wellbeingData.labels.length-1) { // If page number is not larger than the number of aspects (6). (props.wellbeingData.labels.length = 6 and index number starts from 0 so subtract 1) 
                 changePageNumber(pageNumber+1)                      // to next page
             } else if (pageNumber === 5) {                          // if pg number is 6 (5 for index number)
-                console.log(dataHistory)
-                updateDataHistory(...dataHistory, wellbeingRating)
-                console.log(dataHistory)
-                wellbeingData.datasets[0].data = wellbeingRating    // update graph data
+                // updateDataHistory(...dataHistory, wellbeingRating)
+                props.wellbeingData.datasets[0].data = wellbeingRating    // update graph data
                 closeModal()                                        // close modal (and update graph)
             }
             

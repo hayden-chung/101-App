@@ -9,7 +9,8 @@ import {wellbeingData} from '../assets/wellbeingData';
 
 
 const WellBeingScreen = () => { // main function for wellbeing screen  
-
+  console.log(wellbeingData.labels);
+  // const { dataHistory, updateDataHistory, labels, datasets } = wellbeingData();
   const [isNewChartModalVisible, newChartModalVisible] = useState(false);
 
   return (
@@ -31,7 +32,7 @@ const WellBeingScreen = () => { // main function for wellbeing screen
               
             <NewWellbeingChartModal
               newChartModalVisible = {newChartModalVisible}
-              wellbeingData={wellbeingData}
+              wellbeingData = {wellbeingData}
             />
 
           </Modal>
