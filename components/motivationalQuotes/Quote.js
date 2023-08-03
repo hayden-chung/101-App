@@ -6,21 +6,23 @@ const Quote = ({item}) => { // item = quote item [quote, author, selected/unsele
     return (
         <View style={styles.item}>
             <View style={styles.checkcircle}>
-                {item[2] ? (
+                {/* If item[2] = true, display checked button, else, display unchecked button */}
+                {item[2] ? ( 
                     <MaterialIcons name="radio-button-checked" size={24} color="black" />
                 ) : (
                     <MaterialIcons name="radio-button-unchecked" size={24} color="black" />
                 )}
                 
             </View>
+
+                {/* Display quote (item[0]), and on the next line, display author (item[1]) */}
                 <Text style={[styles.quoteText, {color: 'black'}]}>"{item[0]}" {'\n'}- {item[1]} -</Text>
-                {/* <Text style={[styles.quoteText, {color: 'black'}]}></Text> */}
         </View>
     );
 }
 
 const styles = StyleSheet.create({
-    item: {
+    item: { // quote Item container
         flexDirection: 'row',
         alignItems: 'center',
         padding: 10,
@@ -28,7 +30,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         marginBottom: 5,
     },
-    quoteText: { 
+    quoteText: { // quote Text
         maxWidth: '92%',
         marginLeft: 5,
         paddingLeft: 5,

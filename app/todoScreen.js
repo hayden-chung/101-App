@@ -39,7 +39,7 @@ const ToDoScreen = () => { // when user clicks on todo button, navigate to this 
       
       {/* prevent task box and add button from hiding when keyboard appears */}
       <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? "padding" : "height"}
+      behavior={Platform.OS === 'ios' ? "padding" : "height"} // if phone plantform is iOS, use padding to push items, else add height. 
       style={styles.writeTaskWrapper}
       >
         {/* text input box. placeholder = when box is empty. value = string value when enter button pressed. onChangeText = when textbox changes,   */}

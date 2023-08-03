@@ -33,6 +33,7 @@ export const EditDeleteQuoteModal = (props) => { // edit and delete quotes
             {/* Popup Modal Screen */}
             <View style={styles.modal}> 
 
+                    {/*  */}
                     <TouchableOpacity 
                         style={styles.editButton}
                         onPress={() => editQuote()}
@@ -41,7 +42,6 @@ export const EditDeleteQuoteModal = (props) => { // edit and delete quotes
                             Edit
                         </Text>
                         <MaterialIcons name="edit" size={24} color="black" />
-
                     </TouchableOpacity>
 
                     <View style={styles.divider}> 
@@ -94,7 +94,7 @@ const styles= StyleSheet.create({
         flex: 1, 
         alignItems: 'center',
     },
-    divider: {
+    divider: { // divide edit and delete button with a line
         height: '1%',
         width: '100%',
         backgroundColor: '#D3D3D3',

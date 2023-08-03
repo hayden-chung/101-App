@@ -44,6 +44,8 @@ export const QuoteModal = (props) => {
             {/* Popup Modal Screen */}
             <View style={styles.modal}> 
                 <View style={styles.modalTextContainer}>
+
+                    {/* If Editing mode --> display 'Edit Quote', else --> 'Add Quote' */}
                     <Text style={[styles.modalTitle, {fontSize: 20}]}>{props.isQuoteModalVisible[1] ? 'Edit Quote': 'Add Quote'}</Text>
                     <Text style={styles.textInputHeaderQuote}>Quote:</Text>
                     <TextInput style={styles.textInput} placeholder={'Enter your quote:'} value={quote[0]} onChangeText={quoteText => setQuote([quoteText, quote[1], false])} />  
@@ -53,11 +55,11 @@ export const QuoteModal = (props) => {
                     <Text style={styles.textInputHeaderAuthor}>Author:</Text>
                     <TextInput 
                         style={styles.textInput} 
-                        placeholder={'Author:'} 
-                        value={quote[1]} 
-                        onChangeText={authorText => {
-                            authorText.trim() !== '' ? authorText: 'Unknown';
-                            setQuote([quote[0], authorText, false])
+                        placeholder={'Author:'}     // When textbox is empty, display 'Author:'
+                        value={quote[1]}            // quote[1] = author
+                        onChangeText={authorText => { // when text in textbox changes
+                            authorText.trim() !== '' ? authorText: 'Unknown'; // trim white spaces from string and when length of remaining = 0, display Unknown
+                            setQuote([quote[0], authorText, false])           // create a new quote item [quote, author, quote not selected]
                         }} 
                     />  
                 </View>
@@ -77,7 +79,8 @@ export const QuoteModal = (props) => {
                         onPress={() => closeModal(true)}
                     >
                         <Text style={[styles.modalButtonText, {color: 'blue',}]}>
-                            {props.isQuoteModalVisible[1] ? 'Ok': 'Add'}
+                            {/* if editing mode, display 'Ok', else, display 'Add' for button */}
+                            {props.isQuoteModalVisible[1] ? 'Ok': 'Add'} 
                         </Text>
                     </TouchableOpacity>
                 </View>
@@ -91,12 +94,12 @@ export const QuoteModal = (props) => {
 }
 
 const styles= StyleSheet.create({
-    container: {
+    container: { // modal container
         flex: 1, 
         alignItems: 'center', 
         justifyContent: 'center',
     }, 
-    modal: {
+    modal: { // 
         height: HEIGHT_MODAL, 
         width: WIDTH -80, 
         paddingTop: 10, 

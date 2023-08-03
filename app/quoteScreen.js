@@ -36,7 +36,6 @@ const QuoteScreen = () => {
                     onRequestClose={() => quoteModalVisible([false, false])} // when backbutton on phone tapped, close modal
                     >
                     
-
                     <View style={styles.modalBackDrop}> 
                         <QuoteModal // while modal is true, use quote modal component.
                         isQuoteModalVisible={isQuoteModalVisible}               // [modal display (true/false), edit? (true/false)]
@@ -50,16 +49,16 @@ const QuoteScreen = () => {
             </View>
 
             <View style={styles.quoteWrapper}>
-                <FlatList
+                <FlatList                                // FlatList to render lists.
                     data={quoteList}                     // data being inputted for flatlist to access.
                     showsVerticalScrollIndicator={false} // hide scroll bar.
-                    renderItem={({item, index}) =>       // quote item in the list array and index of it. 
-                    <TouchableOpacity 
+                    renderItem={({item, index}) =>       // quote item in the list array & index. 
+                    <TouchableOpacity                    // quote is responsive to touches
                         onPress={() => {const {quoteList: updatedQuoteList} = quoteToggle(index, quoteList, setQuoteList)}} // when quote pressed, change between selected/unselected.
                         onLongPress={() => {EditDeleteModalVisible ([true, index]);}} // when quote is long pressed, set modal to appear ([0] = true).
                         >
                         {/* Quote Item */}
-                        <Quote item={item}/>
+                        <Quote item={item}/> 
                     </TouchableOpacity>
                 }/>
             </View>
@@ -78,7 +77,7 @@ const QuoteScreen = () => {
                     isEditDeleteModalVisible={isEditDeleteModalVisible} // edit/delete modal visible (true/false) and quote index.
                     EditDeleteModalVisible={EditDeleteModalVisible}     // send function so modal visible can be set back to false to close. 
                     quoteList = {quoteList}                             // send quoteList to modify.
-                    setQuoteList = {setQuoteList}                       // send setQuoteList to re-set.
+                    setQuoteList = {setQuoteList}                       // send setQuoteList to update quoteList.
                     />
                 </View>
             </Modal>
@@ -89,15 +88,15 @@ const QuoteScreen = () => {
 }
 
 const styles = StyleSheet.create({
-    container: {
+    container: { // whole screen
         flex: 1, 
         backgroundColor: 'white',
     },
-    wrapper: { // main wrapper
+    wrapper: { // main wrapper (area items will go in)
         paddingTop: 60,
         paddingHorizontal: 22,
     }, 
-    header: {
+    header: { // Header container
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent:'space-between',
@@ -105,11 +104,11 @@ const styles = StyleSheet.create({
         paddingBottom: 20,
         paddingHorizontal: 10,
     },
-    quoteTitle: { // header title
+    quoteTitle: { // Header title
         fontWeight: 'bold',
         fontSize: 24,
     },
-    quoteWrapper: { 
+    quoteWrapper: { // container for list of quotes. 
         height: '75%',
         borderRadius: 10,
         borderWidth: 5, 
@@ -125,7 +124,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         alignItems: 'flex-end',
     },
-    addQuote: {
+    addQuote: { // 
         borderRadius: 10,
         borderWidth: 3,
         paddingLeft: 8,

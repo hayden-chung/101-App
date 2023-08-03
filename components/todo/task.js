@@ -6,20 +6,22 @@ const Task = ({text, taskStatus}) => {
   return (
     <View style={styles.item}>
         <View style={styles.itemLeft}>
-            {taskStatus ? (
+            {/* If taskStatus = true, display checked checkbox, else display empty checkbox */}
+            {taskStatus ? ( 
                 <Ionicons name="checkbox-sharp" size={28} color="black" style={styles.checkbox} />
             ) : (
                 <Ionicons name="checkbox-outline" size={28} color="black" style={styles.checkbox}/>
             )}
             
-            <Text style={styles.taskText}>{text}</Text>
+            {/*  Task Text */}
+            <Text style={styles.taskText}>{text}</Text> 
         </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-    item: { 
+    item: { // quote Item
         padding: 15,
         borderRadius: 10,
         backgroundColor: 'white',
@@ -28,7 +30,7 @@ const styles = StyleSheet.create({
         justifyContent:'space-between',
         marginBottom: 20,
     },
-    itemLeft: {
+    itemLeft: { 
         flexDirection: 'row',
         alignItems: 'center',
         flexWrap: 'wrap',
