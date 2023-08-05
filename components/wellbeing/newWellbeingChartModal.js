@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import { StyleSheet, Text, View, Dimensions, TextInput, Alert, TouchableOpacity} from 'react-native';
 import Slider from '@react-native-community/slider';
 import { AntDesign } from '@expo/vector-icons';
-import NextButton from './modalNextButton';
+import NextButton from './ModalNextButton';
 import {updateWellbeingDataStorage} from '../../assets/wellbeingData';
 
 
@@ -161,19 +161,16 @@ const styles= StyleSheet.create({
         marginBottom: 10,
         // backgroundColor: 'green',
     }, 
-    previousButton: {
+    previousButton: { // go to previous page button in modal
         justifyContent: 'center',
         alignItems: 'center',
         width: SCREEN_HEIGHT/18, 
         height: SCREEN_HEIGHT/18,
-        borderRadius: 500, // just give the border value any high number as there is a max limit which at that point creates a circle and that's what we want. 
-        backgroundColor: 'white',
+        borderRadius: 500, // just give the border value any high number as there is a max limit which at that point creates the radius of a circle. 
         borderColor: 'black',
         borderWidth: 2.5,
-        alignSelf: 'flex-end',
-    },
-    finishedButton: {
-
+        backgroundColor: 'white',
+        alignSelf: 'flex-end', // bottom of column
     },
     sliderContainer: {
         flexDirection: 'column',

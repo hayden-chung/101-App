@@ -48,6 +48,7 @@ const QuoteScreen = () => {
                 </Modal>
             </View>
 
+            {/* Quote */}
             <View style={styles.quoteWrapper}>
                 <FlatList                                // FlatList to render lists.
                     data={quoteList}                     // data being inputted for flatlist to access.
