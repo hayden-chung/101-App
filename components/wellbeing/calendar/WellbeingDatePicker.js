@@ -7,7 +7,9 @@ import { Feather } from '@expo/vector-icons';
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = (Dimensions.get('window').height);
 
-const WellbeingDate = ({setCalendarVisible, setSelectedDate, selectedDate})  => {
+const WellbeingDatePicker = ({setCalendarVisible, setSelectedDate, selectedDate})  => {
+
+    const [tempSelectedDate, setTempSelectedDate] = useState();
 
     return (
         <View style={styles.container}>
@@ -34,18 +36,18 @@ const WellbeingDate = ({setCalendarVisible, setSelectedDate, selectedDate})  => 
                                 <Entypo name="chevron-right" size={SCREEN_HEIGHT/20} color="#291D89" />
                             );
                         }}
-                        onDayPress={day => { // when a day is pressed
-                        setSelectedDate(day.dateString); // set selected date in variable
+                        onDayPress={day => { // When a day is pressed
+                        setTempSelectedDate(day.dateString); // setSelectedDate to selected date.
                         }}
-                        markedDates={{
-                        [selectedDate]: {selected: true, disableTouchEvent: true, selectedDotColor: 'orange'}
+                        markedDates={{ 
+                        [tempSelectedDate]: {selected: true, disableTouchEvent: true} // For the selected date (tempSelectedDate), selected: true --> indicate the date is marked, disableTouchEvent: true --> selected date cannot be touched anymore, 
                         }}
                     />
                     {/* Use this 'pushBottom' view to push the item below it to the bottom */}
                     <View style={styles.pushBottom}/> 
 
                 </View>
-                <TouchableOpacity style={styles.okButton}>
+                <TouchableOpacity style={styles.okButton} onPress={() => {setSelectedDate(tempSelectedDate); setCalendarVisible(false);}}>
                     <Text style={{fontSize: SCREEN_HEIGHT/40, fontWeight: '500'}}>OK</Text>
                 </TouchableOpacity>
             </View>
@@ -101,4 +103,4 @@ const styles = StyleSheet.create({
     },
 });
 
-  export default WellbeingDate;
+  export default WellbeingDatePicker;

@@ -6,33 +6,38 @@ import { Ionicons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
-import {NewWellbeingChartModal} from '../components/wellbeing/NewWellbeingChartModal';
-import {wellbeingData} from '../assets/wellbeingData';
-import WellbeingDate from '../components/wellbeing/WellbeingDate';
+import {NewWellbeingChartModal} from '../components/wellbeing/newChartModal/NewWellbeingChartModal';
+import {wellbeingData, updateWellbeingData} from '../assets/wellbeingData';
+import WellbeingDatePicker from '../components/wellbeing/calendar/WellbeingDatePicker';
+import {getCurrentDate, updateCalendarData} from '../components/wellbeing/wellbeingControls'
+import {handlePreviousDay, handleNextDay} from '../components/wellbeing/calendar/calendarControls';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = (Dimensions.get('window').height);
 
 const WellBeingScreen = () => { // main function for wellbeing screen  
   // const { dataHistory, updateDataHistory, labels, datasets } = wellbeingData();
-  const [isNewChartModalVisible, newChartModalVisible] = useState(false);
-  const [isCalendarVisible, setCalendarVisible] = useState(false);
-  const [selectedDate, setSelectedDate] = useState(null); // Selected date from date picker (calendar).
-  console.log(selectedDate)
+  const [isNewChartModalVisible, newChartModalVisible] = useState(false); // Is 'new chart' modal visible. 
+  const [isCalendarVisible, setCalendarVisible] = useState(false); // Is calendar modal visible.
+  const [selectedDate, setSelectedDate] = useState(getCurrentDate()); // Selected date from date picker (calendar).
+  const [calendarData, setCalendarData] = useState({"2023-08-02": [10, 1, 2, 5, 1, 1]}); // data type = object (key value (like dictionary in python))
+
+  updateWellbeingData(selectedDate, calendarData)
+
   return (
     // SafeAreaView renders content within the visible boundaries of the device (iOS only).
     <SafeAreaView style={styles.container}> 
 
         <View style={styles.header}>
 
-          <TouchableOpacity style={styles.goBackHomeButton}>
+          <TouchableOpacity style={styles.goBackHomeButton}>  
             <Ionicons name="chevron-back" size={SCREEN_HEIGHT/20} color="black"/>
           </TouchableOpacity>
 
           <Text style={styles.title}> Wellbeing Chart</Text>
 
           {/* ------------ UPDATE WELLBEING CHART BUTTON ------------ */}
-          <TouchableOpacity onPress={() => {newChartModalVisible(true)}} style={styles.updateButtonWrapper}>
+          <TouchableOpacity onPress={() => {newChartModalVisible(true)}} style={styles.updateButtonWrapper}> 
             <Ionicons name="add" size={35} color="black" style={styles.updateButton}/>
           </TouchableOpacity>
 
@@ -43,11 +48,12 @@ const WellBeingScreen = () => { // main function for wellbeing screen
             visible={isNewChartModalVisible} // modal is visible (true/false)
             onRequestClose={() => newChartModalVisible(false)} // when backbutton tapped, close modal (set showNewChartModal to false)
             >
-            {/* Modal Component */}
+            {/* Make a new wellbeing rating (Modal Component) */}
             <NewWellbeingChartModal
-              newChartModalVisible = {newChartModalVisible}
-              animation
-              wellbeingData = {wellbeingData}
+              newChartModalVisible={newChartModalVisible}
+              wellbeingData={wellbeingData}
+              setCalendarData={setCalendarData}
+              calendarData={calendarData}
             />
 
           </Modal>
@@ -56,8 +62,8 @@ const WellBeingScreen = () => { // main function for wellbeing screen
         {/* --------------- Wellbeing Date Bar --------------- */}
         <View style={styles.dateBar}>
 
-          {/* Previous Day */}
-          <TouchableOpacity style={styles.goBackHomeButton}>
+          {/* Previous Day */}   
+          <TouchableOpacity style={styles.goBackHomeButton} onPress={() => handlePreviousDay(selectedDate, setSelectedDate)}>
             <Entypo name="chevron-left" size={SCREEN_HEIGHT/20} color="black" />
           </TouchableOpacity>
 
@@ -65,7 +71,7 @@ const WellBeingScreen = () => { // main function for wellbeing screen
           <Text style={styles.dateText}>{selectedDate}</Text>
           
           {/* Next Day */}
-          <TouchableOpacity style={styles.goBackHomeButton}>
+          <TouchableOpacity style={styles.goBackHomeButton} onPress={() => handleNextDay(selectedDate, setSelectedDate)}>
           <Entypo name="chevron-right" size={SCREEN_HEIGHT/20} color="black" />
           </TouchableOpacity>
 
@@ -80,7 +86,7 @@ const WellBeingScreen = () => { // main function for wellbeing screen
             visible={isCalendarVisible}
             onRequestClose={() => setCalendarVisible(false)} // when backbutton on phone tapped, close modal.
           >
-            <WellbeingDate 
+            <WellbeingDatePicker 
               setCalendarVisible={setCalendarVisible}
               setSelectedDate={setSelectedDate}
               selectedDate={selectedDate}

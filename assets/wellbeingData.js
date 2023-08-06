@@ -3,9 +3,17 @@ import {useState} from 'react';
 const wellbeingDataStorage = [[2, 9, 3, 8, 10, 4]];
 
 export const updateWellbeingDataStorage = (newArray) => { // update new array to existing array storage 
-    console.log('before', wellbeingDataStorage)
     wellbeingDataStorage.push(newArray);
-    console.log('after', wellbeingDataStorage);
+};
+
+export const updateWellbeingData = (selectedDate, calendarData) => { // Provide currently selected date. check if there is stored wellbeing data in that date and update the graph data. 
+    console.log('----------------------------------------------------------------')
+    console.log('updateWellbeingData:', calendarData[selectedDate])
+    const defaultData = [1, 1, 1, 1, 1, 1];
+    const displayData = calendarData[selectedDate] || defaultData;
+    console.log('displayData:', displayData);
+    wellbeingData.datasets[0].data = displayData
+    console.log('----------------------------------------------------------------')
 };
 
 export const wellbeingData = { 

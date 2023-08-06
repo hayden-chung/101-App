@@ -3,13 +3,18 @@ import { StyleSheet, Text, View, Dimensions, TextInput, Alert, TouchableOpacity}
 import Slider from '@react-native-community/slider';
 import { AntDesign } from '@expo/vector-icons';
 import NextButton from './ModalNextButton';
-import {updateWellbeingDataStorage} from '../../assets/wellbeingData';
+import {updateWellbeingDataStorage} from '../../../assets/wellbeingData';
+import {getCurrentDate, updateCalendarData} from '../wellbeingControls';
 
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = (Dimensions.get('window').height);
 
+const currentDate = getCurrentDate();
+
 export const NewWellbeingChartModal = (props) => {
+
+    console.log('calendar data', props.calendarData);
 
     const [pageNumber, changePageNumber] = useState(0) // starting page number in modal = 1 (0 for index number).
     const [wellbeingRating, updateWellbeingRating] = useState([1, 1, 1, 1, 1, 1]) // set all default ratings to 1.
@@ -27,16 +32,17 @@ export const NewWellbeingChartModal = (props) => {
     };
 
     // ----------- Change Page in Modal ------------ //
-    const changePage = (direction) => {                             // when right button pressed. 
+    const changePage = (direction) => {                             // When right button pressed. 
         if (direction === 'right') {                                // If right button pressed
             if (pageNumber < props.wellbeingData.labels.length-1) { // If page number is not larger than the number of aspects (6). (props.wellbeingData.labels.length = 6 and index number starts from 0 so subtract 1) 
-                changePageNumber(pageNumber+1)                      // to next page
+                changePageNumber(pageNumber+1)                      // Increase page number by 1.
             } else if (pageNumber === 5) {                          // if pg number is 6 (5 for index number)
                 // updateDataHistory(...dataHistory, wellbeingRating)
-
-                updateWellbeingDataStorage(wellbeingRating);
-                props.wellbeingData.datasets[0].data = wellbeingRating    // update graph data
-                closeModal()                                        // close modal (and update graph)
+                
+                updateWellbeingDataStorage(wellbeingRating);            // Update wellbeing rating.
+                props.wellbeingData.datasets[0].data = wellbeingRating  // Update graph data.
+                updateCalendarData(props.setCalendarData, currentDate, wellbeingRating)  // Save wellbeing rating data into current date.
+                closeModal()                                            // close modal (and update graph).
             }
             
         } else if (direction === 'left' && pageNumber > 0) {        // If left button pressed & If page number is larger than 0 (as it cannot go below this), change page number by -1 to go to previous page. 
