@@ -6,16 +6,13 @@ import { quoteToggle } from '../components/motivationalQuotes/quoteControl';
 import { QuoteModal } from '../components/motivationalQuotes/quoteControl';
 import { MaterialIcons } from '@expo/vector-icons'; 
 import { EditDeleteQuoteModal } from '../components/motivationalQuotes/edit&deleteQuoteModal';
-import {defaultQuotes} from '../assets/defaultQuotes';
-
+import {QuoteListItems} from '../components/motivationalQuotes/quoteItemsList';
 
 const QuoteScreen = () => { 
-
-    const [quoteList, setQuoteList] = useState(defaultQuotes); // List of quotes
     
-
     const [isQuoteModalVisible, quoteModalVisible] = useState([false, false]); // [modal display (true/false), edit? (true/false)]
     const [isEditDeleteModalVisible, EditDeleteModalVisible] = useState([false, null]); // [edit/delete modal display (true/false), quote index no.]
+    const {quoteList, setQuoteList} = QuoteListItems(); // destructure function (QuoteListItems) into 'quoteList' variable and 'setQuoteList' function.
 
     return (
     <SafeAreaView style={styles.container}>
@@ -48,8 +45,8 @@ const QuoteScreen = () => {
                 </Modal>
             </View>
 
-            {/* Quote */}
-            <View style={styles.quoteWrapper}>
+            {/* Quote Container */}
+            <View style={styles.quoteWrapper}> 
                 <FlatList                                // FlatList to render lists.
                     data={quoteList}                     // data being inputted for flatlist to access.
                     showsVerticalScrollIndicator={false} // hide scroll bar.

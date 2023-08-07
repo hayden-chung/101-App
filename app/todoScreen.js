@@ -1,13 +1,15 @@
 import React, {useState} from 'react';
-import { KeyboardAvoidingView, StyleSheet, Text, View, TextInput, TouchableOpacity, Keyboard, ScrollView} from 'react-native';
+import { KeyboardAvoidingView, StyleSheet, Text, View, TextInput, TouchableOpacity, Keyboard, ScrollView, FlatList} from 'react-native';
 import colors from '../assets/colors';
 import Task from '../components/todo/Task';
 import {addTask, completedTask, deleteTask} from '../components/todo/taskControls'; // import taskControl functions
+import {TaskItemsList} from '../components/todo/taskItemsList';
 
 const ToDoScreen = () => { // when user clicks on todo button, navigate to this main function of the to-do screen
 
-  const [task, setTask] = useState([null, false]); // useState is a hook that allows you to state variables in functional components. In this case: task = [null, false] (null = taskname, false = state of task completion)
-  const [taskItems, setTaskItems] = useState([]); // taskItems = []
+  const [task, setTask] = useState([null, false, false]); // useState is a hook that allows you to state variables in functional components. In this case: task = [null, false] (null = taskname, false = state of task completion)
+  const {taskItems, setTaskItems} = TaskItemsList();
+  console.log(taskItems);
 
   return (
     <View style={styles.container}> 
@@ -17,23 +19,22 @@ const ToDoScreen = () => { // when user clicks on todo button, navigate to this 
         <Text style={styles.taskTitle}>Today's Tasks</Text> 
 
         {/* enable scrolling using ScrollView */}
-        <ScrollView style={styles.taskItems}> 
+        <View style={styles.taskItems}> 
 
-        {/* iterate over taskItems array using map() function */}
-          {taskItems.map((item, index) => { 
-
-            {/* each task is wrapped in touchable opacity to make items responsive */}
-            return (
-              <TouchableOpacity 
-                key={index} // send index number of quote list to display particular quote item
+          {/* iterate over taskItems array using map() function */}
+          <FlatList   
+            data = {taskItems}                   // Data being inputted for flatlist to access.
+            showsVerticalScrollIndicator={false} // Hide scroll bar.
+            renderItem={({item, index}) =>       // Item and index no. of task in array. 
+              <TouchableOpacity                  // Task is responsive to touches
                 onPress={() => completedTask(index, taskItems, setTaskItems)} // when quote pressed, change completed state (compelted/not completed)
-                onLongPress={() => deleteTask(index, taskItems, setTaskItems)}> 
+                onLongPress={() => deleteTask(index, taskItems, setTaskItems)}
+                > 
                 {/* Task component displays task item. Parameters 'text' (task text) and 'taskState' (checkbox)*/}
-                <Task text={item[0]} taskStatus={taskItems[index][1]} /> 
+                <Task text={item[0]} timetableGenerator={false} taskStatus={taskItems[index][1]} /> 
               </TouchableOpacity>
-            )
-          })}
-        </ScrollView>
+          }/>
+        </View>
 
       </View>
       
@@ -43,7 +44,7 @@ const ToDoScreen = () => { // when user clicks on todo button, navigate to this 
       style={styles.writeTaskWrapper}
       >
         {/* text input box. placeholder = when box is empty. value = string value when enter button pressed. onChangeText = when textbox changes,   */}
-        <TextInput style={styles.input} placeholder={'Write a Task'} value={task[0]} onChangeText={text => setTask([text, false])}/> 
+        <TextInput style={styles.input} placeholder={'Write a Task'} value={task[0]} onChangeText={text => setTask([text, false, false])}/> 
 
         {/* Touchable opacity to add task */}
         <TouchableOpacity onPress={() => {const { task: updatedTask, taskItems: updatedTaskItems } = addTask(task, taskItems, setTaskItems, setTask)}}>

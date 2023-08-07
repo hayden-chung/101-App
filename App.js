@@ -5,11 +5,12 @@ import ToDoScreen from './app/todoScreen';
 import HomeScreen from './app/homeScreen';
 import QuoteScreen from './app/quoteScreen';
 import WellBeingScreen from './app/wellbeingScreen'
+import TimetableGenerator from './components/timetable/timetableGenerator';
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <WellBeingScreen />
+      <TimetableGenerator />
     </View>
   );
 }
