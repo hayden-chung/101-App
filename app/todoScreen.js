@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import { KeyboardAvoidingView, StyleSheet, Text, View, TextInput, TouchableOpacity, Keyboard, ScrollView, FlatList} from 'react-native';
 import colors from '../assets/colors';
-import Task from '../components/todo/Task';
+import Task from '../components/todo/task';
 import {addTask, completedTask, deleteTask} from '../components/todo/taskControls'; // import taskControl functions
 import {TaskItemsList} from '../components/todo/taskItemsList';
 
