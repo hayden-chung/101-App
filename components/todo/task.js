@@ -8,29 +8,34 @@ const SCREEN_HEIGHT = (Dimensions.get('window').height);
 
 checkIconSize = SCREEN_HEIGHT/30
 
-const Task = ({text, timetableGenerator, taskStatus}) => {
+const Task = ({text, timetableGenerator, taskStatus, taskTime}) => {
   return (
     <View style={styles.item}>
         <View style={styles.itemLeft}>
             
             {timetableGenerator ? ( 
-                taskStatus ? ( // {If taskStatus = true, display selected circle, else display empty circle
+                taskStatus ? ( // (Timetable Generator) If taskStatus = true, display selected circle, else display empty circle
                     <MaterialIcons name="radio-button-checked" size={checkIconSize} color="black" style={styles.checkbox}/>
                 ) : (
                     <MaterialIcons name="radio-button-unchecked" size={checkIconSize} color="black" style={styles.checkbox}/>
                 )
             ) : (
-                taskStatus ? ( // {If taskStatus = true, display checked checkbox, else display empty checkbox 
+                taskStatus ? ( // (To-Do Screen) If taskStatus = true, display checked checkbox, else display empty checkbox 
                     <Ionicons name="checkbox-sharp" size={checkIconSize} color="black" style={styles.checkbox} />
                 ) : (
                     <Ionicons name="checkbox-outline" size={checkIconSize} color="black" style={styles.checkbox}/>
                 )
             )}
 
-            
             {/*  Task Text */}
             <Text style={styles.taskText}>{text}</Text> 
         </View>
+
+        {/* Estimated Time */}
+        {taskTime !== null ? (
+            <Text style={styles.estimatedTime}> ({taskTime}h) </Text>
+        ) : null}
+
     </View>
   );
 }
@@ -56,7 +61,9 @@ const styles = StyleSheet.create({
     taskText:{
         maxWidth: '80%',
     },
-
+    estimatedTime: {
+        color: 'gray',
+    }
 });
 
 export default Task;

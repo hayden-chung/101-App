@@ -7,7 +7,7 @@ import {TaskItemsList} from '../components/todo/taskItemsList';
 
 const ToDoScreen = () => { // when user clicks on todo button, navigate to this main function of the to-do screen
 
-  const [task, setTask] = useState([null, false, false]); // useState is a hook that allows you to state variables in functional components. In this case: task = [null, false] (null = taskname, false = state of task completion)
+  const [task, setTask] = useState([null, false, false, null]); // useState is a hook that allows you to state variables in functional components. In this case: task = [task name, task completion state, task selected state in timetable generator, estimated completion time ] 
   const {taskItems, setTaskItems} = TaskItemsList();
   console.log(taskItems);
 
@@ -31,7 +31,7 @@ const ToDoScreen = () => { // when user clicks on todo button, navigate to this 
                 onLongPress={() => deleteTask(index, taskItems, setTaskItems)}
                 > 
                 {/* Task component displays task item. Parameters 'text' (task text) and 'taskState' (checkbox)*/}
-                <Task text={item[0]} timetableGenerator={false} taskStatus={taskItems[index][1]} /> 
+                <Task text={item[0]} timetableGenerator={false} taskStatus={taskItems[index][1]} taskTime={taskItems[index][3]} /> 
               </TouchableOpacity>
           }/>
         </View>
@@ -44,7 +44,7 @@ const ToDoScreen = () => { // when user clicks on todo button, navigate to this 
       style={styles.writeTaskWrapper}
       >
         {/* text input box. placeholder = when box is empty. value = string value when enter button pressed. onChangeText = when textbox changes,   */}
-        <TextInput style={styles.input} placeholder={'Write a Task'} value={task[0]} onChangeText={text => setTask([text, false, false])}/> 
+        <TextInput style={styles.input} placeholder={'Write a Task'} value={task[0]} onChangeText={text => setTask([text, false, false, null])}/> 
 
         {/* Touchable opacity to add task */}
         <TouchableOpacity onPress={() => {const { task: updatedTask, taskItems: updatedTaskItems } = addTask(task, taskItems, setTaskItems, setTask)}}>

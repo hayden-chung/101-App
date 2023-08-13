@@ -1,7 +1,7 @@
-import React, {useState} from 'react';
-import { KeyboardAvoidingView, StyleSheet, Text, View, Dimensions, TouchableOpacity, Keyboard, ScrollView, FlatList} from 'react-native';
+import React, {useState, useRef} from 'react';
+import { KeyboardAvoidingView, StyleSheet, Text, View, Dimensions, TouchableOpacity, Keyboard, ScrollView, FlatList, Animated} from 'react-native';
 import {QuoteListItems} from '../motivationalQuotes/quoteItemsList';
-import Task from '../todo/Task';
+import Task from '../todo/task';
 import {TaskItemsList} from '../todo/taskItemsList';
 import {selectedTask} from '../todo/taskControls'; // import taskControl functions
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -14,8 +14,37 @@ const SCREEN_HEIGHT = (Dimensions.get('window').height);
 const TimetableGenerator = () => { 
 
     const {taskItems, setTaskItems} = TaskItemsList();// destructure function (TaskItemsList) into 'taskItems' variable and 'setTaskItems' function.
-    const [isBreakChecked, setBreakChecked] = useState(false);
-    
+    const [isBreakChecked, setBreakChecked] = useState(false); // 'Fill With Breaks' checkbox.
+
+    console.log(taskItems)
+
+    const [isAlarmMessage, toggleAlarmMessage] = useState(false);
+    const fadeAnim =useRef (new Animated.Value(0)).current; // useRef does not cause a re-render when updated. Persists values between renders.
+
+    const handleAlarmMessage = () => { // alert message for when task cannot be selected
+        toggleAlarmMessage(false); // set animation back to false. 
+        fadeAnim.setValue(0);
+
+        Animated.sequence([
+            Animated.timing(fadeAnim, {
+                toValue: 1, 
+                duration: 0, 
+                useNativeDriver: true,
+            }),
+            Animated.timing(fadeAnim, { // React native function to animate fade animation. 
+                toValue: 1, // Final value (opacity). 
+                duration: 2000, // 2 seconds.
+                useNativeDriver: true, // enables animations to be executed on the platform's native thread to prevent lag and for a smooth run. 
+            }), // start animation (everything inside this bracket).
+            Animated.timing(fadeAnim, {
+                toValue: 0, 
+                duration: 1000, 
+                useNativeDriver: true,
+            }),
+        ]).start();
+
+    };
+
     return(
         <View style={styles.container}>
             <View style={styles.wrapper}>
@@ -25,14 +54,31 @@ const TimetableGenerator = () => {
                     data = {taskItems}                   // Data being inputted for flatlist to access.
                     showsVerticalScrollIndicator={false} // Hide scroll bar.
                     renderItem={({item, index}) =>       // Item and index no. of task in array. 
-                        <TouchableOpacity                  // Task is responsive to touches
-                        onPress={() => selectedTask(index, taskItems, setTaskItems)} // when quote pressed, change completed state (compelted/not completed)
-                        > 
+                        <TouchableOpacity                // Task is responsive to touches
+                        onPress={() => { // when quote pressed, 
+                            selectedTask(index, taskItems, setTaskItems, toggleAlarmMessage, isAlarmMessage); // select/unselect task (if possible)
+                            console.log(isAlarmMessage)
+                            if (isAlarmMessage) { // if this variable is true, 
+                                handleAlarmMessage(); // use function for popup alert message
+                            }
+                        }}>
+
                         {/* Task component displays task item. Parameters 'text' (task text) and 'taskState' (checkbox)*/}
-                        <Task text={item[0]} timetableGenerator={true} taskStatus={taskItems[index][2]} /> 
+                        <Task text={item[0]} timetableGenerator={true} taskStatus={taskItems[index][2]} taskTime={taskItems[index][3]} /> 
                         </TouchableOpacity>
                     }/>
                 </View>
+
+                <Animated.View style={{opacity:fadeAnim}}>
+                    <View style={styles.anim}>
+                        <Text style={styles.anim}>
+                            <Text style={styles.text}>
+                                You can only select tasks with an estimated time 
+                            </Text>
+                        </Text>
+                    </View>
+
+                </Animated.View>
 
                 <View style={styles.breakCheckBoxWrapper}>
                     <Text style={styles.breakCheckBoxText}>Fill With Breaks</Text>
