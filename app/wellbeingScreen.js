@@ -16,7 +16,6 @@ const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = (Dimensions.get('window').height);
 
 const WellBeingScreen = () => { // main function for wellbeing screen  
-  // const { dataHistory, updateDataHistory, labels, datasets } = wellbeingData();
   const [isNewChartModalVisible, newChartModalVisible] = useState(false); // Is 'new chart' modal visible. 
   const [isCalendarVisible, setCalendarVisible] = useState(false); // Is calendar modal visible.
   const [selectedDate, setSelectedDate] = useState(getCurrentDate()); // Selected date from date picker (calendar).

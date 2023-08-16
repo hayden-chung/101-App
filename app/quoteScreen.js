@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import { KeyboardAvoidingView, StyleSheet, Text, View, TextInput, TouchableOpacity, Keyboard, ScrollView, FlatList, SafeAreaView, Modal, Alert} from 'react-native';
 import colors from '../assets/colors';
-import Quote from '../components/motivationalQuotes/Quote';
+import Quote from '../components/motivationalQuotes/quote';
 import { quoteToggle } from '../components/motivationalQuotes/quoteControl';
 import { QuoteModal } from '../components/motivationalQuotes/quoteControl';
 import { MaterialIcons } from '@expo/vector-icons'; 

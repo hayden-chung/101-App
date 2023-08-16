@@ -6,11 +6,13 @@ import HomeScreen from './app/homeScreen';
 import QuoteScreen from './app/quoteScreen';
 import WellBeingScreen from './app/wellbeingScreen'
 import TimetableGenerator from './components/timetable/timetableGenerator';
+import GenerateTimetable from './test';
+import TimetableSettings from './components/timetable/settings/timetableSettings';
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <TimetableGenerator />
+      <TimetableSettings />
     </View>
   );
 }

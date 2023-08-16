@@ -1,5 +1,3 @@
-import {useState} from 'react';
-
 const wellbeingDataStorage = [[2, 9, 3, 8, 10, 4]];
 
 export const updateWellbeingDataStorage = (newArray) => { // update new array to existing array storage 
