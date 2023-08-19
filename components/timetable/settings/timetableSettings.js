@@ -1,16 +1,16 @@
 import React, {useState} from 'react';
-import {StyleSheet, Text, View, Button, Platform, Dimensions, FlatList} from 'react-native';
+import {StyleSheet, Text, View, Button, Platform, Dimensions, FlatList, TouchableOpacity} from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import TimePicker from './timePicker';
-import {fixedSessions} from '../timetableSettingsData'
+import {fixedSessions} from './timetableSettingsData'
+import {GenerateTimetable} from '../timetableControls';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 
 const TimetableSettings = () => { 
 
-    const breakSessions = Object.keys(fixedSessions).filter(type => type !== 'start-finish'); // remove start-finish from the list array
-    console.log(breakSessions);
+    const breakSessions = Object.keys(fixedSessions).filter(type => type !== 'start-finish'); // Store break sessions only. Remove start-finish from the list array.
 
     return(
         <View style={styles.container}>
@@ -51,21 +51,12 @@ const TimetableSettings = () => {
                         )
                     }
                     />
-    
-
-
-
-                    <Text style={styles.startText}>Start</Text>
-                    {/* sessionType = name of session, startOrFinish = starting or finishing time (0 = start, 1 = finish)*/}
-                    <TimePicker sessionType='start-finish' startOrFinish={0}/> 
-
-                    <Text style={styles.startText}>Finish</Text>
-                    <TimePicker sessionType='start-finish' startOrFinish={1}/>  
                 </View>
             </View>
 
-
-
+            <TouchableOpacity style={styles.testbutton} onPress={() => GenerateTimetable()}>
+                    <Text style={styles.testText}>TEST</Text>
+            </TouchableOpacity>
 
 
         </View>
@@ -102,6 +93,9 @@ const styles = StyleSheet.create({
     startText: {
         fontSize: SCREEN_WIDTH/20,
     },
+    breakSessionsContainer: {
+        height: 400,
+    },
     breakSessionItems: {
         width: SCREEN_WIDTH/1.2,
         height: SCREEN_HEIGHT/10,
@@ -110,6 +104,14 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: 'yellow',
+    },
+    testbutton: { 
+        height: 100,
+        width: 100,
+        backgroundColor: 'red',
+    },
+    testText: {
+        fontSize: 20,
     },
 });
 

@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {StyleSheet, Text, View, Button, Platform, Dimensions, TouchableOpacity} from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import {fixedSessions, updateFixedSessions} from '../timetableSettingsData'
+import {fixedSessions, updateFixedSessions} from './timetableSettingsData'
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = Dimensions.get('window').height;
@@ -13,16 +13,19 @@ const TimePicker = ({sessionType, startOrFinish}) => {
     
     const onChange = (event, selectedTime) => { // event = cancel/ok button, selectedTime = only exists if user presses ok button.
         if (event.type === 'set' && startOrFinish === 1) { // ok button pressed and setting finish time
-            if (selectedTime <= fixedSessions[sessionType][0]) {
-                const tempTime = new Date(fixedSessions[sessionType][0]);
-                tempTime.setMinutes(fixedSessions[sessionType][0].getMinutes() + 10);
-
-
-                console.log('Current Date:', selectedTime);
-                selectedTime = tempTime;
-                console.log('New Date with 10 minutes added:', selectedTime);
+            if (selectedTime <= fixedSessions[sessionType][0]) { // if selected time is smaller or equal to starting time
+                const tempTime = new Date(fixedSessions[sessionType][0]); // set temporary time to starting time
+                tempTime.setMinutes(fixedSessions[sessionType][0].getMinutes() + 10); // set tempTime to 10min more than starting time
+                selectedTime = tempTime; // re-set selected time to tempTime. 
             } 
         }
+        if (event.type === 'set' && startOrFinish === 0) { // ok button pressed and setting start time
+            if (selectedTime >= fixedSessions[sessionType][1]) { // if selected time is smaller or equal to starting time
+                const tempTime = new Date(fixedSessions[sessionType][1]); // set temporary time to starting time
+                tempTime.setMinutes(fixedSessions[sessionType][1].getMinutes() - 10); // set tempTime to 10min more than starting time
+                selectedTime = tempTime; // re-set selected time to tempTime. 
+            } 
+        } 
         const currentTime = selectedTime || time; // If there is a selected time, else, initial date (new Date()). 
         setShow(false); // date picker hides now
         setTime(currentTime); // Set time to currently selected time. 
@@ -30,7 +33,7 @@ const TimePicker = ({sessionType, startOrFinish}) => {
         let newTime = new Date(currentTime); // create a new Date object to manipulate rather than changing the original 'currentTime' object. 
         setText(newTime) // For displaying the time.
         updateFixedSessions(sessionType, startOrFinish, newTime) // Update the time for this session. 
-        console.log('event', event, 'selected time', selectedTime, 'ti stil prints')
+        console.log('event', event, 'selected time', selectedTime, 'it stil prints')
 
     }
 

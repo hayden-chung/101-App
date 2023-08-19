@@ -1,11 +1,14 @@
 import React, {useState} from 'react';
-import { KeyboardAvoidingView, StyleSheet, Text, View, TextInput, TouchableOpacity, Keyboard, ScrollView} from 'react-native';
+import { KeyboardAvoidingView, StyleSheet, Text, View, TextInput, TouchableOpacity, Keyboard, Button} from 'react-native';
 
 
-const HomeScreen = () => { 
+const HomeScreen = ({navigation}) => { 
     return(
         <View>
-            <Text>Home Screen</Text>
+            <Button
+                title="navigate to second screen"
+                onPress={() => navigation.navigate("Second")}
+            />
         </View>
     )
 }

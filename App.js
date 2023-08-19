@@ -1,19 +1,33 @@
 import React from 'react';
 import { StyleSheet, View} from 'react-native';
+import { NavigationContainer } from '@react-navigation/native'
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import colors from './assets/colors';
 import ToDoScreen from './app/todoScreen';
 import HomeScreen from './app/homeScreen';
 import QuoteScreen from './app/quoteScreen';
 import WellBeingScreen from './app/wellbeingScreen'
 import TimetableGenerator from './components/timetable/timetableGenerator';
-import GenerateTimetable from './test';
 import TimetableSettings from './components/timetable/settings/timetableSettings';
+
+const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <TimetableSettings />
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator>
+
+        <Stack.Screen 
+          name="TimetableGenerator"
+          component={TimetableGenerator}
+        />
+
+        <Stack.Screen 
+          name="TimetableSettings"
+          component={TimetableSettings}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 

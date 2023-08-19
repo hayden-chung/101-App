@@ -7,18 +7,17 @@ import {selectedTask} from '../todo/taskControls'; // import taskControl functio
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import {toggleCheckbox} from './timetableControls';
+import TimetableSettings from './settings/timetableSettings';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
-const SCREEN_HEIGHT = (Dimensions.get('window').height);
+const SCREEN_HEIGHT = (Dimensions.get('window').height); 
 
-const TimetableGenerator = () => { 
+const TimetableGenerator = ({navigation}) => { 
 
     const {taskItems, setTaskItems} = TaskItemsList();// destructure function (TaskItemsList) into 'taskItems' variable and 'setTaskItems' function.
     const [isBreakChecked, setBreakChecked] = useState(false); // 'Fill With Breaks' checkbox.
+    const [isAlarmMessage, toggleAlarmMessage] = useState(false); // Alarm message for when user presses task with no estimated time. 
 
-    console.log(taskItems)
-
-    const [isAlarmMessage, toggleAlarmMessage] = useState(false);
     const fadeAnim =useRef (new Animated.Value(0)).current; // useRef does not cause a re-render when updated. Persists values between renders.
 
     const handleAlarmMessage = () => { // alert message for when task cannot be selected
@@ -57,7 +56,6 @@ const TimetableGenerator = () => {
                         <TouchableOpacity                // Task is responsive to touches
                         onPress={() => { // when quote pressed, 
                             selectedTask(index, taskItems, setTaskItems, toggleAlarmMessage, isAlarmMessage); // select/unselect task (if possible)
-                            console.log(isAlarmMessage)
                             if (isAlarmMessage) { // if this variable is true, 
                                 handleAlarmMessage(); // use function for popup alert message
                             }
@@ -80,7 +78,7 @@ const TimetableGenerator = () => {
 
                 </Animated.View>
 
-                <View style={styles.breakCheckBoxWrapper}>
+                {/* <View style={styles.breakCheckBoxWrapper}>
                     <Text style={styles.breakCheckBoxText}>Fill With Breaks</Text>
                     
                     <TouchableOpacity onPress={() => {toggleCheckbox(isBreakChecked, setBreakChecked)}}>
@@ -90,11 +88,18 @@ const TimetableGenerator = () => {
                             <Ionicons name="ios-checkbox-outline" size={24} color="white" />
                         )}
                     </TouchableOpacity>
-                </View>
-
-                <TouchableOpacity style={styles.generateButton}> 
-                    <MaterialCommunityIcons name="gesture-double-tap" size={SCREEN_HEIGHT/10} color="white" />
+                </View> */}
+                
+                
+                <TouchableOpacity style={styles.timetableSettingsButton} onPress={() => navigation.navigate("TimetableSettings")}>
+                    <Text>Timetable Settings</Text>
                 </TouchableOpacity>
+
+                {/* ---------- Generate Timetable Button ---------- */}
+                    <TouchableOpacity style={styles.generateButton}> 
+                        <MaterialCommunityIcons name="gesture-double-tap" size={SCREEN_HEIGHT/10} color="white" />
+                    </TouchableOpacity>
+
                 <Text style={styles.buttonDescription}>GENERATE TIMETABLE</Text>
             </View>
         </View>
@@ -146,7 +151,12 @@ const styles = StyleSheet.create({
         paddingRight: SCREEN_WIDTH/30,
         color: 'white',
     },
-
+    timetableSettingsButton: {
+        width: SCREEN_WIDTH/1.5,
+        height: SCREEN_HEIGHT/30,
+        backgroundColor: 'yellow',
+        alignItems: 'center',
+    },
     generateButton: {
         marginTop: SCREEN_HEIGHT/50,
         padding: SCREEN_HEIGHT/100,
