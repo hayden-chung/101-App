@@ -14,7 +14,7 @@ import TimeBlock from '../components/timetable/timetableBlocks'
 const TimetableScreen = ({navigation}) => { 
     console.log('====================================================================================================================================')
     console.log('testing in screen', timetable)  
-    return( 
+    return(
         <View>
             <TouchableOpacity onPress={() => navigation.navigate("TimetableGenerator")}>
                 <Text>New Timetable</Text>
