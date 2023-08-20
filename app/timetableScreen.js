@@ -1,11 +1,36 @@
 import React, {useState} from 'react';
-import { KeyboardAvoidingView, StyleSheet, Text, View, TextInput, TouchableOpacity, Keyboard, ScrollView} from 'react-native';
+import { KeyboardAvoidingView, StyleSheet, Text, View, FlatList, TouchableOpacity} from 'react-native';
+import {timetable} from '../components/timetable/timetableGenerator'
+import TimeBlock from '../components/timetable/timetableBlocks'
 
+// const setToTimeObject = () => {
+//     for (let i = 0; i < timetable.length; i++) {
+//         if (timetable[3]) {
+//             console.
+//         }
+//     }
+// } 
 
-const HomeScreen = () => { 
-    return(
+const TimetableScreen = ({navigation}) => { 
+    console.log('====================================================================================================================================')
+    console.log('testing in screen', timetable)  
+    return( 
         <View>
-            <Text>Home Screen</Text>
+            <TouchableOpacity onPress={() => navigation.navigate("TimetableGenerator")}>
+                <Text>New Timetable</Text>
+            </TouchableOpacity> 
+                 
+                <FlatList
+                    data = {timetable}
+                    renderItem={({item, index}) => 
+                    <TimeBlock
+                        item={item}
+                        index={index}
+                    />
+
+                }/>
+
+            
         </View>
     )
 }
@@ -14,4 +39,4 @@ const styles = StyleSheet.create({
     
 });
 
-export default HomeScreen;
+export default TimetableScreen;

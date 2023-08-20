@@ -7,8 +7,10 @@ import ToDoScreen from './app/todoScreen';
 import HomeScreen from './app/homeScreen';
 import QuoteScreen from './app/quoteScreen';
 import WellBeingScreen from './app/wellbeingScreen'
+import TimetableScreen from './app/timetableScreen'
 import TimetableGenerator from './components/timetable/timetableGenerator';
 import TimetableSettings from './components/timetable/settings/timetableSettings';
+
 
 const Stack = createNativeStackNavigator();
 
@@ -16,6 +18,11 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
+
+        <Stack.Screen 
+          name="TimetableScreen"
+          component={TimetableScreen}
+        />
 
         <Stack.Screen 
           name="TimetableGenerator"

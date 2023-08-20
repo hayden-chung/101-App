@@ -1,16 +1,28 @@
 import React, {useState} from 'react';
-import {StyleSheet, Text, View, Button, Platform, Dimensions, FlatList, TouchableOpacity} from 'react-native';
-import DateTimePicker from '@react-native-community/datetimepicker';
+import {StyleSheet, Text, View, Button, Platform, Dimensions, FlatList, TouchableOpacity, Modal} from 'react-native';
 import TimePicker from './timePicker';
+import {AddBreakModal} from './addBreakModal'
 import {fixedSessions} from './timetableSettingsData'
-import {GenerateTimetable} from '../timetableControls';
+import { MaterialIcons } from '@expo/vector-icons';
+
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 
 const TimetableSettings = () => { 
 
-    const breakSessions = Object.keys(fixedSessions).filter(type => type !== 'start-finish'); // Store break sessions only. Remove start-finish from the list array.
+    const RemoveBreak = (item) => {
+        console.log('before', fixedSessions)
+        delete fixedSessions[item];
+        console.log('after', fixedSessions)
+    };
+
+    const UpdateSessions = () => {
+        setBreakSessions(Object.keys(fixedSessions).filter(type => type !== 'start-finish')); // Store break sessions only. Remove start-finish from the list array.
+    }
+
+    const [breakSessions, setBreakSessions] = useState(Object.keys(fixedSessions).filter(type => type !== 'start-finish')); // Store break sessions only. Remove start-finish from the list array.
+    const [isBreakModalVisible, setBreakModalVisible] = useState(false);
 
     return(
         <View style={styles.container}>
@@ -35,7 +47,6 @@ const TimetableSettings = () => {
             
             <View style={styles.breakSessionsContainer}>
                 <Text style={styles.breakSessionsText}>Break Sessions</Text>
-
                 <View style={styles.breakSessionsWrapper}>
 
                     <FlatList
@@ -47,17 +58,36 @@ const TimetableSettings = () => {
             
                                 <Text style={styles.startText}>Finish</Text>
                                 <TimePicker sessionType={item} startOrFinish={1}/>  
+
+                                {/* Delete Button */}
+                                <TouchableOpacity style={styles.removeBreak} onPress={() => {RemoveBreak(item), UpdateSessions()}} >
+                                    <MaterialIcons name="delete" size={24} color="black" />
+                                </TouchableOpacity>
+        
                             </View>
                         )
                     }
                     />
                 </View>
             </View>
-
-            <TouchableOpacity style={styles.testbutton} onPress={() => GenerateTimetable()}>
-                    <Text style={styles.testText}>TEST</Text>
+            
+            {/* Add new break session */}
+            <TouchableOpacity style={styles.addBreakButton} onPress={() => {setBreakModalVisible(true)}}>
+                <Text style={styles.addBreakText}>Add Break</Text>
             </TouchableOpacity>
 
+            <Modal
+                transparent ={true} // covers screen completely but allows transparency in empty areas. 
+                animationType='fade' // fade animation when appearing/disappearing.
+                visible={isBreakModalVisible} // modal is visible (true/false)
+                onRequestClose={() => setBreakModalVisible(false)} // when backbutton tapped, close modal
+            >
+                {/* Make a new wellbeing rating (Modal Component) */}
+                <AddBreakModal
+                    setBreakModalVisible={setBreakModalVisible}
+                    UpdateSessions={UpdateSessions}
+                />
+          </Modal>
 
         </View>
     )
@@ -95,6 +125,10 @@ const styles = StyleSheet.create({
     },
     breakSessionsContainer: {
         height: 400,
+        backgroundColor: '#D3D3D3',
+    },
+    breakSessionsWrapper: {
+        padingBottom: SCREEN_HEIGHT/2,
     },
     breakSessionItems: {
         width: SCREEN_WIDTH/1.2,
@@ -105,14 +139,16 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: 'yellow',
     },
-    testbutton: { 
-        height: 100,
-        width: 100,
-        backgroundColor: 'red',
+    addBreakButton: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: SCREEN_WIDTH/1.2,
+        height: SCREEN_HEIGHT/10,
+        backgroundColor: 'pink',
     },
-    testText: {
-        fontSize: 20,
-    },
+    addBreakText: {
+
+    }
 });
 
 export default TimetableSettings;

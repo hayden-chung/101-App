@@ -1,16 +1,15 @@
 import React, {useState, useRef} from 'react';
-import { KeyboardAvoidingView, StyleSheet, Text, View, Dimensions, TouchableOpacity, Keyboard, ScrollView, FlatList, Animated} from 'react-native';
-import {QuoteListItems} from '../motivationalQuotes/quoteItemsList';
+import { KeyboardAvoidingView, StyleSheet, Text, View, Dimensions, TouchableOpacity, FlatList, Animated} from 'react-native';
 import Task from '../todo/task';
 import {TaskItemsList} from '../todo/taskItemsList';
 import {selectedTask} from '../todo/taskControls'; // import taskControl functions
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { Ionicons } from '@expo/vector-icons';
-import {toggleCheckbox} from './timetableControls';
-import TimetableSettings from './settings/timetableSettings';
+import {GenerateTimetable} from './timetableControls';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = (Dimensions.get('window').height); 
+
+export let timetable = [] 
 
 const TimetableGenerator = ({navigation}) => { 
 
@@ -43,6 +42,11 @@ const TimetableGenerator = ({navigation}) => {
         ]).start();
 
     };
+
+    const onGenerateTimetablePressed = () => {
+        timetable = []
+        timetable = GenerateTimetable(taskItems, timetable)
+    }
 
     return(
         <View style={styles.container}>
@@ -77,18 +81,6 @@ const TimetableGenerator = ({navigation}) => {
                     </View>
 
                 </Animated.View>
-
-                {/* <View style={styles.breakCheckBoxWrapper}>
-                    <Text style={styles.breakCheckBoxText}>Fill With Breaks</Text>
-                    
-                    <TouchableOpacity onPress={() => {toggleCheckbox(isBreakChecked, setBreakChecked)}}>
-                        {isBreakChecked ? (
-                            <Ionicons name="ios-checkbox" size={24} color="white" />
-                        ) : (
-                            <Ionicons name="ios-checkbox-outline" size={24} color="white" />
-                        )}
-                    </TouchableOpacity>
-                </View> */}
                 
                 
                 <TouchableOpacity style={styles.timetableSettingsButton} onPress={() => navigation.navigate("TimetableSettings")}>
@@ -96,9 +88,9 @@ const TimetableGenerator = ({navigation}) => {
                 </TouchableOpacity>
 
                 {/* ---------- Generate Timetable Button ---------- */}
-                    <TouchableOpacity style={styles.generateButton}> 
-                        <MaterialCommunityIcons name="gesture-double-tap" size={SCREEN_HEIGHT/10} color="white" />
-                    </TouchableOpacity>
+                <TouchableOpacity style={styles.generateButton} onPress={() => onGenerateTimetablePressed()}> 
+                    <MaterialCommunityIcons name="gesture-double-tap" size={SCREEN_HEIGHT/10} color="white" />
+                </TouchableOpacity>
 
                 <Text style={styles.buttonDescription}>GENERATE TIMETABLE</Text>
             </View>
