@@ -4,15 +4,16 @@ import Task from '../todo/task';
 import {TaskItemsList} from '../todo/taskItemsList';
 import {selectedTask} from '../todo/taskControls'; // import taskControl functions
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import {GenerateTimetable} from './timetableControls';
+import {GenerateTimetable} from './timetableGeneratorAlgorithm';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = (Dimensions.get('window').height); 
 
-export let timetable = [] 
 
-const TimetableGenerator = ({navigation}) => { 
 
+const TimetableGenerator = ({route, navigation}) => { 
+
+    const [generatedTimetable, setGeneratedTimetable] = useState([]);
     const {taskItems, setTaskItems} = TaskItemsList();// destructure function (TaskItemsList) into 'taskItems' variable and 'setTaskItems' function.
     const [isBreakChecked, setBreakChecked] = useState(false); // 'Fill With Breaks' checkbox.
     const [isAlarmMessage, toggleAlarmMessage] = useState(false); // Alarm message for when user presses task with no estimated time. 
@@ -44,9 +45,18 @@ const TimetableGenerator = ({navigation}) => {
     };
 
     const onGenerateTimetablePressed = () => {
-        timetable = []
-        timetable = GenerateTimetable(taskItems, timetable)
+        console.log("works 1")
+        const newGeneratedTimetable = GenerateTimetable(taskItems)
+        const updatedTimetableData = [...newGeneratedTimetable];
+        setGeneratedTimetable(newGeneratedTimetable);
+        // console.log('testing route.param', route.params.onGenerate(updatedTimetableData), route.params.onGenerate())
+        console.log('updatedTimetableData', updatedTimetableData)
+        // route.params.onGenerate(updatedTimetableData);
+        route.params.setTimetableData(newGeneratedTimetable)
+        console.log(route.params.timetableData)
+        navigation.goBack()
     }
+
 
     return(
         <View style={styles.container}>
@@ -88,7 +98,7 @@ const TimetableGenerator = ({navigation}) => {
                 </TouchableOpacity>
 
                 {/* ---------- Generate Timetable Button ---------- */}
-                <TouchableOpacity style={styles.generateButton} onPress={() => onGenerateTimetablePressed()}> 
+                <TouchableOpacity style={styles.generateButton} onPress={() => {onGenerateTimetablePressed()}}> 
                     <MaterialCommunityIcons name="gesture-double-tap" size={SCREEN_HEIGHT/10} color="white" />
                 </TouchableOpacity>
 

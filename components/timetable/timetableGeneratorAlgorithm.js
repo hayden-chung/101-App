@@ -5,13 +5,10 @@ import { selectedTask } from "../todo/taskControls";
 const makeSelectedTasksArr = (taskItems) => {
     // Make an array that consists of selected items only. 
     selectedTasks = [];
-    console.log('selected tasks', selectedTasks);
-    console.log('taskItems', taskItems)
     for (let i=0; i < taskItems.length; i++) {
         if (taskItems[i][2] === true) {
             let tempTaskItems = [...taskItems[i]]
             tempTaskItems[3] *= 100
-            // console.log('temptaskItems', tempTaskItems)
             selectedTasks.push(tempTaskItems)
         }
     }
@@ -48,7 +45,6 @@ export const subsetSum = (selectedTasks, startAndEndTime) => {
                 // to prevent overlaps 
                 sumOfTasks = 0
                 lengthOfTasks = dp[i].slice(1).length
-                console.log('lengthof Tasks',  lengthOfTasks)
                 for (let j = 0; j < lengthOfTasks; j++) {
                     sumOfTasks = sumOfTasks + dp[i][j+1][3]
                 }
@@ -71,9 +67,7 @@ export const subsetSum = (selectedTasks, startAndEndTime) => {
             break;
         }
     }
-    // console.log('closest sum', closest_sum)
 
-    // console.log(dp)
     return dp[closest_sum].slice(1)
 }
 
@@ -119,20 +113,16 @@ const getSessions = () => {
     }
 
     sessionsBetweenBreaks.push([fixedSessionsCopy[earliestNextBreakStart][1], timetableEnd])
-    console.log('Final sessionsBetweenBreaks', sessionsBetweenBreaks)
     return [sessionsBetweenBreaks, breakOrder]
 }
 
 
 
 const insertSessions = (timetable, breakSession, usedTasks) => {
-    console.log('breakSession', breakSession, 'timetable:', timetable, 'used tasks', usedTasks)
     timetable = timetable.concat(usedTasks)
-    console.log('timetable after concat', timetable)
     if (breakSession !== undefined) {
         timetable.push([breakSession, fixedSessions[breakSession]])
     }
-    console.log('timetable after', timetable)
     return timetable
 }
 
@@ -144,8 +134,8 @@ const eliminateTasks = (selectedTasks, usedTasks) => {
     return selectedTasks
 }
 
-export const GenerateTimetable = (taskItems, timetable) => {
-
+export const GenerateTimetable = (taskItems) => {
+    timetable = []
     const [sessionsBetweenBreaks, breakOrder] = getSessions()
 
     // Generating Timetable
