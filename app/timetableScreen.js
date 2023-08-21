@@ -12,7 +12,9 @@ import TimeBlock from '../components/timetable/timetableBlocks'
 //     }
 // } 
 
+
 const TimetableScreen = ({navigation}) => { 
+
     console.log('====================================================================================================================================')
     console.log('testing in screen', timetableData)  
 
@@ -28,7 +30,14 @@ const TimetableScreen = ({navigation}) => {
 
     return( 
         <View>
-            <TouchableOpacity onPress={() => navigation.navigate("TimetableGenerator")}>
+
+            {/* Generate New Timetable Button. When pressed, navigate to 'TimetableGenerator' screen. */}
+            <TouchableOpacity onPress={() => 
+                navigation.navigate("TimetableGenerator", {
+                    timetableData: timetableData,
+                    setTimetableData: setTimetableData,
+                    // onGenerate: handleGenerate,
+            })}>
                 <Text>New Timetable</Text>
             </TouchableOpacity> 
                  
@@ -42,7 +51,19 @@ const TimetableScreen = ({navigation}) => {
 
                 }/>
 
-            
+            <TouchableOpacity onPress={() => navigation.navigate("TimetableGenerator")}>
+                <Text>New Timetable</Text>
+            </TouchableOpacity> 
+                 
+                <FlatList
+                    data = {timetable}
+                    renderItem={({item, index}) => 
+                    <TimeBlock
+                        item={item}
+                        index={index}
+                    />
+                }/>
+
         </View>
     )
 }
