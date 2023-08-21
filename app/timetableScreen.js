@@ -4,10 +4,22 @@ import {timetable} from '../components/timetable/timetableGenerator'
 import {TimetableGenerator} from '../components/timetable/timetableGenerator'
 import TimeBlock from '../components/timetable/timetableBlocks'
 
+<<<<<<< HEAD
 
 const TimetableScreen = ({navigation}) => { // navigation object allows users to navigate between pages. 
 
     const [timetableData, setTimetableData] = useState([]);
+=======
+// const setToTimeObject = () => {
+//     for (let i = 0; i < timetable.length; i++) {
+//         if (timetable[3]) {
+//             console.
+//         }
+//     }
+// } 
+
+const TimetableScreen = ({navigation}) => { 
+>>>>>>> parent of 9e7f6cf (Added comments)
     console.log('====================================================================================================================================')
     console.log('testing in screen', timetableData)  
 
@@ -23,6 +35,7 @@ const TimetableScreen = ({navigation}) => { // navigation object allows users to
 
     return( 
         <View>
+<<<<<<< HEAD
 
             {/* Generate New Timetable Button. When pressed, navigate to 'TimetableGenerator' screen. */}
             <TouchableOpacity onPress={() => 
@@ -44,6 +57,23 @@ const TimetableScreen = ({navigation}) => { // navigation object allows users to
                 />
 
             }/>
+=======
+            <TouchableOpacity onPress={() => navigation.navigate("TimetableGenerator")}>
+                <Text>New Timetable</Text>
+            </TouchableOpacity> 
+                 
+                <FlatList
+                    data = {timetable}
+                    renderItem={({item, index}) => 
+                    <TimeBlock
+                        item={item}
+                        index={index}
+                    />
+
+                }/>
+
+            
+>>>>>>> parent of 9e7f6cf (Added comments)
         </View>
     )
 }

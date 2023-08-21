@@ -5,16 +5,17 @@ import {fixedSessions} from './timetableSettingsData'
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = (Dimensions.get('window').height);
 
-export const AddBreakModal = (props) => { // Add a new break session. 
+export const AddBreakModal = (props) => {
 
-    const [breakName, setBreakName] = useState('') // Name of break session. 
+    const [breakName, setBreakName] = useState('')
     // ------------- Close Modal Function ------------- //
-    const closeModal = (addBreak) => {  // Close Modal Screen
-        if (addBreak && breakName) { // If addBreak is true, and breakName is also valid:
-            temMinutesLater = new Date(new Date().getTime() + 10 * 60 * 1000) // Time ten minutes after current time. 
-            fixedSessions[breakName] = [new Date(), temMinutesLater]    // add [current time, time 10min after current] to set the break session in the beginning. This is to prevent an empty string when the user first sets up the break session. 
-            props.UpdateSessions()  // update
+    const closeModal = (addBreak) => {             // update = add/edit quote (boolean)
+        if (addBreak && breakName) {
+            temMinutesLater = new Date(new Date().getTime() + 10 * 60 * 1000)
+            fixedSessions[breakName] = [new Date(), temMinutesLater]
+            props.UpdateSessions()
         }
+        console.log(fixedSessions)
         props.setBreakModalVisible(false); // set to false as modal should not be visible now.
     };
 
@@ -28,14 +29,11 @@ export const AddBreakModal = (props) => { // Add a new break session.
                     <Text style={{fontSize: 20}}>X</Text>
                 </TouchableOpacity>
 
-                {/*  */}
                 <View style={styles.modalContent}>
-                    {/* Name of Break */}
                     <Text style={styles.textInputHeader}>Break Name:</Text>
                     <TextInput style={styles.textInput} placeholder={'Break:'} value={breakName} onChangeText={text => setBreakName(text)} />  
-
-                    {/* When add button pressed */}
-                    <TouchableOpacity style={styles.addButton} onPress={() => closeModal(true)}> 
+                
+                    <TouchableOpacity style={styles.addButton} onPress={() => closeModal(true)}>
                         <Text style={styles.addButtonText}>Add</Text>
                     </TouchableOpacity>
                     </View>
