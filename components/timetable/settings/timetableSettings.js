@@ -12,9 +12,7 @@ const SCREEN_HEIGHT = Dimensions.get('window').height;
 const TimetableSettings = () => { 
 
     const RemoveBreak = (item) => {
-        console.log('before', fixedSessions)
         delete fixedSessions[item];
-        console.log('after', fixedSessions)
     };
 
     const UpdateSessions = () => {

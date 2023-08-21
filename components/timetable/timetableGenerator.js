@@ -47,6 +47,7 @@ const TimetableGenerator = ({route, navigation}) => {
     const onGenerateTimetablePressed = () => {
         console.log("works 1")
         const newGeneratedTimetable = GenerateTimetable(taskItems)
+        console.log('works2')
         const updatedTimetableData = [...newGeneratedTimetable];
         setGeneratedTimetable(newGeneratedTimetable);
         // console.log('testing route.param', route.params.onGenerate(updatedTimetableData), route.params.onGenerate())
