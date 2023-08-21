@@ -12,7 +12,6 @@ const Quote = ({item}) => { // item = quote item [quote, author, selected/unsele
                 ) : (
                     <MaterialIcons name="radio-button-unchecked" size={24} color="black" />
                 )}
-                
             </View>
 
                 {/* Display quote (item[0]), and on the next line, display author (item[1]) */}
