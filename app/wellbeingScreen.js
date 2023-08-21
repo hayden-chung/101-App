@@ -6,7 +6,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
-import {NewWellbeingChartModal} from '../components/wellbeing/newChartModal/NewWellbeingChartModal';
+import {NewWellbeingChartModal} from '../components/wellbeing/newChartModal/newWellbeingChartModal';
 import {wellbeingData, updateWellbeingData} from '../assets/wellbeingData';
 import WellbeingDatePicker from '../components/wellbeing/calendar/WellbeingDatePicker';
 import {getCurrentDate, updateCalendarData} from '../components/wellbeing/wellbeingControls'

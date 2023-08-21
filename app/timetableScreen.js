@@ -1,27 +1,30 @@
 import React, {useState} from 'react';
+import {useNavigation, useRoute} from "@react-navigation/native"
 import { KeyboardAvoidingView, StyleSheet, Text, View, FlatList, TouchableOpacity} from 'react-native';
 import {timetable} from '../components/timetable/timetableGenerator'
 import TimeBlock from '../components/timetable/timetableBlocks'
 
-// const setToTimeObject = () => {
-//     for (let i = 0; i < timetable.length; i++) {
-//         if (timetable[3]) {
-//             console.
-//         }
-//     }
-// } 
-
-const TimetableScreen = ({navigation}) => { 
+const TimetableScreen = ({navigation}) => { // navigation object allows users to navigate between pages. 
     console.log('====================================================================================================================================')
     console.log('testing in screen', timetable)  
+
+    const route = useRoute(); // useRoute(), mainly in this context to receive parameter, timetable, once it's generated. 
+
+    const routeTimetable = route.params?.timetable; // '?' ensures routeTimetable is not null or undefined. 
+
     return(
-        <View>
+        <View style={styles.container}>
+
+            {/* Generate New Timetable Button. When pressed, navigate to 'TimetableGenerator' screen. */}
             <TouchableOpacity onPress={() => navigation.navigate("TimetableGenerator")}>
                 <Text>New Timetable</Text>
             </TouchableOpacity> 
                  
+                {/* list of timetable items (timeblocks) */}
+            <View style={styles.sessionsListContainer}></View>
                 <FlatList
-                    data = {timetable}
+                    data = {routeTimetable || []} // Input timetable data for the timeblock items to render. If routeTimetable is not valid, just send an empty string to display nothing. 
+                    showsVerticalScrollIndicator={false} // hide scroll bar.
                     renderItem={({item, index}) => 
                     <TimeBlock
                         item={item}
@@ -29,14 +32,17 @@ const TimetableScreen = ({navigation}) => {
                     />
 
                 }/>
-
-            
         </View>
     )
 }
 
 const styles = StyleSheet.create({
-    
+    container: {
+
+    },
+    sessionsListContainer: {
+
+    },
 });
 
 export default TimetableScreen;

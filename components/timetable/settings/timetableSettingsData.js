@@ -7,4 +7,3 @@ export const updateFixedSessions = (key, index, value) => {
     fixedSessions[key][index] = value;
     console.log('after', fixedSessions)
 }
-

@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import { StyleSheet, Text, View, Dimensions, TextInput, Alert, TouchableOpacity} from 'react-native';
 import Slider from '@react-native-community/slider';
 import { AntDesign } from '@expo/vector-icons';
-import NextButton from './ModalNextButton';
+import NextButton from './modalNextButton';
 import {updateWellbeingDataStorage} from '../../../assets/wellbeingData';
 import {getCurrentDate, updateCalendarData} from '../wellbeingControls';
 
