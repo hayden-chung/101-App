@@ -8,9 +8,9 @@ import HomeScreen from './app/homeScreen';
 import QuoteScreen from './app/quoteScreen';
 import WellBeingScreen from './app/wellbeingScreen'
 import TimetableScreen from './app/timetableScreen'
-import TimetableGenerator from './components/timetable/timetableGenerator';
+import TimetableGenerator from './components/timetable/generator/timetableGenerator';
 import TimetableSettings from './components/timetable/settings/timetableSettings';
-import TimerScreen from './app/timerScreen'
+// import TimerScreen from './app/timerScreen'
 
 
 const Stack = createNativeStackNavigator();
@@ -20,10 +20,10 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator>
 
-        <Stack.Screen 
+        {/* <Stack.Screen 
           name="TimerScreen"
           component={TimerScreen}
-        />
+        /> */}
 
         <Stack.Screen 
           name="TimetableScreen"

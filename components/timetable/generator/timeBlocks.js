@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Dimensions } from 'react-native';
 import {timetable} from './timetableGenerator'
-import {fixedSessions} from './settings/timetableSettingsData'
+import {fixedSessions} from '../settings/timetableSettingsData'
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = (Dimensions.get('window').height);

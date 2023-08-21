@@ -1,8 +1,8 @@
 import React, {useState, useRef} from 'react';
 import { KeyboardAvoidingView, StyleSheet, Text, View, Dimensions, TouchableOpacity, FlatList, Animated} from 'react-native';
-import Task from '../todo/task';
-import {TaskItemsList} from '../todo/taskItemsList';
-import {selectedTask} from '../todo/taskControls'; // import taskControl functions
+import Task from '../../todo/task';
+import {TaskItemsList} from '../../todo/taskItemsList';
+import {selectedTask} from '../../todo/taskControls'; // import taskControl functions
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import {GenerateTimetable} from './timetableGeneratorAlgorithm';
 

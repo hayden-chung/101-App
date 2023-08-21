@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import { StyleSheet, Text, View, Dimensions, TextInput, Alert, TouchableOpacity} from 'react-native';
-import {fixedSessions} from './timetableSettingsData'
+import {fixedSessions} from './timetableSettingsData' 
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = (Dimensions.get('window').height);
@@ -11,11 +11,15 @@ export const AddBreakModal = (props) => { // Add a new break session.
     // ------------- Close Modal Function ------------- //
     const closeModal = (addBreak) => {  // Close Modal Screen
         if (addBreak && breakName) { // If addBreak is true, and breakName is also valid:
-            temMinutesLater = new Date(new Date().getTime() + 10 * 60 * 1000) // Time ten minutes after current time. 
-            fixedSessions[breakName] = [new Date(), temMinutesLater]    // add [current time, time 10min after current] to set the break session in the beginning. This is to prevent an empty string when the user first sets up the break session. 
-            props.UpdateSessions()  // update
+            
+            // time must be before timetable finish time 
+            
+            startTime = new Date()
+            endTime = new Date(new Date().getTime() + 10 * 60 * 1000) // Time ten minutes after current time. 
+            fixedSessions[breakName] = [new Date(), endTime]    // add [current time, time 10min after current] to set the break session in the beginning. This is to prevent an empty string when the user first sets up the break session. 
+            props.updateBreakSessions()  // update
         }
-        props.setBreakModalVisible(false); // set to false as modal should not be visible now.
+        props.setNewBreakModalVisible(false); // set to false as modal should not be visible now.
     };
 
     return ( 
@@ -28,13 +32,13 @@ export const AddBreakModal = (props) => { // Add a new break session.
                     <Text style={{fontSize: 20}}>X</Text>
                 </TouchableOpacity>
 
-                {/*  */}
+                {/* Content inside modal (excluding exit button) */}
                 <View style={styles.modalContent}>
-                    {/* Name of Break */}
+                    {/* Name of Break. Text input from user */}
                     <Text style={styles.textInputHeader}>Break Name:</Text>
                     <TextInput style={styles.textInput} placeholder={'Break:'} value={breakName} onChangeText={text => setBreakName(text)} />  
 
-                    {/* When add button pressed */}
+                    {/* When add button pressed, call closeModal function */}
                     <TouchableOpacity style={styles.addButton} onPress={() => closeModal(true)}> 
                         <Text style={styles.addButtonText}>Add</Text>
                     </TouchableOpacity>
@@ -47,12 +51,12 @@ export const AddBreakModal = (props) => { // Add a new break session.
 
 
 const styles= StyleSheet.create({
-    container: {
+    container: { // Whole screen. 
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
     },
-    modal: {
+    modal: { // View component of modal.
         height: SCREEN_HEIGHT/5,
         width: SCREEN_WIDTH/1.4,
         backgroundColor: 'white',
@@ -60,21 +64,21 @@ const styles= StyleSheet.create({
         borderWidth: 3,
         borderRadius: 10,
     },
-    modalContent: {
+    modalContent: { // Content inside modal excluding exit button. 
         alignItems: 'center',
         justifyContent: 'center',
     },
-    textInputHeader: {
+    textInputHeader: { // Header text of text input inside modal.
         marginBottom: SCREEN_HEIGHT/70,
     },
-    textInput: {
+    textInput: { // Text input box.
         width: '80%',
         height: SCREEN_HEIGHT/20,
         borderWidth: 2,
         borderRadius: 10,
         padding: 10,
     },
-    addButton: {
+    addButton: { // Add button (for adding new break session).
         justifyContent: 'center',
         alignItems: 'center',
         marginTop: SCREEN_HEIGHT/50,
@@ -82,7 +86,7 @@ const styles= StyleSheet.create({
         width: SCREEN_WIDTH/2.6,
         height: SCREEN_HEIGHT/26,
     },
-    addButtonText: {
+    addButtonText: { // Texdt inside add button that displays 'add'. 
         color: 'white',
     },
 

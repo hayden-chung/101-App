@@ -1,14 +1,14 @@
 import React, {useState} from 'react';
 import {useNavigation, useRoute} from "@react-navigation/native"
 import { KeyboardAvoidingView, StyleSheet, Text, View, FlatList, TouchableOpacity} from 'react-native';
-import {timetable} from '../components/timetable/timetableGenerator'
-import TimeBlock from '../components/timetable/timetableBlocks'
+import {timetable} from '../components/timetable/generator/timetableGenerator'
+import TimeBlock from '../components/timetable/generator/timeBlocks'
 
 const TimetableScreen = ({navigation}) => { // navigation object allows users to navigate between pages. 
     console.log('====================================================================================================================================')
     console.log('testing in screen', timetable)  
 
-    const route = useRoute(); // useRoute(), mainly in this context to receive parameter, timetable, once it's generated. 
+    const route = useRoute(); // useRoute(), mainly in this context to receive parameter 'timetable' once it's generated. 
 
     const routeTimetable = route.params?.timetable; // '?' ensures routeTimetable is not null or undefined. 
 
@@ -25,9 +25,9 @@ const TimetableScreen = ({navigation}) => { // navigation object allows users to
                 <FlatList
                     data = {routeTimetable || []} // Input timetable data for the timeblock items to render. If routeTimetable is not valid, just send an empty string to display nothing. 
                     showsVerticalScrollIndicator={false} // hide scroll bar.
-                    renderItem={({item, index}) => 
-                    <TimeBlock
-                        item={item}
+                    renderItem={({item, index}) => // grab item and index of list for every iteration
+                    <TimeBlock // Send paramters item and index to timeblock function. 
+                        item={item} 
                         index={index}
                     />
 
