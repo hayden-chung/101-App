@@ -1,21 +1,18 @@
 import { fixedSessions } from "../settings/timetableSettingsData";
 
-const makeSelectedTasksArr = (taskItems) => {
-    // Make an array that consists of selected items only. 
-    selectedTasks = [];
-    for (let i=0; i < taskItems.length; i++) {
-        if (taskItems[i][2] === true) {
-            let tempTaskItems = [...taskItems[i]]
-            tempTaskItems[3] *= 100
-            // console.log('temptaskItems', tempTaskItems)
-            selectedTasks.push(tempTaskItems)
+const makeSelectedTasksArr = (taskItems) => { // create a list of tasks that are selected. 
+    selectedTasks = []; // Make an array that consists of selected items only. 
+    for (let i=0; i < taskItems.length; i++) { // iterate for length of taskItems
+        if (taskItems[i][2] === true) { // if task is seleceted to be included in the timetable generator
+            let tempTaskItems = [...taskItems[i]] // temp var = task item (from list)
+            tempTaskItems[3] *= 100 // the estimated time [3] has to be multiplied by 100 to convert it from a float to integer, so later it can be itearted. 
+            selectedTasks.push(tempTaskItems) // add taskItem to selectedTasks list. 
         }
     }
     return selectedTasks
 }
 
-// start/finish time = [2023-08-19T03:30:03.795Z, 2023-08-19T09:30:03.803Z]
-export const subsetSum = (selectedTasks, startAndEndTime) => {
+const subsetSum = (selectedTasks, startAndEndTime) => { // 
 
     // Find available time --> Find target.
     const startTime = new Date(startAndEndTime[0]);
