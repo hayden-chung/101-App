@@ -22,6 +22,8 @@ const TimetableSettings = () => { // Timetable Settings Screen.
         setBreakSessions(Object.keys(fixedSessions).filter(type => type !== 'start-finish')); // Store break sessions only. Filter out start-finish from the list array.
     }
 
+    console.log('fixed opening session', fixedSessions)
+
     return(
         <View style={styles.container}>
 
@@ -58,6 +60,9 @@ const TimetableSettings = () => { // Timetable Settings Screen.
                         data={breakSessions}        // input data 'breakSessions' with all the break sessions. 
                         renderItem={({item}) => (   // item = string value of break sessions (e.g. 'break 1')
                             <View style={styles.breakSessionItems}>
+                                {/* Name of break session */}
+                                <Text>{item}</Text>
+
 
                                 {/* Start time of break session */}
                                 <Text style={styles.startFinishText}>Start</Text>

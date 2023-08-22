@@ -5,6 +5,20 @@ import {fixedSessions} from './timetableSettingsData'
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = (Dimensions.get('window').height);
 
+const getRemainingTime = () => {
+    let fixedSessionsCopy = {...fixedSessions}
+    let remainingTime = fixedSessionsCopy['start-finish'][1] - fixedSessionsCopy['start-finish'][0]
+    breaks = Object.keys(fixedSessionsCopy).filter(type => type !== 'start-finish')
+    for (let i = 0; i < breaks.length; i++) {
+        breakTimeLength = fixedSessionsCopy[breaks[i]][1] - fixedSessionsCopy[breaks[i]][0]
+        remainingTime -= breakTimeLength
+    }
+    remainingTime = remainingTime/(1000*60) // convert ms to min
+    console.log('remainingTime', remainingTime)
+    return remainingTime
+
+}
+
 export const AddBreakModal = (props) => { // Add a new break session. 
 
     const [breakName, setBreakName] = useState('') // Name of break session. 
@@ -14,10 +28,21 @@ export const AddBreakModal = (props) => { // Add a new break session.
             
             // time must be before timetable finish time 
             
-            startTime = new Date()
-            endTime = new Date(new Date().getTime() + 10 * 60 * 1000) // Time ten minutes after current time. 
-            fixedSessions[breakName] = [new Date(), endTime]    // add [current time, time 10min after current] to set the break session in the beginning. This is to prevent an empty string when the user first sets up the break session. 
-            props.updateBreakSessions()  // update
+            const remainingTime = getRemainingTime()
+        
+            if (remainingTime > 10) { // can a new break session fit in the timetable (if more than 10min available)
+                if (new Date() < fixedSessions['start-finish'][0]) { // if current time is less than start time of timetable start time:
+                    startTime = fixedSessions['start-finish'][0] // set start time to start time of timetable. 
+                    endTime = new Date(startTime.getTime() + 1 * 60 * 1000) // end time = ten minutes after start time. 
+                } else if (new Date() > fixedSessions['start-finish'][1]) { // start time is less than start time of timetable start time:
+                    endTime = fixedSessions['start-finish'][1]
+                    startTime = new Date(endTime.getTime() - 1 * 60 * 1000)
+                }
+                
+                fixedSessions[breakName] = [startTime, endTime]    // add [current time, time 10min after current] to set the break session in the beginning. This is to prevent an empty string when the user first sets up the break session. 
+                props.updateBreakSessions()  // update break sessions. 
+            }
+
         }
         props.setNewBreakModalVisible(false); // set to false as modal should not be visible now.
     };

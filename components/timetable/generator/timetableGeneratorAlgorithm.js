@@ -22,9 +22,13 @@ const subsetSum = (selectedTasks, startAndEndTime) => { //
     const availableHours = (availableTimeInMilliseconds/(1000*60*60)).toFixed(2); // convert milliseconds to hours. to 2 d.p.
     const target = availableHours*100; // e.g.if available time = 6.5h, target = 650. This is so we can iterate over an integer value as float values don't allow iteration with for loops. 
     
-    console.log('variables set', 'target:', target, ',availableTimeInMilliseconds:', availableTimeInMilliseconds);
-    // Create array of booleans to find closest sum to target. 
+    console.log('works-1')
+    console.log('variables set target:', target, ',availableTimeInMilliseconds:', availableTimeInMilliseconds);
+    // Create array of booleans to find closest sum to target.  
+    console.log('works0')
     let dp = Array(target + 1); // dp (dynamic programming) = array
+    console.log('works')
+    console.log(dp)
     for (let i = 0; i< dp.length; i++) { // fill with false values (for number of target + 1). 
         dp[i] = [false];
     }
@@ -38,7 +42,6 @@ const subsetSum = (selectedTasks, startAndEndTime) => { //
         console.log('selectedTasks[num][3]', selectedTasks[num][3])
         console.log('target:', target)
         for (let i = target; i >= selectedTasks[num][3]; i--) { // 
-            console.log('PASSED')
             dp[i][0] = dp[i][0] // If dp[i][0] is true, set to true. dp[i][0] is so that on the next outer for loop with the next num, the true values won't be re-set to false. 
             
             if (dp[i-selectedTasks[num][3]][0]) { // # if dp[i-selectedTasks[num][3]][0] is True, set to True.
@@ -77,7 +80,7 @@ const getSessions = () => {
     let fixedSessionsCopy = {...fixedSessions}
     let sessionsBetweenBreaks = []
     let breakOrder = []
-    console.log(fixedSessionsCopy)
+    console.log('fixedSessionsCopy', fixedSessionsCopy)
     breaks = Object.keys(fixedSessionsCopy).filter(type => type !== 'start-finish')
     console.log('fixedSessionsCopy AFTER', fixedSessionsCopy)
     timetableStart = fixedSessionsCopy['start-finish'][0]
@@ -102,7 +105,7 @@ const getSessions = () => {
         // earliestNextBreakStart 
         currentStartTime = fixedSessionsCopy[earliestNextBreakStart][1]
 
-        fixedBreakLength = breaks.length // prevent bug as the length of breaks may change. 
+        fixedBreakLength = breaks.length // create a copy to prevent bug as the length of breaks may change. 
         
         for (i = 0; i < fixedBreakLength; i++) {
             earliestNextBreakStart = breaks[0]
@@ -146,13 +149,9 @@ const eliminateTasks = (selectedTasks, usedTasks) => {
 }
 
 export const GenerateTimetable = (taskItems, timetable) => {
-    console.log('passed -1')
     const [sessionsBetweenBreaks, breakOrder] = getSessions()
-    console.log('passed 0')
     // Generating Timetable
     selectedTasks = makeSelectedTasksArr(taskItems)
-
-    console.log('passed0')
     for (i = 0; i < sessionsBetweenBreaks.length; i++) {
         console.log('in loop', 'selected tasks', selectedTasks, 'sessionsBetweenBreaks', sessionsBetweenBreaks)
         let usedTasks = subsetSum(selectedTasks, sessionsBetweenBreaks[i])
@@ -160,7 +159,6 @@ export const GenerateTimetable = (taskItems, timetable) => {
         timetable = insertSessions(timetable, breakOrder[i], usedTasks)
         selectedTasks = eliminateTasks(selectedTasks, usedTasks)
     }
-    console.log('passed')
     console.log('final timetable', timetable)
     return timetable 
 }
