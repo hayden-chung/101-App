@@ -15,32 +15,24 @@ const makeSelectedTasksArr = (taskItems) => { // create a list of tasks that are
 const subsetSum = (selectedTasks, startAndEndTime) => { // 
 
     // Find available time --> Find target.
-    const startTime = new Date(startAndEndTime[0]);
-    const endTime = new Date(startAndEndTime[1]);
-    console.log('startTime', startTime, 'endTime', endTime)
-    const availableTimeInMilliseconds = endTime - startTime; 
+    startTime = new Date(startAndEndTime[0]).getTime();
+    endTime = new Date(startAndEndTime[1]).getTime();
+    availableTimeInMilliseconds = endTime - startTime;
+    console.log('startTime2', startTime, 'endTime', endTime, 'availableTimeInMilliseconds', availableTimeInMilliseconds) 
     const availableHours = (availableTimeInMilliseconds/(1000*60*60)).toFixed(2); // convert milliseconds to hours. to 2 d.p.
     const target = availableHours*100; // e.g.if available time = 6.5h, target = 650. This is so we can iterate over an integer value as float values don't allow iteration with for loops. 
     
-    console.log('works-1')
-    console.log('variables set target:', target, ',availableTimeInMilliseconds:', availableTimeInMilliseconds);
+
     // Create array of booleans to find closest sum to target.  
-    console.log('works0')
     let dp = Array(target + 1); // dp (dynamic programming) = array
-    console.log('works')
-    console.log(dp)
     for (let i = 0; i< dp.length; i++) { // fill with false values (for number of target + 1). 
         dp[i] = [false];
     }
     dp[0][0] = true;
-    console.log('dp set', dp)
 
-    console.log('passed first loop, sleected task:', selectedTasks)
     // Subset Sum Algorithm
     for (let num=0; num < selectedTasks.length; num++) { // iterate for length of selectedTasks
-        console.log(num)
-        console.log('selectedTasks[num][3]', selectedTasks[num][3])
-        console.log('target:', target)
+
         for (let i = target; i >= selectedTasks[num][3]; i--) { // 
             dp[i][0] = dp[i][0] // If dp[i][0] is true, set to true. dp[i][0] is so that on the next outer for loop with the next num, the true values won't be re-set to false. 
             
@@ -76,16 +68,13 @@ const subsetSum = (selectedTasks, startAndEndTime) => { //
     return dp[closest_sum].slice(1)
 }
 
-const getSessions = () => {
+export const getSessions = () => { // get (available) session times apart from break times. 
     let fixedSessionsCopy = {...fixedSessions}
     let sessionsBetweenBreaks = []
     let breakOrder = []
-    console.log('fixedSessionsCopy', fixedSessionsCopy)
     breaks = Object.keys(fixedSessionsCopy).filter(type => type !== 'start-finish')
-    console.log('fixedSessionsCopy AFTER', fixedSessionsCopy)
     timetableStart = fixedSessionsCopy['start-finish'][0]
     timetableEnd = fixedSessionsCopy['start-finish'][1]
-    console.log('timetableStart', timetableStart, 'timetableEnd', timetableEnd, 'breaks', breaks, 'break.length', breaks.length)
  
     if (breaks.length !== 0) {
         // Find earliest break start
@@ -121,12 +110,11 @@ const getSessions = () => {
         }
 
         sessionsBetweenBreaks.push([fixedSessionsCopy[earliestNextBreakStart][1], timetableEnd])
-        console.log('Final sessionsBetweenBreaks', sessionsBetweenBreaks)
-        console.log('returning sessionsBetweenBreaks', sessionsBetweenBreaks)
     }
     else {
         sessionsBetweenBreaks.push([timetableStart, timetableEnd])
     }
+    
     return [sessionsBetweenBreaks, breakOrder]
 }
 
@@ -153,12 +141,9 @@ export const GenerateTimetable = (taskItems, timetable) => {
     // Generating Timetable
     selectedTasks = makeSelectedTasksArr(taskItems)
     for (i = 0; i < sessionsBetweenBreaks.length; i++) {
-        console.log('in loop', 'selected tasks', selectedTasks, 'sessionsBetweenBreaks', sessionsBetweenBreaks)
         let usedTasks = subsetSum(selectedTasks, sessionsBetweenBreaks[i])
-        console.log('passed subset funtion, sessionsBetweenBreaks', sessionsBetweenBreaks)
         timetable = insertSessions(timetable, breakOrder[i], usedTasks)
         selectedTasks = eliminateTasks(selectedTasks, usedTasks)
     }
-    console.log('final timetable', timetable)
     return timetable 
 }

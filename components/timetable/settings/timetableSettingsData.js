@@ -9,7 +9,6 @@
 // console.log('SET TIME: ', currentTime, 'next time', nextTime) 
 // console.log('differenceInTime', differenceInTime)
 export const fixedSessions = {"start-finish": [new Date('2023-08-22T03:30:13.289Z'), new Date('2023-08-22T11:30:13.294Z')]}
-console.log('fixedSessions', fixedSessions)
 
 
 export const updateFixedSessions = (key, index, value) => { // function to update fixed session array. 

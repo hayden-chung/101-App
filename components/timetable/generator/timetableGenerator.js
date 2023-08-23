@@ -5,7 +5,7 @@ import {TaskItemsList} from '../../todo/taskItemsList';
 import {selectedTask} from '../../todo/taskControls'; // import taskControl functions
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import {GenerateTimetable} from './timetableGeneratorAlgorithm';
-import FadeAnim from '../../alertMessage'
+import AlertMessage from '../../alertMessage'
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = (Dimensions.get('window').height); 
@@ -52,10 +52,12 @@ const TimetableGenerator = ({navigation}) => {
                 </View>
 
 
-                <FadeAnim 
+                <AlertMessage 
                     isAlarmMessage={isAlarmMessage}
                     toggleAlarmMessage={toggleAlarmMessage}
                     text={'You can only select tasks with an estimated time'}
+                    fontSize={15}
+                    fontColor={'white'}
                 />
                 
                 <TouchableOpacity style={styles.timetableSettingsButton} onPress={() => navigation.navigate("TimetableSettings")}>

@@ -19,10 +19,10 @@ const TimetableSettings = () => { // Timetable Settings Screen.
     };
 
     const updateBreakSessions = () => { // Update array that stores break sessions. 
+        
+        setBreakSessions([]) // Set to empty for the purpose of re-triggering the flatList as flatList will update when the array 'breakSession' changes.
         setBreakSessions(Object.keys(fixedSessions).filter(type => type !== 'start-finish')); // Store break sessions only. Filter out start-finish from the list array.
-    }
-
-    console.log('fixed opening session', fixedSessions)
+    } 
 
     return(
         <View style={styles.container}>
@@ -40,11 +40,11 @@ const TimetableSettings = () => { // Timetable Settings Screen.
 
                     {/* sessionType='start-finish because we want to display the start-finish time of timetable. startOrFinish={0} so we can display the start time */}
                     <Text style={styles.startFinishText}>Start</Text>
-                    <TimePicker sessionType='start-finish' startOrFinish={0}/> 
+                    <TimePicker sessionType='start-finish' startOrFinish={0} updateBreakSessions={updateBreakSessions}/> 
 
                     {/* startOrFinish={1} so we can display the finish time of timetable. */}
                     <Text style={styles.startFinishText}>Finish</Text>
-                    <TimePicker sessionType='start-finish' startOrFinish={1}/>  
+                    <TimePicker sessionType='start-finish' startOrFinish={1} updateBreakSessions={updateBreakSessions}/>  
                 </View>
             </View>
 
@@ -58,7 +58,9 @@ const TimetableSettings = () => { // Timetable Settings Screen.
                     {/* FlatList to iterate over the breakSessions array */}
                     <FlatList
                         data={breakSessions}        // input data 'breakSessions' with all the break sessions. 
-                        renderItem={({item}) => (   // item = string value of break sessions (e.g. 'break 1')
+                        renderItem={({item}) => {
+                        
+                            return (   // item = string value of break sessions (e.g. 'break 1')
                             <View style={styles.breakSessionItems}>
                                 {/* Name of break session */}
                                 <Text>{item}</Text>
@@ -66,11 +68,11 @@ const TimetableSettings = () => { // Timetable Settings Screen.
 
                                 {/* Start time of break session */}
                                 <Text style={styles.startFinishText}>Start</Text>
-                                <TimePicker sessionType={item} startOrFinish={0}/> 
+                                <TimePicker sessionType={item} startOrFinish={0} updateBreakSessions={updateBreakSessions}/> 
 
                                 {/* Finish time of break session */}
                                 <Text style={styles.startFinishText}>Finish</Text>
-                                <TimePicker sessionType={item} startOrFinish={1}/>  
+                                <TimePicker sessionType={item} startOrFinish={1} updateBreakSessions={updateBreakSessions}/>  
 
                                 {/* Delete Button (with trash can icon button. When pressed, call deleteBreak to delete the break session and call updateBreakSessions to update the breakSessions array after deleted.  */}
                                 <TouchableOpacity style={styles.removeBreak} onPress={() => {deleteBreak(item), updateBreakSessions()}} >
@@ -78,8 +80,9 @@ const TimetableSettings = () => { // Timetable Settings Screen.
                                 </TouchableOpacity>
         
                             </View>
-                        )
+                        )}
                     }
+
                     />
                 </View>
             </View>

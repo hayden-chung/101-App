@@ -5,7 +5,6 @@ import {timetable} from '../components/timetable/generator/timetableGenerator'
 import TimeBlock from '../components/timetable/generator/timeBlocks'
 
 const TimetableScreen = ({navigation}) => { // navigation object allows users to navigate between pages. 
-    console.log('====================================================================================================================================')
     console.log('testing in screen', timetable)  
 
     const route = useRoute(); // useRoute(), mainly in this context to receive parameter 'timetable' once it's generated. 

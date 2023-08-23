@@ -2,7 +2,7 @@ import {useRef} from 'react';
 import {Animated, View, Text, StyleSheet} from 'react-native';
 
 
-const FadeAnim = ({isAlarmMessage, toggleAlarmMessage, text}) => {
+const AlertMessage = ({isAlarmMessage, toggleAlarmMessage, text, fontSize, fontColor}) => {
 
     const fadeAnim =useRef (new Animated.Value(0)).current; // useRef is used as it does not cause a re-render when updated. Persists values between renders.
 
@@ -37,7 +37,7 @@ const FadeAnim = ({isAlarmMessage, toggleAlarmMessage, text}) => {
             <Animated.View style={{opacity:fadeAnim}}>
                 <View style={styles.anim}>
                     <Text style={styles.anim}>
-                        <Text style={styles.text}>
+                        <Text style={[styles.text, { fontSize, color: fontColor }]} >
                             {text}
                         </Text>
                     </Text>
@@ -50,4 +50,4 @@ const styles = StyleSheet.create({
    
 });
 
-export default FadeAnim;
+export default AlertMessage;
