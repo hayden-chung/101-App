@@ -75,7 +75,7 @@ export const getSessions = () => { // get (available) session times apart from b
     breaks = Object.keys(fixedSessionsCopy).filter(type => type !== 'start-finish')
     timetableStart = fixedSessionsCopy['start-finish'][0]
     timetableEnd = fixedSessionsCopy['start-finish'][1]
- 
+
     if (breaks.length !== 0) {
         // Find earliest break start
         let earliestNextBreakStart = breaks[0] // 

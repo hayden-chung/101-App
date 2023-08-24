@@ -7,55 +7,44 @@ import {getSessions} from '../generator/timetableGeneratorAlgorithm'
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = (Dimensions.get('window').height);
 
-const getRemainingTime = () => {
-    let fixedSessionsCopy = {...fixedSessions}
-    let remainingTime = new Date(fixedSessionsCopy['start-finish'][1]).getTime() - new Date(fixedSessionsCopy['start-finish'][0]).getTime()
+const getRemainingTime = () => { // Get the remaining available time excluding breaks. 
+    let fixedSessionsCopy = {...fixedSessions} // Create a copy of the fixed sessions, so the original fixedSessions does not get manipulated. 
+    let remainingTime = new Date(fixedSessionsCopy['start-finish'][1]).getTime() - new Date(fixedSessionsCopy['start-finish'][0]).getTime() // get remaining time by subtracting the start time from the finish time of the timetable.  
     console.log("remainingTime", remainingTime)
-    breaks = Object.keys(fixedSessionsCopy).filter(type => type !== 'start-finish')
-    for (let i = 0; i < breaks.length; i++) {
-        breakTimeLength = fixedSessionsCopy[breaks[i]][1] - fixedSessionsCopy[breaks[i]][0]
-        remainingTime -= breakTimeLength
+    breaks = Object.keys(fixedSessionsCopy).filter(type => type !== 'start-finish') // Create a list with breaks, 
+    for (let i = 0; i < breaks.length; i++) { // Repeat for the number of breaks. 
+        breakTimeLength = fixedSessionsCopy[breaks[i]][1] - fixedSessionsCopy[breaks[i]][0] // period length of break. 
+        remainingTime -= breakTimeLength // subtract break length from remaining time. 
     }
     remainingTimeInMinutes = remainingTime/(1000*60) // convert ms to min
     return remainingTimeInMinutes
 
 }
 
-const addBreakIfAvailable = (breakName) => {
-    const [sessionsBetweenBreaks, breakOrder] = getSessions()
-    console.log('CHECK',sessionsBetweenBreaks)
+const addBreakIfAvailable = (breakName) => { // Add break if there is available time. 
+    const [sessionsBetweenBreaks, breakOrder] = getSessions() // get available session times between breaks (available time)
+    console.log('CHECK',sessionsBetweenBreaks) 
 
-    const remainingTimeInMinutes = getRemainingTime()
-    let startTime = 0
-    let endTime = 0
+    const remainingTimeInMinutes = getRemainingTime() // determine the remaining time 
+    let startTime = 0 // Initialize a start time.
+    let endTime = 0 // Initialize an end time. 
       
-
-
-    // if (remainingTimeInMinutes > 10) { // can a new break session fit in the timetable (if more than 10min available)
-    //     if (new Date() < fixedSessions['start-finish'][0]) { // if current time is less than start time of timetable:
-    //         startTime = fixedSessions['start-finish'][0] // set start time to start time of timetable. 
-    //         endTime = new Date(startTime.getTime() + 1 * 60 * 1000) // end time = one minute after start time. 
-    //     } else if (new Date() > fixedSessions['start-finish'][1]) { // if current time is greater than end time of timetable:
-    //         endTime = fixedSessions['start-finish'][1]
-    //         startTime = new Date(endTime.getTime() - 1 * 60 * 1000)
-    //     }
-        
     if (remainingTimeInMinutes > 10 && breakOrder.length >= 1) { // can a new break session fit in the timetable (if more than 10min available)
         console.log('option 1')
-        for (i=0; i < breakOrder.length+1; i++){
-            let availableTime = new Date(sessionsBetweenBreaks[i][1]) - new Date(sessionsBetweenBreaks[i][0])
-            let availableTimeInMinutes = availableTime/(1000*60)
+        for (i=0; i < breakOrder.length+1; i++){ // repeat for the number of breaks
+            let availableTime = new Date(sessionsBetweenBreaks[i][1]) - new Date(sessionsBetweenBreaks[i][0]) // available time in between one break time to another. 
+            let availableTimeInMinutes = availableTime/(1000*60) // convert from ms to minutes. 
             console.log('availableTimeInMinutes', availableTimeInMinutes)
-            if (availableTimeInMinutes > 10) {
-                startTime=new Date(sessionsBetweenBreaks[i][0])
-                endTime = new Date(startTime.getTime() + 1 * 60 * 1000)
-                console.log('startTime', startTime, 'endTime', endTime)
+            if (availableTimeInMinutes > 10) { // add break only if there is more than 10 mins of available time.
+                startTime=new Date(sessionsBetweenBreaks[i][0])         // Set to beginning of break.
+                endTime = new Date(startTime.getTime() + 1 * 60 * 1000) // Set 1 min more than start time. 
+                console.log('startTime', startTime, 'endTime', endTime) 
             }
         }
-    } else if (breakOrder.length === 0){
+    } else if (breakOrder.length === 0){ // if there are no breaks"
         console.log('option 2')
-        startTime = new Date(fixedSessions['start-finish'][0])
-        endTime = new Date(startTime.getTime() + 1*60*1000)
+        startTime = new Date(fixedSessions['start-finish'][0]) // set start time to start time of timetable.
+        endTime = new Date(startTime.getTime() + 1*60*1000) // set end time to 1 min more than start time. 
     }
     console.log('startTime', startTime, 'endTime', endTime)
     fixedSessions[breakName] = [startTime, endTime]    // add [current time, time 10min after current] to set the break session in the beginning. This is to prevent an empty string when the user first sets up the break session. 
@@ -71,8 +60,8 @@ export const AddBreakModal = (props) => { // Add a new break session.
         if (addBreak && breakName) { // If addBreak is true, and breakName is also valid (not empty):
             // time must be before timetable finish time 
             
-            addBreakIfAvailable(breakName)
-            props.updateBreakSessions()  // update break sessions. 
+            addBreakIfAvailable(breakName) // Add break only if there is time available. 
+            props.updateBreakSessions()  // Update break sessions. 
         }
         props.setNewBreakModalVisible(false); // set to false as modal should not be visible now.
     };
