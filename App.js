@@ -2,7 +2,6 @@ import React from 'react';
 import { StyleSheet, View} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import colors from './assets/colors';
 import ToDoScreen from './app/todoScreen';
 import HomeScreen from './app/homeScreen';
 import QuoteScreen from './app/quoteScreen';
@@ -26,6 +25,11 @@ export default function App() {
         /> */}
 
         <Stack.Screen 
+          name="WellBeingScreen"
+          component={WellBeingScreen}
+        />
+
+        <Stack.Screen 
           name="TimetableScreen"
           component={TimetableScreen}
         />
@@ -47,6 +51,6 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.background,
+    backgroundColor:'#E8EAED',
   }
 });

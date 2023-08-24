@@ -1,16 +1,15 @@
 import React, {useState} from 'react';
 import { StyleSheet, View, Text, Image, Dimensions, SafeAreaView, TouchableOpacity, Modal, Touchable} from 'react-native';
 import {BarChart, PieChart, ContributionGraph} from 'react-native-chart-kit'; // charts from third party library.
-import dimensions from '../assets/dimensions';
 import { Ionicons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import {NewWellbeingChartModal} from '../components/wellbeing/newChartModal/newWellbeingChartModal';
-import {wellbeingData, updateWellbeingData} from '../assets/wellbeingData';
+import {wellbeingData, updateWellbeingData} from '../components/wellbeing/wellbeingData';
 import WellbeingDatePicker from '../components/wellbeing/calendar/WellbeingDatePicker';
-import {getCurrentDate, updateCalendarData} from '../components/wellbeing/wellbeingControls'
-import {handlePreviousDay, handleNextDay} from '../components/wellbeing/calendar/calendarControls';
+import {getCurrentDate} from '../components/wellbeing/wellbeingControls'
+import {handlePreviousDay, handleNextDay, updateCalendarData} from '../components/wellbeing/calendar/calendarControls';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = (Dimensions.get('window').height);
@@ -21,7 +20,7 @@ const WellBeingScreen = () => { // main function for wellbeing screen
   const [selectedDate, setSelectedDate] = useState(getCurrentDate()); // Selected date from date picker (calendar).
   const [calendarData, setCalendarData] = useState({"2023-08-02": [10, 1, 2, 5, 1, 1]}); // data type = object (key value (like dictionary in python))
 
-  updateWellbeingData(selectedDate, calendarData)
+  updateWellbeingData(selectedDate, calendarData) // Update 
 
   return (
     // SafeAreaView renders content within the visible boundaries of the device (iOS only).
@@ -29,13 +28,15 @@ const WellBeingScreen = () => { // main function for wellbeing screen
 
         <View style={styles.header}>
 
+          {/* Return to Home Dashboard Button */}
           <TouchableOpacity style={styles.goBackHomeButton}>  
             <Ionicons name="chevron-back" size={SCREEN_HEIGHT/20} color="black"/>
           </TouchableOpacity>
 
+          {/* Title */}
           <Text style={styles.title}> Wellbeing Chart</Text>
 
-          {/* ------------ UPDATE WELLBEING CHART BUTTON ------------ */}
+          {/* Update Wellbeing Chart Button. When pressed, set isNewChartModalVisible to true for modal to appear.*/}
           <TouchableOpacity onPress={() => {newChartModalVisible(true)}} style={styles.updateButtonWrapper}> 
             <Ionicons name="add" size={35} color="black" style={styles.updateButton}/>
           </TouchableOpacity>
@@ -49,8 +50,8 @@ const WellBeingScreen = () => { // main function for wellbeing screen
             >
             {/* Make a new wellbeing rating (Modal Component) */}
             <NewWellbeingChartModal
-              newChartModalVisible={newChartModalVisible}
-              wellbeingData={wellbeingData}
+              newChartModalVisible={newChartModalVisible} // Is modal visible
+              wellbeingData={wellbeingData}               // 
               setCalendarData={setCalendarData}
               calendarData={calendarData}
             />
@@ -61,24 +62,25 @@ const WellBeingScreen = () => { // main function for wellbeing screen
         {/* --------------- Wellbeing Date Bar --------------- */}
         <View style={styles.dateBar}>
 
-          {/* Previous Day */}   
+          {/* Previous Day Button */}   
           <TouchableOpacity style={styles.goBackHomeButton} onPress={() => handlePreviousDay(selectedDate, setSelectedDate)}>
             <Entypo name="chevron-left" size={SCREEN_HEIGHT/20} color="black" />
           </TouchableOpacity>
 
-          {/* Selected Date */}
+          {/* Display Selected Date */}
           <Text style={styles.dateText}>{selectedDate}</Text>
           
-          {/* Next Day */}
+          {/* Next Day Button */}
           <TouchableOpacity style={styles.goBackHomeButton} onPress={() => handleNextDay(selectedDate, setSelectedDate)}>
           <Entypo name="chevron-right" size={SCREEN_HEIGHT/20} color="black" />
           </TouchableOpacity>
 
-          {/* Calendar Button */}
+          {/* Calendar Button. Open calendar modal when pressed. */}
           <TouchableOpacity style={styles.calendarButton} onPress={() => setCalendarVisible(true)}>
             <AntDesign name="calendar" size={24} color="black" />
           </TouchableOpacity>
 
+          {/* Calendar Modal */}
           <Modal
             transparent={true} // don't cover the whole screen. only modal area covers screen. 
             animationType='fade' // fade animation when appearing/disappearing.
@@ -93,16 +95,16 @@ const WellBeingScreen = () => { // main function for wellbeing screen
           </Modal>
         </View>
       
-        {/* --------------- WELLBEING CHART --------------- */}
+        {/* --------------- WELLBEING CHART (Pie Chart) --------------- */}
         <View style={styles.chartWrapper}>
           <BarChart
             // style={graphStyle}
-            data={wellbeingData}
-            width={dimensions.SCREEN_WIDTH}
-            height={220}
-            yAxisLabel={''} // to put in fron of y axis labels (e.g. '$')
-            verticalLabelRotation={-20}
-            fromZero={true} // start y label from 0
+            data={wellbeingData} // import wellbeing data to display 
+            width={SCREEN_WIDTH} // width of chart
+            height={220}                    // height of chart
+            yAxisLabel={''}                 // to put in fron of y axis labels (e.g. '$')
+            verticalLabelRotation={-20}     // rotate y axis labels.
+            fromZero={true}                 // start y axis from 0
 
             chartConfig={{ // Chart Design 
               backgroundColor: '#e26a00', 

@@ -1,4 +1,4 @@
-export const defaultQuotes = [
+export const defaultQuotes = [ // Default quotes to display in the beginning. 
     ["All our dreams can come true, if we have the courage to pursue them", "Walt Disney", false],
     ["The secret of getting ahead is getting started", "Mark Twain", false ],
     ["Whatever you are, be a good one", "Abraham Lincoln", false],

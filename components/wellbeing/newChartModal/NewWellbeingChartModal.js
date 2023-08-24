@@ -3,8 +3,10 @@ import { StyleSheet, Text, View, Dimensions, TextInput, Alert, TouchableOpacity}
 import Slider from '@react-native-community/slider';
 import { AntDesign } from '@expo/vector-icons';
 import NextButton from './modalNextButton';
-import {updateWellbeingDataStorage} from '../../../assets/wellbeingData';
-import {getCurrentDate, updateCalendarData} from '../wellbeingControls';
+import {updateWellbeingDataStorage} from '../wellbeingData';
+import {getCurrentDate} from '../wellbeingControls';
+import {updateCalendarData} from '../calendar/calendarControls'
+
 
 
 const SCREEN_WIDTH = Dimensions.get('window').width;

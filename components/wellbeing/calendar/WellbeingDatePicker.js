@@ -7,47 +7,57 @@ import { Feather } from '@expo/vector-icons';
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = (Dimensions.get('window').height);
 
-const WellbeingDatePicker = ({setCalendarVisible, setSelectedDate, selectedDate})  => {
+const WellbeingDatePicker = ({setCalendarVisible, setSelectedDate, selectedDate})  => { // When called, open calendar. 
 
-    const [tempSelectedDate, setTempSelectedDate] = useState();
+    const [currentSelectedDate, setCurrentSelectedDate] = useState(); // date selected on calendar. 
 
     return (
         <View style={styles.container}>
+
+            {/* Modal Container */}
             <View style={styles.modalContainer}> 
+
+                {/* Modal Wrapper (contains all except ok button) */}
                 <View style={styles.modalWrapper}>
+
+                    {/* Modal Header (contains title (Seleceted Date) and Exit Button) */}
                     <View style={styles.modalHeader}>
                         <Text style={styles.headerText}>Select Date</Text>
 
+                        {/* When pressed, don't show calendar modal anymore */}
                         <TouchableOpacity style={styles.exitModalButton} onPress={() => setCalendarVisible(false)}>
                             <Feather name="x" size={SCREEN_HEIGHT/23} color="black" />
                         </TouchableOpacity>
                     </View>
+
                     <Calendar
                         style={{
                             borderRadius: 10,
                         }}
                         renderArrow={(direction) => { // custom arrow image for calendar (left&right)
-                            if (direction == "left")
+                            if (direction == "left") // When left arrow button pressed. 
                             return (
                                 <Entypo name="chevron-left" size={SCREEN_HEIGHT/20} color="#291D89" />
                             );
-                            if (direction == "right")
+                            if (direction == "right") // When right arrow button pressed. 
                             return (
                                 <Entypo name="chevron-right" size={SCREEN_HEIGHT/20} color="#291D89" />
                             );
                         }}
-                        onDayPress={day => { // When a day is pressed
-                        setTempSelectedDate(day.dateString); // setSelectedDate to selected date.
+                        onDayPress={day => { // When a date is pressed
+                        setCurrentSelectedDate(day.dateString); // set currentSelectedDate to selected date.
                         }}
-                        markedDates={{ 
-                        [tempSelectedDate]: {selected: true, disableTouchEvent: true} // For the selected date (tempSelectedDate), selected: true --> indicate the date is marked, disableTouchEvent: true --> selected date cannot be touched anymore, 
+                        markedDates={{ // Mark the selected date as blue. 
+                        [currentSelectedDate]: {selected: true, disableTouchEvent: true} // For the selected date (currentSelectedDate), selected: true --> indicate the date is marked, disableTouchEvent: true --> selected date cannot be touched anymore, 
                         }}
                     />
-                    {/* Use this 'pushBottom' view to push the item below it to the bottom */}
+                    {/* Use this 'pushBottom' view to push the item below it (ok button) to the bottom */}
                     <View style={styles.pushBottom}/> 
 
                 </View>
-                <TouchableOpacity style={styles.okButton} onPress={() => {setSelectedDate(tempSelectedDate); setCalendarVisible(false);}}>
+
+                {/* Ok Button. Press once date is selected to navigate to this date */}
+                <TouchableOpacity style={styles.okButton} onPress={() => {setSelectedDate(currentSelectedDate); setCalendarVisible(false);}}>
                     <Text style={{fontSize: SCREEN_HEIGHT/40, fontWeight: '500'}}>OK</Text>
                 </TouchableOpacity>
             </View>
@@ -74,7 +84,7 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 10,
     },
-    modalHeader: {
+    modalHeader: { // container for title and exit button. 
         flexDirection: 'row',
         justifyContent: 'space-between',
         padding: 15,
@@ -82,7 +92,7 @@ const styles = StyleSheet.create({
     exitModalButton: {
 
     },
-    headerText: {
+    headerText: { // Style header text (Select Date)
         fontSize: SCREEN_HEIGHT/33,
         fontWeight: '500',
     },
@@ -92,13 +102,13 @@ const styles = StyleSheet.create({
     pushBottom: { // Fill this area with empty space to push the ok button to the bottom. 
         flex: 1,
     },
-    okButton: {
+    okButton: { // Ok button at the bottom 
         height: SCREEN_HEIGHT/16,
         width: '100%',
         justifyContent: 'center',
         alignItems: 'center',
-        borderBottomLeftRadius: 10, // Border for bottom left corner only.
-        borderBottomRightRadius: 10, // Border for bottom right corner only.
+        borderBottomLeftRadius: SCREEN_HEIGHT/90, // Border for bottom left corner only.
+        borderBottomRightRadius: SCREEN_HEIGHT/90, // Border for bottom right corner only.
         backgroundColor: 'orange',
     },
 });

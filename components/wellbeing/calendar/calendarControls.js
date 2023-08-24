@@ -5,14 +5,14 @@ export const updateCalendarData = (setCalendarData, date, ratings) => { // send 
     }));
   };
 
-export const handlePreviousDay = (selectedDate, setSelectedDate) => {
-    const currentDate = new Date(selectedDate);
-    currentDate.setDate(currentDate.getDate() - 1);
-    setSelectedDate(currentDate.toISOString().split('T')[0]);
+export const handlePreviousDay = (selectedDate, setSelectedDate) => { // Go 1 day back. 
+    const currentDate = new Date(selectedDate);     // create a copy of current selected date
+    currentDate.setDate(currentDate.getDate() - 1); // minus 1 day from current date. 
+    setSelectedDate(currentDate.toISOString().split('T')[0]); // e.g. 2023-08-03T00:00:00.000Z --> 2023-08-03 
   };
 
-export const handleNextDay = (selectedDate, setSelectedDate) => {
-    const currentDate = new Date(selectedDate);
-    currentDate.setDate(currentDate.getDate() + 1);
-    setSelectedDate(currentDate.toISOString().split('T')[0]);
+export const handleNextDay = (selectedDate, setSelectedDate) => { // Go 1 day forward. 
+    const currentDate = new Date(selectedDate);     // create a copy of current selected date
+    currentDate.setDate(currentDate.getDate() + 1); // add 1 day from current date. 
+    setSelectedDate(currentDate.toISOString().split('T')[0]); // e.g. 2023-08-03T00:00:00.000Z --> 2023-08-03 
   };

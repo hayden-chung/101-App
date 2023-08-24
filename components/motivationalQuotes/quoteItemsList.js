@@ -1,5 +1,5 @@
 import {useState} from 'react';
-import {defaultQuotes} from '../../assets/defaultQuotes';
+import {defaultQuotes} from './defaultQuotes';
 
 
 export const QuoteListItems = () => {

@@ -9,7 +9,7 @@ const HEIGHT_MODAL = (Dimensions.get('window').height)/7;
 
 export const EditDeleteQuoteModal = (props) => { // edit and delete quotes
 
-    const closeModal = () => { 
+    const closeModal = () => { // Close modal 
         props.EditDeleteModalVisible([false, props.isEditDeleteModalVisible[1]]); // set to false as mode should not be visible now
     }
 
@@ -33,7 +33,7 @@ export const EditDeleteQuoteModal = (props) => { // edit and delete quotes
             {/* Popup Modal Screen */}
             <View style={styles.modal}> 
 
-                    {/*  */}
+                    {/* Edit Button */}
                     <TouchableOpacity 
                         style={styles.editButton}
                         onPress={() => editQuote()}
@@ -43,10 +43,11 @@ export const EditDeleteQuoteModal = (props) => { // edit and delete quotes
                         </Text>
                         <MaterialIcons name="edit" size={24} color="black" />
                     </TouchableOpacity>
+                    
+                    {/* Divider line between edit and delete button */}
+                    <View style={styles.divider}></View>
 
-                    <View style={styles.divider}> 
-                    </View>
-
+                    {/* Delete Button */}
                     <TouchableOpacity 
                         style={styles.deleteButton}
                         onPress={() => deleteQuote()}
