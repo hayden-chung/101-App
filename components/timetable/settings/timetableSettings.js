@@ -11,6 +11,7 @@ const SCREEN_HEIGHT = Dimensions.get('window').height;
 
 const TimetableSettings = () => { // Timetable Settings Screen.
 
+    const [timetableTime, setTimetableTime] = useState(['start-finish'])
     const [breakSessions, setBreakSessions] = useState(Object.keys(fixedSessions).filter(type => type !== 'start-finish')); // Store break sessions only. Filter out start-finish from the list array.
     const [isNewBreakModalVisible, setNewBreakModalVisible] = useState(false); 
 
@@ -18,10 +19,12 @@ const TimetableSettings = () => { // Timetable Settings Screen.
         delete fixedSessions[item]; // delete item from fixedSessions array. 'item' = a string (e.g. 'break 1)
     };
 
-    const updateBreakSessions = () => { // Update array that stores break sessions. 
-        
+    const updateAndReRender = () => { // Update array that stores break sessions. 
         setBreakSessions([]) // Set to empty for the purpose of re-triggering the flatList as flatList will update when the array 'breakSession' changes.
         setBreakSessions(Object.keys(fixedSessions).filter(type => type !== 'start-finish')); // Store break sessions only. Filter out start-finish from the list array.
+        setTimetableTime([])
+        setTimetableTime(['start-finish'])
+        console.log('updated')
     } 
 
     return(
@@ -36,16 +39,25 @@ const TimetableSettings = () => { // Timetable Settings Screen.
             <View style={styles.timetableStartFinishContainer}>
                 <Text style={styles.startFinishTitleText}>Timetable Start-Finish</Text>
 
-                <View style={styles.startFinishWrapper}>
+                
 
-                    {/* sessionType='start-finish because we want to display the start-finish time of timetable. startOrFinish={0} so we can display the start time */}
-                    <Text style={styles.startFinishText}>Start</Text>
-                    <TimePicker sessionType='start-finish' startOrFinish={0} updateBreakSessions={updateBreakSessions}/> 
+                    <FlatList
+                        data={timetableTime}
+                        renderItem={({item}) => {
+                            return (
+                            <View style={styles.startFinishWrapper}>
+                                <Text style={styles.startFinishText}>Start</Text>
+                                {/* sessionType='start-finish because we want to display the start-finish time of timetable. startOrFinish={0} so we can display the start time */}
+                                <TimePicker sessionType={item} startOrFinish={0} updateAndReRender={updateAndReRender}/> 
 
-                    {/* startOrFinish={1} so we can display the finish time of timetable. */}
-                    <Text style={styles.startFinishText}>Finish</Text>
-                    <TimePicker sessionType='start-finish' startOrFinish={1} updateBreakSessions={updateBreakSessions}/>  
-                </View>
+                                <Text style={styles.startFinishText}>Finish</Text>
+                                {/* startOrFinish={1} so we can display the finish time of timetable. */}
+                                <TimePicker sessionType={item} startOrFinish={1} updateAndReRender={updateAndReRender}/>  
+                            </View>
+                        )}}
+                    />
+
+                
             </View>
 
             {/* Display the rest of break sessions */}
@@ -68,14 +80,14 @@ const TimetableSettings = () => { // Timetable Settings Screen.
 
                                 {/* Start time of break session */}
                                 <Text style={styles.startFinishText}>Start</Text>
-                                <TimePicker sessionType={item} startOrFinish={0} updateBreakSessions={updateBreakSessions}/> 
+                                <TimePicker sessionType={item} startOrFinish={0} updateAndReRender={updateAndReRender}/> 
 
                                 {/* Finish time of break session */}
                                 <Text style={styles.startFinishText}>Finish</Text>
-                                <TimePicker sessionType={item} startOrFinish={1} updateBreakSessions={updateBreakSessions}/>  
+                                <TimePicker sessionType={item} startOrFinish={1} updateAndReRender={updateAndReRender}/>  
 
-                                {/* Delete Button (with trash can icon button. When pressed, call deleteBreak to delete the break session and call updateBreakSessions to update the breakSessions array after deleted.  */}
-                                <TouchableOpacity style={styles.removeBreak} onPress={() => {deleteBreak(item), updateBreakSessions()}} >
+                                {/* Delete Button (with trash can icon button. When pressed, call deleteBreak to delete the break session and call updateAndReRender to update the breakSessions array after deleted.  */}
+                                <TouchableOpacity style={styles.removeBreak} onPress={() => {deleteBreak(item), updateAndReRender()}} >
                                     <MaterialIcons name="delete" size={24} color="black" />
                                 </TouchableOpacity>
         
@@ -102,7 +114,7 @@ const TimetableSettings = () => { // Timetable Settings Screen.
                 {/* Display modal to add a break session */}
                 <AddBreakModal
                     setNewBreakModalVisible={setNewBreakModalVisible} // send setNewBreakModalVisible as a parameter so the AddBreakModal function can set it to false when user closes the modal.
-                    updateBreakSessions={updateBreakSessions}         // if user adds new break session, function needs to update the break sessions so send this function as a paramter. 
+                    updateAndReRender={updateAndReRender}         // if user adds new break session, function needs to update the break sessions so send this function as a paramter. 
                 />
           </Modal>
 

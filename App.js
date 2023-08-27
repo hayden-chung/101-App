@@ -24,10 +24,6 @@ export default function App() {
           component={TimerScreen}
         /> */}
 
-        <Stack.Screen 
-          name="WellBeingScreen"
-          component={WellBeingScreen}
-        />
 
         <Stack.Screen 
           name="TimetableScreen"

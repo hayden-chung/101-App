@@ -7,7 +7,7 @@ import { Entypo } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import {NewWellbeingChartModal} from '../components/wellbeing/newChartModal/newWellbeingChartModal';
 import {wellbeingData, updateWellbeingData} from '../components/wellbeing/wellbeingData';
-import WellbeingDatePicker from '../components/wellbeing/calendar/WellbeingDatePicker';
+import WellbeingDatePicker from '../components/wellbeing/calendar/wellbeingDatePicker';
 import {getCurrentDate} from '../components/wellbeing/wellbeingControls'
 import {handlePreviousDay, handleNextDay, updateCalendarData} from '../components/wellbeing/calendar/calendarControls';
 

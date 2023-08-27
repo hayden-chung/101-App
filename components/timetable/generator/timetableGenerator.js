@@ -56,7 +56,7 @@ const TimetableGenerator = ({navigation}) => {
                     isAlarmMessage={isAlarmMessage}
                     toggleAlarmMessage={toggleAlarmMessage}
                     text={'You can only select tasks with an estimated time'}
-                    fontSize={15}
+                    fontSize={1}
                     fontColor={'white'}
                 />
                 

@@ -10,16 +10,14 @@ const TimeBlock = ({item, index}) => {
     const timeBlockName = item[0]
     let startTime = 0
     let endTime = 0
-
+    
     // setting start and finish times. Order of time blocks has been set in the timetable generator function, so now we need to set the exact time of the timeblocks (e.g. 15:30-18:30))
     if (item[3]) { // First make sure the timeBlock is a task (not a break)
         for (let i = 0; i < index+2 && item[3]; i++) { 
             if (timetable[index - i] && timetable[index - i][1] && timetable[index - i][1][1] && item[3]) { // if these conditions are true (basically, if there is a break session before the current task), it indicates a break is present at index 'index-1'.
                 let addTime = 0
-                console.log("TRUE")
                 for (j=i-1; j > 0; j--) { // Sum up the time of all sessions before the current task to the break session to set the starting time. 
                     addTime = addTime + timetable[index-j][3] // 
-                    console.log('OVERHERE timetable[index-j]', timetable[index-j] ,'timetable[index-j][3]', timetable[index-j][3])
                 }
                 
                 startTime = new Date(timetable[index-i][1][1].getTime() + addTime*60*60*10) 

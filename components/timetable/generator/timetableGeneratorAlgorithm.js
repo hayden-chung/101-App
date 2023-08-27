@@ -18,18 +18,19 @@ const subsetSum = (selectedTasks, startAndEndTime) => { //
     startTime = new Date(startAndEndTime[0]).getTime();
     endTime = new Date(startAndEndTime[1]).getTime();
     availableTimeInMilliseconds = endTime - startTime;
-    console.log('startTime2', startTime, 'endTime', endTime, 'availableTimeInMilliseconds', availableTimeInMilliseconds) 
     const availableHours = (availableTimeInMilliseconds/(1000*60*60)).toFixed(2); // convert milliseconds to hours. to 2 d.p.
-    const target = availableHours*100; // e.g.if available time = 6.5h, target = 650. This is so we can iterate over an integer value as float values don't allow iteration with for loops. 
-    
+    console.log('startTime2', startTime, 'endTime', endTime, 'availableHours', availableHours) 
+    const target = Math.round(availableHours*100); // e.g.if available time = 6.5h, target = 650. This is so we can iterate over an integer value as float values don't allow iteration with for loops. Thus, also round to integer after calculation.  
 
     // Create array of booleans to find closest sum to target.  
     let dp = Array(target + 1); // dp (dynamic programming) = array
+    console.log('passed 1')
     for (let i = 0; i< dp.length; i++) { // fill with false values (for number of target + 1). 
         dp[i] = [false];
     }
     dp[0][0] = true;
 
+    console.log('passed 2')
     // Subset Sum Algorithm
     for (let num=0; num < selectedTasks.length; num++) { // iterate for length of selectedTasks
 
@@ -56,6 +57,7 @@ const subsetSum = (selectedTasks, startAndEndTime) => { //
 
         }
     }
+    console.log('passed 3')
 
     // Find the closest sum
     let closest_sum = 0
@@ -65,7 +67,8 @@ const subsetSum = (selectedTasks, startAndEndTime) => { //
             break;
         }
     }
-    return dp[closest_sum].slice(1)
+    console.log('passed this shit')
+    return dp[closest_sum].slice(1) // extract the array starting from index 1 to the end. 
 }
 
 export const getSessions = () => { // get (available) session times apart from break times. 
@@ -76,7 +79,7 @@ export const getSessions = () => { // get (available) session times apart from b
     timetableStart = fixedSessionsCopy['start-finish'][0]
     timetableEnd = fixedSessionsCopy['start-finish'][1]
 
-    if (breaks.length !== 0) {
+    if (breaks.length !== 0) { // Create a list of breaks in order. un only if breaks exist 
         // Find earliest break start
         let earliestNextBreakStart = breaks[0] // 
         for (i = 0; i < breaks.length; i++) {
@@ -121,7 +124,8 @@ export const getSessions = () => { // get (available) session times apart from b
 
 
 const insertSessions = (timetable, breakSession, usedTasks) => {
-    timetable = timetable.concat(usedTasks)
+    console.log('used tasks', usedTasks)
+    timetable = timetable.concat(usedTasks) // combine 
     if (breakSession !== undefined) {
         timetable.push([breakSession, fixedSessions[breakSession]])
     }
@@ -137,7 +141,9 @@ const eliminateTasks = (selectedTasks, usedTasks) => {
 }
 
 export const GenerateTimetable = (taskItems, timetable) => {
+    console.log('fixedSessions', fixedSessions)
     const [sessionsBetweenBreaks, breakOrder] = getSessions()
+    console.log('sessionsBetweenBreaks', sessionsBetweenBreaks)
     // Generating Timetable
     selectedTasks = makeSelectedTasksArr(taskItems)
     for (i = 0; i < sessionsBetweenBreaks.length; i++) {
