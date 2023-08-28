@@ -98,7 +98,7 @@ export const NewWellbeingChartModal = (props) => {
                 {/* -------------------------------------------- */}
                 
                 {/* Next/Previous Buttons */}
-                <View style={styles.buttonsView}>
+                <View style={styles.nextPreviousButtonContainer}>
                     <TouchableOpacity style={styles.previousButton} onPress={() => changePage('left')}>
                         <AntDesign name="arrowleft" size={30} color="black" />
                     </TouchableOpacity>
@@ -117,12 +117,12 @@ export const NewWellbeingChartModal = (props) => {
 
 
 const styles= StyleSheet.create({
-    container: { // entire screen (including transparent background)
+    container: { // Entire screen (including transparent background).
         flex: 1, 
         alignItems: 'center', 
         justifyContent: 'center',
     }, 
-    modal: { 
+    modal: { // Modal styling.
         height: SCREEN_HEIGHT/2, 
         width: SCREEN_WIDTH -80, 
         paddingTop: 5, 
@@ -131,41 +131,37 @@ const styles= StyleSheet.create({
         borderWidth: 3,
         borderRadius: 10,
     },
-    modalHeader: {
+    modalHeader: { // Modal header. 
         flexDirection: 'row',
         flex: 1, 
         justifyContent: 'center',
         // backgroundColor: 'green',
     }, 
-    headerText: {
+    headerText: { // Header text styling. 
         margin: 5, 
         fontSize: 16, 
         fontWeight: 'bold',
-        // backgroundColor: 'magenta',
     },
-    modalSubHeader: {
+    modalSubHeader: { // Question contain (e.g. how much sleep have you had)
         flex: 1,
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'flex-start',
-        // backgroundColor: 'red',
     },
-    subHeaderText: {
+    subHeaderText: { // Question text. 
         fontWeight: '600',
         fontSize: 18,
     },
-    exitButton: { 
+    exitButton: { // Exit button. 
         width: SCREEN_WIDTH/15, 
         paddingLeft: 5,
-        // backgroundColor: 'red',
     },
-    buttonsView: { 
+    nextPreviousButtonContainer: { // next & previous button. 
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
         marginHorizontal: 10, 
         marginBottom: 10,
-        // backgroundColor: 'green',
     }, 
     previousButton: { // go to previous page button in modal
         justifyContent: 'center',
@@ -178,16 +174,16 @@ const styles= StyleSheet.create({
         backgroundColor: 'white',
         alignSelf: 'flex-end', // bottom of column
     },
-    sliderContainer: {
+    sliderContainer: { // Contains rating text & slider.
         flexDirection: 'column',
         alignItems: 'center',
         paddingBottom: SCREEN_HEIGHT/10,
     },
-    sliderWrapper: {
+    sliderWrapper: { // Rating slider wrapper. 
         flexDirection: 'row',
         paddingTop: SCREEN_HEIGHT/40,
     },
-    slider: {
+    slider: { // Slider 
         width: (SCREEN_WIDTH -80)/1.2, // SCREEN_WIDTH -80 = Modal Width
         marginLeft: 'auto',
         marginRight: 'auto',

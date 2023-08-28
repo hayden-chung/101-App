@@ -20,10 +20,10 @@ export default function App() {
       <Stack.Navigator>
 
         {/* ---------------- Timer Components ---------------- */}
-        <Stack.Screen 
+        {/* <Stack.Screen 
           name="TimerScreen"
           component={TimerScreen}
-        />
+        /> */}
 
 
         {/* ---------------- Timetable Components ---------------- */}

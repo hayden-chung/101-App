@@ -68,7 +68,7 @@ const QuoteScreen = () => {
                 onRequestClose={() => EditDeleteModalVisible([false, isEditDeleteModalVisible[1]])} // when backbutton tapped, close modal
             >
                 <View style={styles.modalBackDrop}>
-                    <EditDeleteQuoteModal 
+                    <EditDeleteQuoteModal // Popup screen (edit & delete quotes)
                     quoteModalVisible = {quoteModalVisible}             // send function so when user presses on edit button, the quote modal appears to edit. 
                     isQuoteModalVisible = {isQuoteModalVisible}         // quote modal is visible and edit is true
                     isEditDeleteModalVisible={isEditDeleteModalVisible} // edit/delete modal visible (true/false) and quote index.
@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         alignItems: 'flex-end',
     },
-    addQuote: { // 
+    addQuote: { // Add quote button
         borderRadius: 10,
         borderWidth: 3,
         paddingLeft: 8,

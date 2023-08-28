@@ -8,6 +8,7 @@ const SCREEN_HEIGHT = Dimensions.get('window').height;
 
 const TimePicker = ({sessionType, startOrFinish, updateAndReRender}) => { // Displaying the start/finish times for sessions. 
     const [time, setTime] = useState(fixedSessions[sessionType][startOrFinish] || new Date()); // initialize 'time' with current date and time. (Gets the date and time of when the date picker was first opened.) 
+    const [amOrPm, setAmOrPm] = useState(null);
     const [show, setShow] = useState(false);      // Time picker shows (true/false)
     const [text, setText] = useState(fixedSessions[sessionType][startOrFinish]); // time text to display. 
     const [breakSessions, setBreakSessions] = useState(Object.keys(fixedSessions).filter(type => type !== 'start-finish')); // Store break sessions only. Filter out start-finish from the list array.
@@ -16,6 +17,16 @@ const TimePicker = ({sessionType, startOrFinish, updateAndReRender}) => { // Dis
         const initialBreakSessions = Object.keys(fixedSessions).filter(type => type !== 'start-finish') // re-initialize breakSessions 
         setBreakSessions(initialBreakSessions) // re-set break sessions to update. 
     }, [fixedSessions]); 
+
+    useEffect(() => {
+        console.log('time.GetHours()', time.getHours())
+        if (time.getHours() > 12) {
+            setAmOrPm('pm')
+        }
+        else if (time.getHours() <= 12) {
+            setAmOrPm('am')
+        }
+    }, [time])
 
     const updateTime = (selectedTime, startOrFinish) => {
         const currentSetTime = new Date(selectedTime || time); // If there is a selected time, else, initial date (new Date()). 
@@ -192,7 +203,7 @@ const TimePicker = ({sessionType, startOrFinish, updateAndReRender}) => { // Dis
             {/* When time text pressed, open time picker by calling showMode */}
             <TouchableOpacity style={{margin:20}} onPress={() => showMode()}> 
                 {/* If time text is not empty, display the assigned times. If there is not assigned time, display 'Empty' instead.  */}
-                {time !== 'Empty' ?  <Text> {time.getHours()}:{time.getMinutes()} </Text> : <Text>Empty</Text>}
+                {time !== 'Empty' ?  <Text> {amOrPm === 'am' ? time.getHours():time.getMinutes()}</Text> : <Text>Empty</Text>}
             </TouchableOpacity>
 
             {show && ( // if 'show' is true

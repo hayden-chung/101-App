@@ -11,30 +11,31 @@ const AlertMessage = ({isAlarmMessage, toggleAlarmMessage, text, fontSize, fontC
         fadeAnim.setValue(0);       // initial value of fadeAnim
     
         Animated.sequence([
-            Animated.timing(fadeAnim, {
-                toValue: 1, 
-                duration: 0, 
-                useNativeDriver: true,
-            }),
             Animated.timing(fadeAnim, { // React native function to animate fade animation. 
-                toValue: 1, // Final value (opacity). 
-                duration: 2000, // 2 seconds.
-                useNativeDriver: true, // enables animations to be executed on the platform's native thread to prevent lag and for a smooth run. 
-            }), // start animation (everything inside this bracket).
+                toValue: 1,             // Final value (opacity). 
+                duration: 0,            // duration of animation
+                useNativeDriver: true,  // enables animations to be executed on the platform's native thread to prevent lag and for a smooth run. 
+            }),
+            Animated.timing(fadeAnim, { 
+                toValue: 1, 
+                duration: 2000, 
+                useNativeDriver: true, 
+            }), 
             Animated.timing(fadeAnim, {
                 toValue: 0, 
                 duration: 1000, 
                 useNativeDriver: true,
             }),
-        ]).start();
+        ]).start(); // start animation (everything inside this bracket).
     };
 
-    if (isAlarmMessage) { 
+    if (isAlarmMessage) { // When isAlarmMessage === true, start animation
         startFadeAnim();
     }
 
     return (
             <Animated.View style={{opacity:fadeAnim}}>
+                {/* 'text' displays when 'startFadeAnim' is toggled, depending on opacity: fadeAnim */}
                 <View style={styles.anim}>
                     <Text style={styles.anim}>
                         <Text style={[styles.text, { fontSize, color: fontColor }]} >

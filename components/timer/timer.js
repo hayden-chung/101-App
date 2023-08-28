@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, Button, StyleSheet, TouchableOpacity, Dimensions, TextInput} from 'react-native';
 import { CountdownCircleTimer } from 'react-native-countdown-circle-timer';
-// import NumberPad, { Input, Display } from './index'; 
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = Dimensions.get('window').height;
@@ -12,7 +11,7 @@ const Timer = () => {
   const [hours, setHours] = useState(null); // Initial time in hours
   const [timerDuration, setTimerDuration] = useState(0); // Initial time in seconds
   const [isActive, setIsActive] = useState(false);
-  const [isReset, setIsReset] = useState(true); // used to indicate when time setter can appear or not. 
+  const [isReset, setIsReset] = useState(true); // indicate when time setter can appear or not. 
   const [key, setKey] = useState(0);
   
   const toggleTimer = () => { // 
@@ -26,7 +25,6 @@ const Timer = () => {
     setKey(prevKey => prevKey + 1) // To reset countdown timer back to its intial time value. 
     setIsActive(false); // Timer is not active (running) anymore
   };
-  console.log('isReset', isReset)
   const setInitialTime = () => {
     console.log('setting initial time')
   }
@@ -45,10 +43,8 @@ const Timer = () => {
         intValue = parseInt(value, 10)
 
         if (!isNaN(intValue)) {
-            console.log('int true')
             return true
         } else {
-            console.log('int false')
             return false
         }
 

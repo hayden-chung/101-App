@@ -11,26 +11,26 @@ export default NextButton = (props) => {
     const radius = size/2 - strokeWidth /2;
     const circumference = 2 * Math.PI * radius; 
 
-    const progressAnimation = useRef(new Animated.Value(0)).current;
-    const progressRef = useRef(null);
+    const progressAnimation = useRef(new Animated.Value(0)).current; // useRef allows values to persist despite a re-render. 
+    const progressRef = useRef(null); 
 
-    const animation = (toValue) => {
+    const animation = (toValue) => { // Next button animation
         return Animated.timing(progressAnimation, { // Animted.timing = React Native's Animated API to create timed animation
-            toValue, // the target value
-            duration: 250, // 250 milliseconds
-            useNativeDriver: true, // allows the native driver to send everything about the animation to native before starting the animatino
-        }).start();
+            toValue, // Target value. 
+            duration: 250, 
+            useNativeDriver: true, // allows the native driver to send everything about the animation to native before starting the animation. 
+        }).start(); 
     };
         
-    useEffect(() => {
+    useEffect(() => { // When pagePercentage changes, run animation. 
         animation((props.pagePercentage))
     }, [(props.pagePercentage)]); // dependency array. every time this changes, the effect is re-executed. 
 
-    useEffect(() => {
+    useEffect(() => { // Whenever progressAnimation changes, change strokeDashoffset. 
         progressAnimation.addListener((value) => { // addListener creates a smooth animation to the progress animation.
             const strokeDashoffset = circumference - (circumference * value.value) / 100;
 
-            if (progressRef?.current) {
+            if (progressRef?.current) { 
                 progressRef.current.setNativeProps({
                     strokeDashoffset
                 });
@@ -56,9 +56,9 @@ export default NextButton = (props) => {
                     <Circle
                         ref={progressRef}
                         stroke="#F4338F"
-                        cx={center}
-                        cy={center} // 
-                        r={radius} // radius of outline 
+                        cx={center}     // center x-pos
+                        cy={center}     // center y-pos
+                        r={radius}      // radius 
                         strokeWidth={strokeWidth} // border width
                         strokeDasharray={circumference} // pattern of dashes (outline) 
                         fill="white"
