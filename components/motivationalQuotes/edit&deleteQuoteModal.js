@@ -21,7 +21,6 @@ export const EditDeleteQuoteModal = (props) => { // edit and delete quotes
 
     const editQuote = () => { // edit a quote
         props.quoteModalVisible([true, true]); // quoteModal = true ==> display
-        console.log('editQuote function', props.isEditDeleteModalVisible);
         closeModal()
     };
     

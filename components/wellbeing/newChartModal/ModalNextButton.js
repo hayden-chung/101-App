@@ -40,7 +40,6 @@ export default NextButton = (props) => {
         );
     });
 
-    // console.log(Dimensions.get('window').width)
     return (
         <View style={styles.container}>
 

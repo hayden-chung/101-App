@@ -24,7 +24,6 @@ const TimetableSettings = () => { // Timetable Settings Screen.
         setBreakSessions(Object.keys(fixedSessions).filter(type => type !== 'start-finish')); // Store break sessions only. Filter out start-finish from the list array.
         setTimetableTime([])
         setTimetableTime(['start-finish'])
-        console.log('updated')
     } 
 
     return(

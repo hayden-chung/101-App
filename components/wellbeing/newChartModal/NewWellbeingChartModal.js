@@ -15,9 +15,7 @@ const SCREEN_HEIGHT = (Dimensions.get('window').height);
 const currentDate = getCurrentDate();
 
 export const NewWellbeingChartModal = (props) => {
-
-    console.log('calendar data', props.calendarData);
-
+    
     const [pageNumber, changePageNumber] = useState(0) // starting page number in modal = 1 (0 for index number).
     const [wellbeingRating, updateWellbeingRating] = useState([1, 1, 1, 1, 1, 1]) // set all default ratings to 1.
 

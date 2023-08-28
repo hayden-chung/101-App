@@ -38,8 +38,6 @@ const TimePicker = ({sessionType, startOrFinish, updateAndReRender}) => { // Dis
                         break // iteration no longer necessary 
                     }
                     if (new Date(selectedTime) > new Date(fixedSessions[breakName][0]) && new Date(selectedTime) < new Date(fixedSessions[breakName][1])){ // if newly set time is between the period of another break session. (e.g. break 1: 5:30~6:00pm, break 2: 5:00~5:45pm)
-                        console.log('selectedTime:', selectedTime, 'fixedSessions[breakName][0]:', fixedSessions[breakName][0])
-                        console.log('is this true:', new Date(selectedTime > fixedSessions[breakName][0]))
                         selectedTime = fixedSessions[breakName][0] // pull newly set time back to starting time of a break session. 
                         console.log('case 2')
                         break // iteration no longer necessary 
@@ -53,8 +51,7 @@ const TimePicker = ({sessionType, startOrFinish, updateAndReRender}) => { // Dis
                         break // iteration no longer necessary 
                     }
                     if (new Date(selectedTime) > new Date(fixedSessions[breakName][0]) && new Date(selectedTime) < new Date(fixedSessions[breakName][1])) { // if newly set starting time is between the period of another break session. (e.g. break 1: 5:30~6:00pm, break 2: 5:45~6:30pm)
-                        console.log('case 4 selectedTime:', new Date(selectedTime), 'fixedSessions[breakName][0]:', new Date(fixedSessions[breakName][0]), 'fixedSessions[breakName][1]:', new Date(fixedSessions[breakName][1]))
-                        console.log('is this true:', selectedTime < new Date(fixedSessions[breakName][1]))  
+                        console.log('case 4')
                         selectedTime = fixedSessions[breakName][1] // pull newly set time back to the finishing time of break session. 
                         break // iteration no longer necessary 
                     }
@@ -89,7 +86,7 @@ const TimePicker = ({sessionType, startOrFinish, updateAndReRender}) => { // Dis
             // Start time cannot be earlier than the start time of the timetable. 
             if (new Date(selectedTime) < new Date(fixedSessions['start-finish'][0])) {  // if ok button pressed, setting time for timetable, and selected time is less than the starting time of tiemtable. 
                 selectedTime = new Date(fixedSessions['start-finish'][0]) // pull newly set time back to the start time of the timetable.
-                console.log('condition 3', selectedTime)
+                console.log('condition 3')
             }
             // Finish time cannot be later than the finish time of the timetable. 
             if (new Date(selectedTime) > new Date(fixedSessions['start-finish'][1])) { 
@@ -97,19 +94,16 @@ const TimePicker = ({sessionType, startOrFinish, updateAndReRender}) => { // Dis
                 console.log('condition 4')
             }         
         }   
-        console.log('selected time after isTImeWithinrange', selectedTime)
         return selectedTime
     }
 
     const isFinishLaterThanStart = (selectedTime) => {
         // -------------------- Ensure start time is always later than the finish time -------------------- //
-        console.log('session type', sessionType)
         // If start time is later than finish time of task: set the start time to the set time, and finish time to 1min later than the set start time. 
         if (startOrFinish === 0 && new Date(selectedTime) >= new Date(fixedSessions[sessionType][1])) { // If starting time is greater or equal to finishing time
             console.log('condition 1')
             selectedTime = isTimeWithinTimetableRange(selectedTime) 
             selectedTime = checkIfUpdatedBreakClashes(selectedTime)
-            console.log('selected time after checkIfNewBreakClashes', selectedTime)
             updateTime(selectedTime, 0) 
             updateTime(selectedTime, 1) // push finish time to the start time as well so finish time is not earlier than start time. 
         } 
@@ -117,9 +111,7 @@ const TimePicker = ({sessionType, startOrFinish, updateAndReRender}) => { // Dis
         if (startOrFinish === 1 && new Date(selectedTime) <= new Date(fixedSessions[sessionType][0])) { // If finish time is smaller or equal to starting time
             console.log('condition 2')
             selectedTime = isTimeWithinTimetableRange(selectedTime)
-            console.log('selected time stage 1', selectedTime)
             selectedTime = checkIfUpdatedBreakClashes(selectedTime)
-            console.log('selected time stage 2', selectedTime)
             updateTime(selectedTime, 1)
             updateTime(selectedTime, 0) // push start time back to the finish time so start time is not later than start time. 
         } 
@@ -130,8 +122,6 @@ const TimePicker = ({sessionType, startOrFinish, updateAndReRender}) => { // Dis
     const checkForTimetableRange = (selectedTime) => { // check if sessionType = 'start-finish'
 
         // Check if finish time is later than start time:
-        console.log('breakSessions.length', breakSessions.length, 'breakSessions', breakSessions)
-        console.log('fixedSessions', fixedSessions)
 
         if (breakSessions.length >= 1) { // If there are breaks:
             // Find earliest and latest time first. 
@@ -157,7 +147,6 @@ const TimePicker = ({sessionType, startOrFinish, updateAndReRender}) => { // Dis
                 selectedTime = new Date(latestTime)
                 console.log('checked condition 2', selectedTime)
             }
-            console.log('final earliest:', earliestTime, 'latestTime:', latestTime)
 
         } else { // If no breaks.
             if (startOrFinish === 1 && new Date(selectedTime) < new Date(fixedSessions['start-finish'][0])) {
@@ -170,11 +159,6 @@ const TimePicker = ({sessionType, startOrFinish, updateAndReRender}) => { // Dis
             }
         }
 
-        // earliestTime = new 
-        // for (i=0; i<breakSessions.length; i++) { // find earliest an latest break time. 
-        //     breakName = breakSessions[i]
-        //     if 
-        // }
         return selectedTime
     }
 
@@ -184,11 +168,9 @@ const TimePicker = ({sessionType, startOrFinish, updateAndReRender}) => { // Dis
         setShow(false); // Hide date picker.     
 
         if (event.type === 'set') { // If ok button pressed
-            if (sessionType == 'start-finish') {
+            if (sessionType == 'start-finish') { // If setting timetable time
                 selectedTime = checkForTimetableRange(selectedTime)
-                console.log('selectedTime here', selectedTime)
-                console.log('fixedSessions', fixedSessions)
-            } else {
+            } else { // If setting break time
                 selectedTime = checkIfNewBreakClashes(selectedTime)
                 selectedTime = isFinishLaterThanStart(selectedTime)
                 selectedTime = isTimeWithinTimetableRange(selectedTime)
@@ -201,7 +183,6 @@ const TimePicker = ({sessionType, startOrFinish, updateAndReRender}) => { // Dis
     }
 
     const showMode = () => { // Show timer picker
-        console.log('show')
         setShow(true); // Set to true (boolean variable).
     }
 

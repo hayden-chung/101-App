@@ -11,7 +11,6 @@ const ToDoScreen = () => { // when user clicks on todo button, navigate to this 
 
   const [task, setTask] = useState([null, false, false, null]); // useState is a hook that allows you to state variables in functional components. In this case: task = [task name, task completion state, task selected state in timetable generator, estimated completion time ] 
   const {taskItems, setTaskItems} = TaskItemsList();
-  console.log(taskItems);
 
   return (
     <View style={styles.container}> 

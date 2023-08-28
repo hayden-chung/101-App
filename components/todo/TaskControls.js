@@ -22,7 +22,6 @@ export const selectedTask = (index, taskItems, setTaskItems, toggleAlarmMessage,
         taskItems[index][2] =!taskItems[index][2]; // inverse the boolean state (if false --> true, if true --> false)
         setTaskItems([...taskItems]); // update the taskItems array 
     } else {
-        console.log(isAlarmMessage)
         toggleAlarmMessage(true); // set alarm message to asppear
         console.log('cannot select')
     }

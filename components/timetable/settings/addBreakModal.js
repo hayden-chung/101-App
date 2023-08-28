@@ -16,14 +16,12 @@ const getRemainingTime = () => { // Get the remaining available time excluding b
         remainingTime -= breakTimeLength // subtract break length from remaining time. 
     }
     remainingTimeInMinutes = remainingTime/(1000*60) // convert ms to min
-    console.log("remainingTime", remainingTimeInMinutes)
     return remainingTimeInMinutes
 
 }
 
 const addBreakIfAvailable = (breakName) => { // Add break if there is available time. 
     const [sessionsBetweenBreaks, breakOrder] = getSessions() // get available session times between breaks (available time)
-    console.log('CHECK',sessionsBetweenBreaks) 
 
     const remainingTimeInMinutes = getRemainingTime() // determine the remaining time 
     let startTime = 0 // Initialize a start time.
@@ -34,11 +32,9 @@ const addBreakIfAvailable = (breakName) => { // Add break if there is available 
         for (i=0; i < breakOrder.length+1; i++){ // repeat for the number of breaks
             let availableTime = new Date(sessionsBetweenBreaks[i][1]) - new Date(sessionsBetweenBreaks[i][0]) // available time in between one break time to another. 
             let availableTimeInMinutes = availableTime/(1000*60) // convert from ms to minutes. 
-            console.log('availableTimeInMinutes', availableTimeInMinutes)
             if (availableTimeInMinutes >= 10) { // add break only if there is more than 10 mins of available time.
                 startTime=new Date(sessionsBetweenBreaks[i][0])         // Set to beginning of break.
                 endTime = new Date(startTime.getTime() + 1 * 60 * 1000) // Set 1 min more than start time. 
-                console.log('startTime', startTime, 'endTime', endTime) 
                 fixedSessions[breakName] = [startTime, endTime]    // add [current time, time 10min after current] to set the break session in the beginning.
             }
         }
@@ -48,8 +44,6 @@ const addBreakIfAvailable = (breakName) => { // Add break if there is available 
         endTime = new Date(startTime.getTime() + 1*60*1000) // set end time to 1 min more than start time. 
         fixedSessions[breakName] = [startTime, endTime]    // add [current time, time 10min after current] to set the break session in the beginning.
     }
-    console.log('startTime', startTime, 'endTime', endTime)
-    console.log('new fixed sessions',  fixedSessions)
     console.log('-================================================================================================================================================================================================')
 }
 

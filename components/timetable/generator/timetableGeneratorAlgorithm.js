@@ -19,18 +19,14 @@ const subsetSum = (selectedTasks, startAndEndTime) => { //
     endTime = new Date(startAndEndTime[1]).getTime();
     availableTimeInMilliseconds = endTime - startTime;
     const availableHours = (availableTimeInMilliseconds/(1000*60*60)).toFixed(2); // convert milliseconds to hours. to 2 d.p.
-    console.log('startTime2', startTime, 'endTime', endTime, 'availableHours', availableHours) 
     const target = Math.round(availableHours*100); // e.g.if available time = 6.5h, target = 650. This is so we can iterate over an integer value as float values don't allow iteration with for loops. Thus, also round to integer after calculation.  
-
     // Create array of booleans to find closest sum to target.  
     let dp = Array(target + 1); // dp (dynamic programming) = array
-    console.log('passed 1')
     for (let i = 0; i< dp.length; i++) { // fill with false values (for number of target + 1). 
         dp[i] = [false];
     }
     dp[0][0] = true;
 
-    console.log('passed 2')
     // Subset Sum Algorithm
     for (let num=0; num < selectedTasks.length; num++) { // iterate for length of selectedTasks
 
@@ -57,7 +53,6 @@ const subsetSum = (selectedTasks, startAndEndTime) => { //
 
         }
     }
-    console.log('passed 3')
 
     // Find the closest sum
     let closest_sum = 0
@@ -67,7 +62,6 @@ const subsetSum = (selectedTasks, startAndEndTime) => { //
             break;
         }
     }
-    console.log('passed this shit')
     return dp[closest_sum].slice(1) // extract the array starting from index 1 to the end. 
 }
 
@@ -124,7 +118,6 @@ export const getSessions = () => { // get (available) session times apart from b
 
 
 const insertSessions = (timetable, breakSession, usedTasks) => {
-    console.log('used tasks', usedTasks)
     timetable = timetable.concat(usedTasks) // combine 
     if (breakSession !== undefined) {
         timetable.push([breakSession, fixedSessions[breakSession]])
@@ -141,9 +134,7 @@ const eliminateTasks = (selectedTasks, usedTasks) => {
 }
 
 export const GenerateTimetable = (taskItems, timetable) => {
-    console.log('fixedSessions', fixedSessions)
     const [sessionsBetweenBreaks, breakOrder] = getSessions()
-    console.log('sessionsBetweenBreaks', sessionsBetweenBreaks)
     // Generating Timetable
     selectedTasks = makeSelectedTasksArr(taskItems)
     for (i = 0; i < sessionsBetweenBreaks.length; i++) {

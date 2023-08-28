@@ -21,6 +21,8 @@
     "react-native-a11y-slider": "^1.2.0",
     "react-native-calendars": "^1.1300.0",
     "react-native-chart-kit": "^6.12.0",
+    "react-native-countdown-circle-timer": "^3.2.1",
+    "react-native-numpad": "^0.3.0",
     "react-native-svg": "^13.10.0"
   },
   "devDependencies": {
