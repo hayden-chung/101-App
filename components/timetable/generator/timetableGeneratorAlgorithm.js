@@ -12,7 +12,7 @@ const makeSelectedTasksArr = (taskItems) => { // create a list of tasks that are
     return selectedTasks
 }
 
-const subsetSum = (selectedTasks, startAndEndTime) => { // 
+const subsetSum = (tasksToPutInTimetable, startAndEndTime) => { // 
 
     // Find available time --> Find target.
     startTime = new Date(startAndEndTime[0]).getTime();
@@ -20,6 +20,7 @@ const subsetSum = (selectedTasks, startAndEndTime) => { //
     availableTimeInMilliseconds = endTime - startTime;
     const availableHours = (availableTimeInMilliseconds/(1000*60*60)).toFixed(2); // convert milliseconds to hours. to 2 d.p.
     const target = Math.round(availableHours*100); // e.g.if available time = 6.5h, target = 650. This is so we can iterate over an integer value as float values don't allow iteration with for loops. Thus, also round to integer after calculation.  
+    console.log('availableHours', availableHours)
     // Create array of booleans to find closest sum to target.  
     let dp = Array(target + 1); // dp (dynamic programming) = array
     for (let i = 0; i< dp.length; i++) { // fill with false values (for number of target + 1). 
@@ -28,25 +29,28 @@ const subsetSum = (selectedTasks, startAndEndTime) => { //
     dp[0][0] = true;
 
     // Subset Sum Algorithm
-    for (let num=0; num < selectedTasks.length; num++) { // iterate for length of selectedTasks
+    for (let num=0; num < tasksToPutInTimetable.length; num++) { // iterate for length of selectedTasks
 
-        for (let i = target; i >= selectedTasks[num][3]; i--) { // 
+        capacityOfCurrentTask = tasksToPutInTimetable[num][3]
+
+        for (let i = target; i >= capacityOfCurrentTask; i--) { // repeat for amount of available time (e.g. idx 3 of ["Test task", false, true, 100])
             dp[i][0] = dp[i][0] // If dp[i][0] is true, set to true. dp[i][0] is so that on the next outer for loop with the next num, the true values won't be re-set to false. 
             
-            if (dp[i-selectedTasks[num][3]][0]) { // # if dp[i-selectedTasks[num][3]][0] is True, set to True.
+            if (dp[i-capacityOfCurrentTask][0]) { // # if current pos - amount of available time of task = true, (dp[i-selectedTasks[num][3]][0] is True), set to True.
                 
-                dp[i][0] = dp[i-selectedTasks[num][3]][0] // set dp[i][0] to true
+                dp[i][0] = dp[i-capacityOfCurrentTask][0] // set dp[i][0] to true
 
-                // to prevent overlaps 
+                // to prevent more tasks being added than the target value. 
                 sumOfTasks = 0
                 lengthOfTasks = dp[i].slice(1).length
-                for (let j = 0; j < lengthOfTasks; j++) {
+                for (let j = 0; j < lengthOfTasks; j++) { // add up the value of all  tasks currently added in that index 
                     sumOfTasks = sumOfTasks + dp[i][j+1][3]
                 }
-                
-                if (sumOfTasks !== target){
-                    dp[i].push(...dp[i-selectedTasks[num][3]].slice(1)); // add tasks required to make sum of i-selectedTasks[num][3]
-                    dp[i].push(selectedTasks[num]) // add task required to make sum of i.
+
+            
+                if ((sumOfTasks + capacityOfCurrentTask) <= target){ // if sum of all tasks + new task is equal or less than target. 
+                    dp[i].push(...dp[i-capacityOfCurrentTask].slice(1)); // add tasks required to make sum of i-selectedTasks[num][3]
+                    dp[i].push(tasksToPutInTimetable[num]) // add task required to make sum of i.
                 }
 
             }
@@ -62,7 +66,8 @@ const subsetSum = (selectedTasks, startAndEndTime) => { //
             break;
         }
     }
-    return dp[closest_sum].slice(1) // extract the array starting from index 1 to the end. 
+    console.log(dp)
+    return dp[closest_sum].slice(1) // extract the array starting from index 1 to the end. (e.g. [true, ["Task 1", true, true, 300], ["Task 2", false, true, 200]] --> ["Task 1", true, true, 300], ["Task 2", false, true, 200])
 }
 
 export const getSessions = () => { // get (available) session times apart from break times. 
@@ -73,7 +78,7 @@ export const getSessions = () => { // get (available) session times apart from b
     timetableStart = fixedSessionsCopy['start-finish'][0]
     timetableEnd = fixedSessionsCopy['start-finish'][1]
 
-    if (breaks.length !== 0) { // Create a list of breaks in order. un only if breaks exist 
+    if (breaks.length !== 0) { // Create a list of breaks in order from earliest to latest. run only if breaks exist 
         // Find earliest break start
         let earliestNextBreakStart = breaks[0] // 
         for (i = 0; i < breaks.length; i++) {
@@ -120,27 +125,30 @@ export const getSessions = () => { // get (available) session times apart from b
 const insertSessions = (timetable, breakSession, usedTasks) => {
     timetable = timetable.concat(usedTasks) // combine 
     if (breakSession !== undefined) {
-        timetable.push([breakSession, fixedSessions[breakSession]])
+        timetable.push([breakSession, fixedSessions[breakSession]]) // add break session after the used tasks
     }
+    console.log('timetable', timetable)
     return timetable
 }
 
-const eliminateTasks = (selectedTasks, usedTasks) => {
+const eliminateTasks = (tasksToPutInTimetable, usedTasks) => { // Eliminate task that was included in timetable already. 
     let removeTasks = [...usedTasks]
     for (idx = 0; idx < removeTasks.length; idx++) {
-        selectedTasks = selectedTasks.filter(task => task !== removeTasks[idx])
+        tasksToPutInTimetable = tasksToPutInTimetable.filter(task => task !== removeTasks[idx])
     }
-    return selectedTasks
+    console.log('tasksToPutInTimetable', tasksToPutInTimetable)
+    return tasksToPutInTimetable
 }
 
 export const GenerateTimetable = (taskItems, timetable) => {
     const [sessionsBetweenBreaks, breakOrder] = getSessions()
     // Generating Timetable
-    selectedTasks = makeSelectedTasksArr(taskItems)
+    tasksToPutInTimetable = makeSelectedTasksArr(taskItems)
     for (i = 0; i < sessionsBetweenBreaks.length; i++) {
-        let usedTasks = subsetSum(selectedTasks, sessionsBetweenBreaks[i])
-        timetable = insertSessions(timetable, breakOrder[i], usedTasks)
-        selectedTasks = eliminateTasks(selectedTasks, usedTasks)
+        let usedTasks = subsetSum(tasksToPutInTimetable, sessionsBetweenBreaks[i]) // used tasks in available times (excluding breaks)
+        timetable = insertSessions(timetable, breakOrder[i], usedTasks)            // 
+        tasksToPutInTimetable = eliminateTasks(tasksToPutInTimetable, usedTasks)   // remaining tasks to put in available times. 
     }
+    console.log('-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------')
     return timetable 
 }
