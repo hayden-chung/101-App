@@ -37,7 +37,7 @@ const Timer = () => {
     return `${hours}:${minutes}:${seconds}`
   }
 
-  const handleInputChange = (num, unit) => { // 
+  const handleInputChange = (num, unit) => { // When text box (sec, min, hr) changes. 
     
     const isIntergerNumbers = (value) => {
         intValue = parseInt(value, 10)
@@ -156,38 +156,38 @@ const Timer = () => {
 };
 
 const styles = StyleSheet.create({
-    container:{
+    container:{ // main container. consists of all timer components. 
         flex: 1, 
         justifyContent: 'center', 
         alignItems: 'center',
     },
-    countdownTimer: {
+    countdownTimer: { // timer container (timer, start, pause)
         justifyContent: 'center',
         alignItems: 'center',
         position: 'relative',
         backgroundColor: 'yellow'
     },
-    setTimeContainer: {
+    setTimeConztainer: { // conatiner for 'start' and 'pause' button. 
         flexDirection: 'row',
         alignItems:'center',
         position: 'absolute',
         backgroundColor: '#90EE90',
     },
-    startOrPauseButton: {
+    startOrPauseButton: { // Pause/Start button. 
         justifyContent: 'center',
         alignItems: 'center',
         width: 90, 
         height: 40, 
         backgroundColor: '#90EE90',
     },
-    resetButton: {
+    resetButton: { // Reset button
         justifyContent: 'center',
         alignItems: 'center',
         width: 90, 
         height: 40, 
         backgroundColor: '#ff4747',
     },
-    textInput: {
+    textInput: { // Style text input boxes. 
         fontWeight: '600',
     }
 })

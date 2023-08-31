@@ -28,29 +28,34 @@ export const QuoteModal = (props) => {
         if (update) {                               // if udpate is true, add the quote to the list.
             if (props.isQuoteModalVisible[1]) {     // if isQuoteModalVisible[1] is true --> edit quote.
                 props.quoteList[quoteIndex] = quote // edit (update) exisitng string value (quote).
-            } else {                                            // if isQuoteModalVisible[1] is false --> add new quote to list.
-                props.setQuoteList([...props.quoteList, quote]) // add quote
+            } else {    // if isQuoteModalVisible[1] is false --> add new quote to list.
+                props.setQuoteList([...props.quoteList, quote]) 
             }
         }
         props.quoteModalVisible([false, false]); // set [0] to false as modal should not be visible now.
     }
     
     return ( 
-        <TouchableOpacity
-            disabled={true}
-            style={styles.container}
-        >
+        <TouchableOpacity disabled={true} style={styles.container}>
 
             {/* Popup Modal Screen */}
             <View style={styles.modal}> 
+
+                {/* Quote text input */}
                 <View style={styles.modalTextContainer}>
 
                     {/* If Editing mode --> display 'Edit Quote', else --> 'Add Quote' */}
                     <Text style={[styles.modalTitle, {fontSize: 20}]}>{props.isQuoteModalVisible[1] ? 'Edit Quote': 'Add Quote'}</Text>
                     <Text style={styles.textInputHeaderQuote}>Quote:</Text>
-                    <TextInput style={styles.textInput} placeholder={'Enter your quote:'} value={quote[0]} onChangeText={quoteText => setQuote([quoteText, quote[1], false])} />  
+                    <TextInput 
+                        style={styles.textInput} 
+                        placeholder={'Enter your quote:'} 
+                        value={quote[0]} 
+                        onChangeText={quoteText => setQuote([quoteText, quote[1], false])} 
+                    />  
                 </View>
 
+                {/* Author text input */}
                 <View style={styles.modalTextContainer}>
                     <Text style={styles.textInputHeaderAuthor}>Author:</Text>
                     <TextInput 
@@ -64,22 +69,19 @@ export const QuoteModal = (props) => {
                     />  
                 </View>
 
-                <View style={styles.buttonsView}>
-                    <TouchableOpacity 
-                        style={styles.touchableOpacity}
-                        onPress={() => closeModal(false)}
-                    >
+                <View style={styles.buttonsContainer}>
+
+                    {/* Cancel Button */}
+                    <TouchableOpacity style={styles.buttonsStyling} onPress={() => closeModal(false)}>
                         <Text style={[styles.modalButtonText, {color: 'blue'}]}>
                             Cancel
                         </Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity 
-                        style={styles.touchableOpacity}
-                        onPress={() => closeModal(true)}
-                    >
+                    {/* Ok/Add Button */}
+                    <TouchableOpacity style={styles.touchableOpacity} onPress={() => closeModal(true)}>
                         <Text style={[styles.modalButtonText, {color: 'blue',}]}>
-                            {/* if editing mode, display 'Ok', else, display 'Add' for button */}
+                            {/* if editing mode, display 'Ok', 'Add' for button */}
                             {props.isQuoteModalVisible[1] ? 'Ok': 'Add'} 
                         </Text>
                     </TouchableOpacity>
@@ -94,12 +96,12 @@ export const QuoteModal = (props) => {
 }
 
 const styles= StyleSheet.create({
-    container: { // modal container
+    container: { // Main Container
         flex: 1, 
         alignItems: 'center', 
         justifyContent: 'center',
     }, 
-    modal: { // 
+    modal: { // Modal Container
         height: HEIGHT_MODAL, 
         width: WIDTH -80, 
         paddingTop: 10, 
@@ -108,50 +110,46 @@ const styles= StyleSheet.create({
         borderWidth: 3,
         borderRadius: 10,
     },
-    textInput: {
-        width: '80%',
-        // backgroundColor: 'red',
-        borderWidth: 2,
-        borderRadius: 10,
-        padding: 10,
-    },
-    modalTextContainer: {
+    modalTextContainer: { // Consists of text input title & text input box 
         flex: 1, 
         alignItems: 'center',
         // backgroundColor: 'yellow',
     }, 
-    modalTitle: {
+    textInput: { // Text Input Container
+        width: '80%',
+        borderWidth: 2,
+        borderRadius: 10,
+        padding: 10,
+    },
+    modalTitle: { // Title of modal (e.g. Add Quote, Edit Quote)
         margin: 5, 
         fontSize: 16, 
         fontWeight: 'bold',
-        // backgroundColor: 'magenta',
     },
-    textInputHeaderQuote: {
+    buttonsContainer: { // Button Container
+        width: '100%', 
+        flexDirection: 'row',
+    }, 
+    textInputHeaderQuote: { // Title of quote input.
         width: '80%',
         alignItems: 'center',
         margin: 5, 
         fontSize: 16, 
         fontWeight: 'bold',
-        // backgroundColor: 'green',
     },
-    textInputHeaderAuthor: {
+    textInputHeaderAuthor: { // Title of author input.
         width: '80%',
         alignItems: 'center',
         margin: 5, 
         fontSize: 16, 
         fontWeight: '400',
-        // backgroundColor: 'green',
     },
-    modalButtonText: {
+    modalButtonText: { // text styling for buttons: Cancel, Ok/Add
         margin: 5, 
         fontSize: 16, 
         fontWeight: 'bold',
     }, 
-    buttonsView: {
-        width: '100%', 
-        flexDirection: 'row',
-    }, 
-    touchableOpacity: {
+    buttonsStyling: { // buttons styling for buttons: Cancel, Ok/Add
         flex: 1, 
         paddingVertical: 10, 
         alignItems: 'center',
