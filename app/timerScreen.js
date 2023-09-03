@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import { KeyboardAvoidingView, StyleSheet, Text, View, TextInput, TouchableOpacity, Keyboard, Dimensions} from 'react-native';
 import Timer from '../components/timer/timer'
 import Stopwatch from '../components/timer/stopwatch';
+import PomodoroTimer from '../components/timer/pomodoro';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = Dimensions.get('window').height;
@@ -10,7 +11,7 @@ const TimerScreen = ({navigation}) => {
     return(
         <View style={styles.container}>
             <View style={styles.timerComponentContainer}>
-                <Stopwatch />
+                <PomodoroTimer />
             </View>
         </View>
     )
