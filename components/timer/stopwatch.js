@@ -4,12 +4,12 @@ import { View, Text, Button, StyleSheet, TouchableOpacity, Dimensions, TextInput
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 
-const Stopwatch = () => {
+const Stopwatch = () => { // Stopwatch function
     const [currenTimeInMilliseconds, setCurrentTimeInMilliseconds] = useState(0);
     const [isRunning, setIsRunning] = useState(false); // Is stopwatch running?
     const lastUpdate = useRef(0);
 
-    useEffect(() => {
+    useEffect(() => { // 
         let interval = null;
 
         if (isRunning) { // if isRunning is true:
@@ -23,7 +23,6 @@ const Stopwatch = () => {
             clearInterval(interval);
         }
 
-        console.log('prevMilliseconds', currenTimeInMilliseconds)
         return () => {
             clearInterval(interval);
         };

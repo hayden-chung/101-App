@@ -5,7 +5,7 @@ import { CountdownCircleTimer } from 'react-native-countdown-circle-timer';
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 
-const PomodoroTimer = () => {
+const PomodoroTimer = () => { // Pomodoro timer function. 
   const [workMinutes, setWorkMinutes] = useState(null); // Initial time in minutes
   const [breakMinutes, setBreakMinutes] = useState(null);
   const [timerDuration, setTimerDuration] = useState(0); // Initial time in seconds
@@ -15,32 +15,38 @@ const PomodoroTimer = () => {
   const [isReset, setIsReset] = useState(true); // indicate when time setter can appear or not. false = timer is runnning
   const [key, setKey] = useState(0);
   
-  const toggleTimer = () => { // 
-    setIsActive(!isActive);
-    setIsReset(false) // Indicate that timer is running now. 
+  const toggleTimer = () => { // If start button pressed, change to pause. Vice versa
+    setIsActive(!isActive); // inverse boolean state. 
+    setIsReset(false) // Indicate that timer is running now and not reset. 
   };
 
-  const resetTimer = () => { // 
+  const resetTimer = () => { // set reset to true to indicate timer is reset. 
     setIsReset(true)
     setKey(prevKey => prevKey + 1) // To reset countdown timer back to its intial time value. 
     setIsActive(false); // Timer is not active (running) anymore
   };
 
   const formatTime = ({ remainingTime }) => { // Format the countdown timer into 'hour:min:seconds' time. 
-    const minutes = Math.floor(remainingTime / 60)
+    
+    if (workOrBreak === 'work') {
+        remainingTime 
+    }
+    const hours = Math.floor(remainingTime / 3600)
+    const minutes = Math.floor((remainingTime % 3600) / 60)
     const seconds = remainingTime % 60
     // e.g. if seconds = 2, display 02 instead of 2. 
+    const formattedHours = String(hours).padStart(2, '0');
     const formattedMinutes = String(minutes).padStart(2, '0');
     const formattedSeconds = String(seconds).padStart(2, '0');
-  
-    return `${formattedMinutes}:${formattedSeconds}`
+
+    return `${formattedHours}:${formattedMinutes}:${formattedSeconds}` // format: hr:min:sec
   }
 
   const handleInputChange = (num, workOrBreak) => { // When text box (sec, min, hr) changes. 
     
     let timeValue = num.replace(/[^0-9]/g, '').slice(0, 3); // Filter out non-numeric characters. Maximum of 2 numeric characters. 
     
-    if (workOrBreak === 'work') {
+    if (workOrBreak === 'work') { 
         setWorkMinutes(timeValue);
     }
     else if (workOrBreak === 'break') {
