@@ -46,6 +46,7 @@ const PomodoroTimer = () => { // Pomodoro timer function.
         remainingTimeForThisSession = remainingTime;
     }
 
+    // Find hours, minutes and seconds
     const hours = Math.floor(remainingTimeForThisSession / 3600)
     const minutes = Math.floor((remainingTimeForThisSession % 3600) / 60)
     const seconds = remainingTimeForThisSession % 60
@@ -55,13 +56,14 @@ const PomodoroTimer = () => { // Pomodoro timer function.
     const formattedMinutes = String(minutes).padStart(2, '0');
     const formattedSeconds = String(seconds).padStart(2, '0');
 
-    return `${formattedHours}:${formattedMinutes}:${formattedSeconds}` // format: hr:min:sec
+    return `${formattedHours}:${formattedMinutes}:${formattedSeconds}` // return: hr:min:sec
   }
 
   const handleInputChange = (num, workOrBreak) => { // When text box (sec, min, hr) changes. 
     
     let timeValue = num.replace(/[^0-9]/g, '').slice(0, 3); // Filter out non-numeric characters. Maximum of 2 numeric characters. 
     
+    // Update work or break time. 
     if (workOrBreak === 'work') { 
         setWorkMinutes(timeValue);
     }
@@ -71,7 +73,7 @@ const PomodoroTimer = () => { // Pomodoro timer function.
 
   };
 
-  useEffect(() => { // when minutes is changed, update timer duration. 
+  useEffect(() => { // when minutes is changed, update timer duration.
     updateTimerDuration()
     console.log('changed')
   }, [workMinutes, breakMinutes])
@@ -82,14 +84,13 @@ const PomodoroTimer = () => { // Pomodoro timer function.
     const isIntergerNumbers = (value) => { // Function to check if value = integer
         let intValue = parseInt(value, 10) // parseInt = convert to integer
 
-        if (!isNaN(intValue)) {
+        if (!isNaN(intValue)) { // if not a 'none' type:
             return true
         } else {
             return false
         }
     }
 
-    console.log('work minutes', workMinutes, 'break minutes', breakMinutes)
     if (isIntergerNumbers(workMinutes) && isIntergerNumbers(breakMinutes)) { // if both workMinutes and breakMinutes are valid
         setTimerDuration(parseInt(workMinutes*60) + parseInt(breakMinutes*60))
     } 
@@ -140,14 +141,15 @@ const PomodoroTimer = () => { // Pomodoro timer function.
                     {({ remainingTime }) => <Text style={styles.timerTimeText}>{formatTime({remainingTime})}</Text>} 
                 </CountdownCircleTimer>
                 
+                {/* Has timer reset? */}
                 {isReset ? (
                 <View style={styles.containerInsideTimer}>
-                    <View style={styles.setTimeContainer}>
 
+                    {/*  */}
+                    <View style={styles.setTimeContainer}>
                         <View style={styles.setWorkTime}>
 
                             <View style={styles.textInputRow}>
-
                                 {/* Work (minutes) */}
                                 <TextInput 
                                     style={styles.textInput} 
@@ -161,11 +163,9 @@ const PomodoroTimer = () => { // Pomodoro timer function.
                             </View>
 
                             <Text style={styles.timeInputLabel}>WORK</Text>
-
                         </View>
 
                         <View style={styles.setBreakTime}>
-
                             <View style={styles.textInputRow}>
                                 {/* Work (minutes) */}
                                 <TextInput 
@@ -180,7 +180,6 @@ const PomodoroTimer = () => { // Pomodoro timer function.
                             </View>
 
                             <Text style={styles.timeInputLabel}>BREAK</Text>
-
                         </View>
 
                     </View>
@@ -195,7 +194,8 @@ const PomodoroTimer = () => { // Pomodoro timer function.
                 ): null}
 
             </View>
-            {isReset === false ? (
+
+            {isReset === false ? ( // If reset is not true
                 <View style={styles.workOrBreakLabelContainer}>
                     <Text style={styles.workOrBreakLabel}> {workOrBreak === 'work' ? ( 'FOCUS MODE' ) : 'REST'} </Text>
                     <Text style={styles.remainingTimeText}> Pomodoro # : {sessionsCount} </Text>

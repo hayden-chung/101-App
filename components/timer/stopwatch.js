@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { View, Text, Button, StyleSheet, TouchableOpacity, Dimensions, TextInput} from 'react-native';
-import { useFonts } from 'expo-font';
-import * as SplashScreen from 'expo-splash-screen';
+import { View, Text, Button, StyleSheet, TouchableOpacity, Dimensions, FlatList} from 'react-native';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = Dimensions.get('window').height;
@@ -9,9 +7,12 @@ const SCREEN_HEIGHT = Dimensions.get('window').height;
 const Stopwatch = () => { // Stopwatch function
     const [currentTimeInMilliseconds, setCurrentTimeInMilliseconds] = useState(0);
     const [isRunning, setIsRunning] = useState(false); // Is stopwatch running?
+    const [laps, setLaps] = useState([]); // [lap time, total time]
+    const [latestLapTimeInMilliseconds, setLatestLapTimeInMilliseconds] = useState(0);
     const lastUpdate = useRef(0);
+    const flatlistRef = useRef();
 
-    useEffect(() => { // 
+    useEffect(() => { // every time timer time changes. 
         let interval = null;
 
         if (isRunning) { // if isRunning is true:
@@ -39,34 +40,75 @@ const Stopwatch = () => { // Stopwatch function
         } 
     }, [isRunning])
 
-    const formatTime = () => {
-        const hours = Math.floor(currentTimeInMilliseconds/(1000*60*60)) // Math.floor() = round down to nearest integer.
-        const minutes = Math.floor((currentTimeInMilliseconds%(1000*60*60))/(1000*60))
-        const seconds =Math.floor((currentTimeInMilliseconds%(1000*60))/1000)
-        const milliseconds = (Math.floor(currentTimeInMilliseconds%1000/10))
+    const formatTime = (timeinMilliseconds) => {
+        const hours = Math.floor(timeinMilliseconds/(1000*60*60)) // Math.floor() = round down to nearest integer.
+        const minutes = Math.floor((timeinMilliseconds%(1000*60*60))/(1000*60))
+        const seconds =Math.floor((timeinMilliseconds%(1000*60))/1000)
+        const milliseconds = (Math.floor(timeinMilliseconds%1000/10))
 
         const formattedHours = String(hours).padStart(2, '0');
         const formattedMinutes = String(minutes).padStart(2, '0');
         const formattedSeconds = String(seconds).padStart(2, '0');
         const formattedMilliseconds = String(milliseconds).padStart(2, '0')
 
-        console.log('milliseconds', milliseconds, 'formatted:', formattedMilliseconds)
         return `${formattedHours}:${formattedMinutes}:${formattedSeconds}.${formattedMilliseconds}`
     }
+
+    const lapOrResetPressed = () => {
+        if (isRunning) { // lap pressed
+            setLaps(prevLaps => [...prevLaps, [formatTime(currentTimeInMilliseconds-latestLapTimeInMilliseconds) ,formatTime(currentTimeInMilliseconds)]])
+            setLatestLapTimeInMilliseconds(currentTimeInMilliseconds)
+        } else if (!isRunning) { // reset pressed
+            setCurrentTimeInMilliseconds(0)
+            setIsRunning(false)
+            setLaps([])
+            setLatestLapTimeInMilliseconds(0)
+            console.log('reset')
+        }
+        console.log('after', laps)
+    }
+
+    const onPressFunction = () => {
+        flatlistRef.current.scrollToEnd();
+    };
 
     return (
         <View style={styles.container}>
             <View style={styles.timeDisplayContainer}>
-                <Text style={styles.timeText}>{formatTime()}</Text>
+                <Text style={styles.timeText}>{formatTime(currentTimeInMilliseconds)}</Text>
             </View>
             
+            <View style={styles.lapsWrapper}>
+            <View style={styles.lapSubheader}>
+                <Text style={styles.lapSubheaderText}>Laps</Text>
+                <Text style={styles.lapSubheaderText}>Lap Time</Text>
+                <Text style={styles.lapSubheaderText}>Total Time</Text>
+            </View>
+            <View style={styles.lineBetweenSubheaderAndLaps}></View>
+
+            <FlatList   // FlatList to render lists.
+                    ref = {flatlistRef}
+                    data={laps}                   
+                    showsVerticalScrollIndicator={false} // hide scroll bar.
+                    renderItem={({item, index}) =>       // quote item in the list array & index. 
+                    <View style={styles.lapItem}>
+                        {/* Lap # */}
+                        <Text styles={styles.lapItemText}>{index}</Text>
+                        {/* Lap time */}
+                        <Text styles={styles.lapItemText}>{item[0]}</Text> 
+                        {/* Total time */}
+                        <Text styles={styles.lapItemText}>{item[1]}</Text>
+                    </View>
+                }/>
+            </View>
+
 
             {/* Start/Pause Button */}
             <View style={styles.controlButtons}>
 
                 {/* Reset Button */}
-                <TouchableOpacity style={styles.resetButton} onPress={() => {setCurrentTimeInMilliseconds(0); setIsRunning(false)}}>
-                    <Text>Reset</Text>
+                <TouchableOpacity style={styles.resetButton} onPress={() => lapOrResetPressed()}>
+                    <Text>{isRunning ? 'Lap' : 'Reset'} </Text>
                 </TouchableOpacity >
 
                 <TouchableOpacity style={styles.startOrPauseButton} onPress={() => setIsRunning(!isRunning)}>
@@ -93,6 +135,34 @@ const styles = StyleSheet.create({
     },
     timeText: {
         fontSize: SCREEN_HEIGHT/20,
+    },
+    lapsWrapper: {
+        height: SCREEN_HEIGHT/4,
+        paddingVertical: SCREEN_HEIGHT/60,
+        backgroundColor: 'magenta',
+    },
+    lapSubheader: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingHorizontal: SCREEN_WIDTH/25,
+        paddingBottom: SCREEN_HEIGHT/100,
+    },
+    lapSubheaderText: {
+
+    },
+    lineBetweenSubheaderAndLaps: {
+        height: SCREEN_HEIGHT/800,
+        backgroundColor: 'black',
+    },
+    lapItem: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingHorizontal: SCREEN_WIDTH/25,
+        paddingLeft: SCREEN_WIDTH/15,
+        paddingBottom: SCREEN_HEIGHT/100,
+    },
+    lapItemText: {
+
     },
     controlButtons: {
         flexDirection: 'row',
