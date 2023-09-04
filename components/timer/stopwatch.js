@@ -1,11 +1,13 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { View, Text, Button, StyleSheet, TouchableOpacity, Dimensions, TextInput} from 'react-native';
+import { useFonts } from 'expo-font';
+import * as SplashScreen from 'expo-splash-screen';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 
 const Stopwatch = () => { // Stopwatch function
-    const [currenTimeInMilliseconds, setCurrentTimeInMilliseconds] = useState(0);
+    const [currentTimeInMilliseconds, setCurrentTimeInMilliseconds] = useState(0);
     const [isRunning, setIsRunning] = useState(false); // Is stopwatch running?
     const lastUpdate = useRef(0);
 
@@ -29,7 +31,7 @@ const Stopwatch = () => { // Stopwatch function
 
         
 
-    }, [isRunning, currenTimeInMilliseconds]);
+    }, [isRunning, currentTimeInMilliseconds]);
 
     useEffect(() => {
         if (isRunning){
@@ -38,17 +40,17 @@ const Stopwatch = () => { // Stopwatch function
     }, [isRunning])
 
     const formatTime = () => {
-        const hours = Math.floor(currenTimeInMilliseconds/(1000*60*60)) // Math.floor() = round down to nearest integer.
-        const minutes = Math.floor((currenTimeInMilliseconds%(1000*60*60))/(1000*60))
-        const seconds =Math.floor((currenTimeInMilliseconds%(1000*60))/1000)
-        const milliseconds = Math.floor(currenTimeInMilliseconds%(100))
+        const hours = Math.floor(currentTimeInMilliseconds/(1000*60*60)) // Math.floor() = round down to nearest integer.
+        const minutes = Math.floor((currentTimeInMilliseconds%(1000*60*60))/(1000*60))
+        const seconds =Math.floor((currentTimeInMilliseconds%(1000*60))/1000)
+        const milliseconds = (Math.floor(currentTimeInMilliseconds%1000/10))
 
         const formattedHours = String(hours).padStart(2, '0');
         const formattedMinutes = String(minutes).padStart(2, '0');
         const formattedSeconds = String(seconds).padStart(2, '0');
-        const formattedMilliseconds = String(milliseconds).padStart(2, '0');
+        const formattedMilliseconds = String(milliseconds).padStart(2, '0')
 
-        console.log('hours', hours, 'minutes', minutes, 'seconds', seconds, 'milliseconds', milliseconds)
+        console.log('milliseconds', milliseconds, 'formatted:', formattedMilliseconds)
         return `${formattedHours}:${formattedMinutes}:${formattedSeconds}.${formattedMilliseconds}`
     }
 
@@ -61,20 +63,22 @@ const Stopwatch = () => { // Stopwatch function
 
             {/* Start/Pause Button */}
             <View style={styles.controlButtons}>
-                <TouchableOpacity style={styles.startOrPauseButton} onPress={() => setIsRunning(!isRunning)}>
-                <Text>{isRunning ? 'Pause' : 'Start'} </Text>
-                </TouchableOpacity>
 
                 {/* Reset Button */}
                 <TouchableOpacity style={styles.resetButton} onPress={() => {setCurrentTimeInMilliseconds(0); setIsRunning(false)}}>
                     <Text>Reset</Text>
                 </TouchableOpacity >
+
+                <TouchableOpacity style={styles.startOrPauseButton} onPress={() => setIsRunning(!isRunning)}>
+                <Text>{isRunning ? 'Pause' : 'Start'} </Text>
+                </TouchableOpacity>
+
             </View>
         </View>
     );
 };
 
-const buttonHeight = SCREEN_HEIGHT/20
+const buttonHeight = SCREEN_HEIGHT/16
 const buttonWidth = SCREEN_WIDTH/4
 
 const styles = StyleSheet.create({
@@ -91,25 +95,28 @@ const styles = StyleSheet.create({
         fontSize: SCREEN_HEIGHT/20,
     },
     controlButtons: {
-        justifyContent: 'center',
+        flexDirection: 'row',
+        justifyContent: 'space-evenly',
         alignItems: 'center',
-        backgroundColor: 'red',
+        backgroundColor: 'yellow',
+        paddingVertical: SCREEN_HEIGHT/100,
     },
     startOrPauseButton: {
         justifyContent: 'center',
         alignItems: 'center',
         width: buttonWidth,
         height: buttonHeight,
-        borderRadius: SCREEN_HEIGHT/60,
-        backgroundColor: '#ADD8E6',
-        margin: 20,
+        borderRadius: 1000,
+        fontFamily: 'OpenSans-Regular',
+        backgroundColor: 'red', 
     },
     resetButton: {
         justifyContent: 'center',
         alignItems: 'center',
         width: buttonWidth,
         height: buttonHeight,
-        borderRadius: SCREEN_HEIGHT/60,
+        borderRadius: 1000,
+        fontFamily: 'OpenSans-Regular',
         backgroundColor: '#ADD8E6',
     },
 })

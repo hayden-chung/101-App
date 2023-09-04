@@ -87,7 +87,6 @@ const Timer = () => {
     }
     if (isIntergerNumbers(seconds)) {
         setTimerDuration(preivous => preivous + parseInt(seconds));
-        console.log('true', intValue)
     }
 
     console.log('hours:', hours, 'minutes:', minutes, 'seconds:', seconds, 'duration:', timerDuration)
@@ -101,11 +100,11 @@ const Timer = () => {
                 key={key}
                 isPlaying={isActive}
                 duration={timerDuration} // initial time 
-                colors={['red', 'green', 'green']}
-                colorsTime={[5, 2, 0]}
+                colors={['#FA220C', '#00FF1C']}
+                colorsTime={[timerDuration, 0]}
                 strokeWidth={12}
                 trailStrokeWidth={12}
-                isSmoothColorTransition={false} // smooth color transition
+                isSmoothColorTransition={true} // smooth color transition
                 size={SCREEN_WIDTH/1.3} // circumference (width/height) of circle timer. 
 
                 onComplete={() => { // When Timer is Over
@@ -161,7 +160,7 @@ const Timer = () => {
         
         
         {/* Start/Pause Button */}
-        <TouchableOpacity style={styles.startOrPauseButton} onPress={toggleTimer}>
+        <TouchableOpacity style={timerDuration === 0 ? styles.startNotReady : styles.startOrPauseButton} disabled={timerDuration===0} onPress={toggleTimer}>
         <Text>{isActive ? 'Pause' : 'Start'} </Text>
         </TouchableOpacity>
 
@@ -193,6 +192,13 @@ const styles = StyleSheet.create({
         alignItems:'center',
         position: 'absolute',
         backgroundColor: '#90EE90',
+    },
+    startNotReady: { // Pause/Start button. 
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: 90, 
+        height: 40, 
+        backgroundColor: '#BEE6BE',
     },
     startOrPauseButton: { // Pause/Start button. 
         justifyContent: 'center',

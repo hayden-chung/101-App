@@ -9,12 +9,13 @@ const PomodoroTimer = () => { // Pomodoro timer function.
   const [workMinutes, setWorkMinutes] = useState(null); // Initial time in minutes
   const [breakMinutes, setBreakMinutes] = useState(null);
   const [timerDuration, setTimerDuration] = useState(0); // Initial time in seconds
-  const [remainingTime, setRemainingTime] = useState(0); // remaining time of tiemr
+  const [sessionsCount, setSessionsCount] = useState(0); // number of pomodoro sessions. 
   const [workOrBreak, setWorkOrBreak] = useState(null);
   const [isActive, setIsActive] = useState(false);
   const [isReset, setIsReset] = useState(true); // indicate when time setter can appear or not. false = timer is runnning
   const [key, setKey] = useState(0);
   
+  console.log('breakMinutes', breakMinutes, 'workMinutes', workMinutes)
   const toggleTimer = () => { // If start button pressed, change to pause. Vice versa
     setIsActive(!isActive); // inverse boolean state. 
     setIsReset(false) // Indicate that timer is running now and not reset. 
@@ -24,17 +25,32 @@ const PomodoroTimer = () => { // Pomodoro timer function.
     setIsReset(true)
     setKey(prevKey => prevKey + 1) // To reset countdown timer back to its intial time value. 
     setIsActive(false); // Timer is not active (running) anymore
+    setSessionsCount(0) 
   };
+
+  const skipSession = () => { // during break session, if skip button is pressed, skip timer to focus mode. 
+    if (workOrBreak === 'break') {
+        setKey(prevKey => prevKey + 1)
+        setSessionsCount(previousCount => previousCount + 1) 
+
+    }
+  }
 
   const formatTime = ({ remainingTime }) => { // Format the countdown timer into 'hour:min:seconds' time. 
     
+    let remainingTimeForThisSession = 0
     if (workOrBreak === 'work') {
-        remainingTime 
+        remainingTimeForThisSession = remainingTime - (breakMinutes * 60);
     }
-    const hours = Math.floor(remainingTime / 3600)
-    const minutes = Math.floor((remainingTime % 3600) / 60)
-    const seconds = remainingTime % 60
-    // e.g. if seconds = 2, display 02 instead of 2. 
+    if (workOrBreak === 'break') {
+        remainingTimeForThisSession = remainingTime;
+    }
+
+    const hours = Math.floor(remainingTimeForThisSession / 3600)
+    const minutes = Math.floor((remainingTimeForThisSession % 3600) / 60)
+    const seconds = remainingTimeForThisSession % 60
+
+    // Format time values. e.g. if seconds = 2, display 02 instead of 2. 
     const formattedHours = String(hours).padStart(2, '0');
     const formattedMinutes = String(minutes).padStart(2, '0');
     const formattedSeconds = String(seconds).padStart(2, '0');
@@ -88,20 +104,6 @@ const PomodoroTimer = () => { // Pomodoro timer function.
     }
   }
 
-  const getRemainingTime = () => {
-    let tempRemainingTime = 0 
-    if (workOrBreak === 'work') { // show how much time left until break: remaining time - work time
-        tempRemainingTime = remainingTime - breakMinutes * 60
-        console.log('work', workMinutes)
-    }
-    else if (workOrBreak === 'break') { 
-        tempRemainingTime = remainingTime - workMinutes * 60
-        console.log('break')
-    }
-    let formattedTime = formatTime({remainingTime: tempRemainingTime})
-    return formattedTime
-
-  }
   return (
     <View style={styles.container}>
 
@@ -118,7 +120,6 @@ const PomodoroTimer = () => { // Pomodoro timer function.
                     trailColor='#FDFEFF'
                     isSmoothColorTransition={false} // smooth color transition
                     size={SCREEN_WIDTH/1.2} // circumference (width/height) of circle timer. 
-
                     onUpdate={(remainingTime) => { // current status: work or break?
                         if (remainingTime > (parseInt(breakMinutes)*60)) { // if remaining time is greater than the break time, set status to work. 
                             setWorkOrBreak('work')
@@ -126,13 +127,13 @@ const PomodoroTimer = () => { // Pomodoro timer function.
                         else if (remainingTime <= (parseInt(breakMinutes)*60)) { // if remaining time is less or equal to the break time, set status to break. 
                             setWorkOrBreak('break')
                         }
-                        setRemainingTime(remainingTime)
 
                     }}
 
                     onComplete={() => { // When Timer is Over
                         console.log('reset Timer')
                         setKey(prevKey => prevKey + 1)
+                        setSessionsCount(previousCount => previousCount + 1)
                     }}
                 >
                     {/* Display 'hour:min:seconds' format */}
@@ -196,16 +197,16 @@ const PomodoroTimer = () => { // Pomodoro timer function.
             </View>
             {isReset === false ? (
                 <View style={styles.workOrBreakLabelContainer}>
-                    <Text style={styles.workOrBreakLabel}> {workOrBreak === 'work' ? ( 'WORK' ) : 'BREAK'} </Text>
-                    <Text style={styles.remainingTimeText}> {workOrBreak === 'work' ? `break in: ${getRemainingTime()}` : null} </Text>
+                    <Text style={styles.workOrBreakLabel}> {workOrBreak === 'work' ? ( 'FOCUS MODE' ) : 'REST'} </Text>
+                    <Text style={styles.remainingTimeText}> Pomodoro # : {sessionsCount} </Text>
                 </View>
             ): null}
     
         </View>
         
         
-        {/* Start/Pause Button */}
-        <TouchableOpacity style={styles.startOrPauseButton} onPress={toggleTimer}>
+        {/* Start/Pause Button. Only display when both work and break minutes have a valid time. */}
+        <TouchableOpacity style={parseInt(breakMinutes) > 0 && parseInt(workMinutes) > 0 ? styles.startOrPauseButton : styles.startNotReady} disabled={!(parseInt(breakMinutes) > 0 && parseInt(workMinutes) > 0)} onPress={toggleTimer}>
         <Text>{isActive ? 'Pause' : 'Start'} </Text>
         </TouchableOpacity>
 
@@ -213,11 +214,26 @@ const PomodoroTimer = () => { // Pomodoro timer function.
         <TouchableOpacity style={styles.resetButton} onPress={resetTimer}>
             <Text>Reset</Text>
         </TouchableOpacity >
+
+        {/* Skip Button. when pressed, skip from break to work*/}
+        {workOrBreak !== 'work' ? (
+        <TouchableOpacity style={styles.skipButton} onPress={skipSession}>
+            <Text>Skip</Text>
+        </TouchableOpacity >
+        ):(
+            <TouchableOpacity style={styles.hideSkipButton} disabled={true}>
+                {/* Empty Container (just to fill up space inside container) */}
+            </TouchableOpacity >
+        )}
     </View>
   );
 };
 
 const timerBackgroundColor = '#FDFEFF'
+const textBlack = '#161A25' // modern black text color
+const textGray = '#161A25'  // modern gray text color
+const modernWhite = '#EBEEF6'
+
 
 const styles = StyleSheet.create({
     container:{ // main container. consists of all timer components. 
@@ -286,7 +302,7 @@ const styles = StyleSheet.create({
         marginHorizontal: SCREEN_WIDTH/30,
         backgroundColor: '#F0F0F0',
     },
-    timeInputLabel: {
+    timeInputLabel: { // 
         color: '#808080', 
     },
     totalCycleTime: { // container for total cycle time
@@ -303,6 +319,13 @@ const styles = StyleSheet.create({
         color: '#B4B4B4',
         fontSize: SCREEN_HEIGHT/60,
     },
+    startNotReady: { // Pause/Start button. 
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: 90, 
+        height: 40, 
+        backgroundColor: '#BEE6BE',
+    },
     startOrPauseButton: { // Pause/Start button. 
         justifyContent: 'center',
         alignItems: 'center',
@@ -316,6 +339,19 @@ const styles = StyleSheet.create({
         width: 90, 
         height: 40, 
         backgroundColor: '#ff4747',
+    },
+    skipButton: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: 90, 
+        height: 40, 
+        backgroundColor: '#fae69eff',
+    },
+    hideSkipButton: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: 90, 
+        height: 40, 
     },
     textInput: { // Style text input boxes. 
         fontWeight: '400',
