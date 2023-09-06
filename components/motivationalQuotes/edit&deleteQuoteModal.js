@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Dimensions, TextInput, Alert } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
+import { updateQuoteList } from './quoteItemsList';
 
 
 // ------------------------ MODAL SCREEN --------------------------------//
@@ -16,11 +17,13 @@ export const EditDeleteQuoteModal = (props) => { // edit and delete quotes
     const deleteQuote = () => { //  delete a quote from quoteList
         props.quoteList.splice(props.isEditDeleteModalVisible[1], 1); // remove the quote from the array (1 = number of items to remove)
         props.setQuoteList([...props.quoteList]); // update the taskItems array 
+        updateQuoteList(props.quoteList)
         closeModal()
     };
 
     const editQuote = () => { // edit a quote
         props.quoteModalVisible([true, true]); // quoteModal = true ==> display
+        updateQuoteList(props.quoteList)
         closeModal()
     };
     

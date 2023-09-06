@@ -2,6 +2,10 @@ import React, {useState, useEffect} from 'react';
 import { StyleSheet, Text, View, Dimensions, TextInput, Alert, TouchableOpacity} from 'react-native';
 import Slider from '@react-native-community/slider';
 import { AntDesign } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
+import { Entypo } from '@expo/vector-icons';
+import { FontAwesome5 } from '@expo/vector-icons';
 import NextButton from './modalNextButton';
 import {updateWellbeingDataStorage} from '../wellbeingData';
 import {getCurrentDate} from '../wellbeingControls';
@@ -62,16 +66,52 @@ export const NewWellbeingChartModal = (props) => {
 
                 {/* Modal Title */}
                 <View style={styles.modalHeader}>
-                    <Text style={[styles.headerText, {fontSize: 20}]}>Update My Wellbeings</Text>
+                    <Text style={[styles.headerText, {fontSize: 20}]}>Create New Wellbeing Chart</Text>
                 </View> 
 
-                <View style={styles.modalSubHeader}>
-                    <Text style={styles.subHeaderText}>How much sleep have you had?</Text>
+                {/* Wellbeing Name */}
+
+                <View style={styles.wellbeingNameContainer}>
+
+                    <View style={styles.labelIcon}>
+                    {pageNumber === 0 && (
+                        <Entypo name={'suitcase'} size={SCREEN_WIDTH/15} color="#3a46bf" />
+                    )}
+
+                    {pageNumber === 1 && (
+                        <MaterialIcons name={'fitness-center'} size={SCREEN_WIDTH/15} color="orange" />
+                    )}
+                    
+                    {pageNumber === 2 && (
+                        <FontAwesome5 name="coffee" size={SCREEN_WIDTH/15} color="#50bfd1" />
+                    )}
+
+                    {pageNumber === 3 && (
+                        <Entypo name={'chat'} size={SCREEN_WIDTH/15} color="#9e32db" />
+                    )}
+
+                    {pageNumber === 4 && (
+                        <MaterialCommunityIcons name={'power-sleep'} size={SCREEN_WIDTH/15} color="#f0ca00" />
+                    )}
+
+                    {pageNumber === 5 && (
+                        <MaterialCommunityIcons name={'head-cog'} size={SCREEN_WIDTH/15} color="#21a177" />
+                    )}
+                    </View>
+
+                    <Text style={styles.wellbeingNameText}>{props.wellbeingData.labels[pageNumber]}: {wellbeingRating[pageNumber]}/10</Text>
+
+                </View>
+
+                <View style={styles.lineBelowWellbeingName}></View>
+
+                {/* Wellbeing Question */}
+                <View style={styles.questionContainer}>
+                    <Text style={styles.questionText}>{props.wellbeingData.question[pageNumber]}</Text>
                 </View>
 
                 {/* ------------- Slider Container ------------- */}
                 <View style={styles.sliderContainer}> 
-                        <Text style={styles.sliderValue}>{props.wellbeingData.labels[pageNumber]}: {wellbeingRating[pageNumber]}/10</Text>
 
                     <View style={styles.sliderWrapper}>   
 
@@ -87,6 +127,7 @@ export const NewWellbeingChartModal = (props) => {
                             step={1}                                        // step value of slider
                             minimumTrackTintColor="green"                   // bar color to the left of the button.
                             maximumTrackTintColor="red"                     // bar color to the right of the button
+                            thumbTintColor="magenta"
                             onValueChange={onSliderValueChange}             // when slider changes value, call function to update value.
                             accessibilityValue={{ text: `${wellbeingRating[pageNumber]}` }} // ${wellbeingRating} creates a value of a variable (sliderVariable) within a string (like f'' strings in python).
                         />
@@ -100,13 +141,15 @@ export const NewWellbeingChartModal = (props) => {
                 {/* Next/Previous Buttons */}
                 <View style={styles.nextPreviousButtonContainer}>
                     <TouchableOpacity style={styles.previousButton} onPress={() => changePage('left')}>
-                        <AntDesign name="arrowleft" size={30} color="black" />
+                        <AntDesign name="arrowleft" size={SCREEN_WIDTH/15} color="black" />
                     </TouchableOpacity>
 
                     <NextButton 
                         changePage={changePage}
                         pagePercentage={((pageNumber+1) * (100/6))}
                     />
+
+                    <View style={{paddingRight: SCREEN_WIDTH/10.5}}></View>
 
                 </View>
             </View>
@@ -123,38 +166,76 @@ const styles= StyleSheet.create({
         justifyContent: 'center',
     }, 
     modal: { // Modal styling.
-        height: SCREEN_HEIGHT/2, 
-        width: SCREEN_WIDTH -80, 
+        alignItem: 'center',
+        justifyContent: 'center',
+        height: SCREEN_HEIGHT/1.3, 
+        width: SCREEN_WIDTH/1.1, 
         paddingTop: 5, 
         backgroundColor: 'white',
-        borderColor: 'white',
+        borderColor: '#EBEEF6',
         borderWidth: 3,
         borderRadius: 10,
+        elevation: 5,
     },
     modalHeader: { // Modal header. 
         flexDirection: 'row',
         flex: 1, 
         justifyContent: 'center',
-        // backgroundColor: 'green',
     }, 
     headerText: { // Header text styling. 
         margin: 5, 
         fontSize: 16, 
         fontWeight: 'bold',
     },
-    modalSubHeader: { // Question contain (e.g. how much sleep have you had)
+    wellbeingNameContainer: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    labelIcon: {
+        alignItems: 'center',
+    },
+    lineBelowWellbeingName: {
+        height: SCREEN_HEIGHT/800,
+        backgroundColor: '#e3e3e3',
+        marginHorizontal: SCREEN_WIDTH/30,
+        marginVertical: SCREEN_HEIGHT/80,
+    },
+    questionContainer: { // Question contain (e.g. how much sleep have you had)
         flex: 1,
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'flex-start',
+        paddingHorizontal: SCREEN_WIDTH/30,
     },
-    subHeaderText: { // Question text. 
-        fontWeight: '600',
-        fontSize: 18,
+    questionText: { // Question text. 
+        fontWeight: '300',
+        fontSize: SCREEN_HEIGHT/40,
     },
     exitButton: { // Exit button. 
         width: SCREEN_WIDTH/15, 
         paddingLeft: 5,
+    },
+    sliderContainer: { // Contains rating text & slider.
+        flexDirection: 'column',
+        alignItems: 'center',
+        paddingBottom: SCREEN_HEIGHT/10,
+    },
+    sliderWrapper: { // Rating slider wrapper. 
+        flexDirection: 'row',
+        paddingTop: SCREEN_HEIGHT/40,
+    },
+    slider: { // Slider 
+        width: (SCREEN_WIDTH -80)/1.2, // SCREEN_WIDTH -80 = Modal Width
+        marginLeft: 'auto',
+        marginRight: 'auto',
+    },
+    wellbeingNameText: {
+        textAlign: 'center',
+        fontSize: SCREEN_HEIGHT/40,
+        fontWeight: '600',
+        paddingLeft: SCREEN_WIDTH/40,
+        paddingRight: SCREEN_WIDTH/10,
     },
     nextPreviousButtonContainer: { // next & previous button. 
         flexDirection: 'row',
@@ -173,22 +254,5 @@ const styles= StyleSheet.create({
         borderWidth: 2.5,
         backgroundColor: 'white',
         alignSelf: 'flex-end', // bottom of column
-    },
-    sliderContainer: { // Contains rating text & slider.
-        flexDirection: 'column',
-        alignItems: 'center',
-        paddingBottom: SCREEN_HEIGHT/10,
-    },
-    sliderWrapper: { // Rating slider wrapper. 
-        flexDirection: 'row',
-        paddingTop: SCREEN_HEIGHT/40,
-    },
-    slider: { // Slider 
-        width: (SCREEN_WIDTH -80)/1.2, // SCREEN_WIDTH -80 = Modal Width
-        marginLeft: 'auto',
-        marginRight: 'auto',
-    },
-    sliderValue: {
-
     },
 })

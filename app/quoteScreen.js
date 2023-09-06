@@ -2,16 +2,19 @@ import React, {useState} from 'react';
 import { KeyboardAvoidingView, StyleSheet, Text, View, TextInput, TouchableOpacity, Keyboard, ScrollView, FlatList, SafeAreaView, Modal, Alert} from 'react-native';
 import Quote from '../components/motivationalQuotes/quote';
 import { quoteToggle } from '../components/motivationalQuotes/quoteControl';
-import { QuoteModal } from '../components/motivationalQuotes/quoteControl';
+import { QuoteModal } from '../components/motivationalQuotes/quoteModal';
 import { MaterialIcons } from '@expo/vector-icons'; 
 import { EditDeleteQuoteModal } from '../components/motivationalQuotes/edit&deleteQuoteModal';
 import {QuoteListItems} from '../components/motivationalQuotes/quoteItemsList';
+import {quoteListSaved} from '../components/motivationalQuotes/quoteItemsList'
 
 const QuoteScreen = () => { 
     
     const [isQuoteModalVisible, quoteModalVisible] = useState([false, false]); // [modal display (true/false), edit? (true/false)]
     const [isEditDeleteModalVisible, EditDeleteModalVisible] = useState([false, null]); // [edit/delete modal display (true/false), quote index no.]
     const {quoteList, setQuoteList} = QuoteListItems(); // destructure function (QuoteListItems) into 'quoteList' variable and 'setQuoteList' function.
+
+    console.log('quoteList', quoteListSaved)
 
     return (
     <SafeAreaView style={styles.container}>

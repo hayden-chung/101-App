@@ -19,13 +19,31 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator>
 
-        {/* ---------------- Timer Components ---------------- */}
+        {/* ---------------- Quote Screen ----------------*/}
+        <Stack.Screen 
+          name="QuoteScreen"
+          component={QuoteScreen}
+        />
+
+        {/* ---------------- Home Screen ---------------- */}
+        <Stack.Screen 
+          name="HomeScreen"
+          component={HomeScreen}
+        />
+
+        {/* ---------------- Wellbeing Screen ----------------*/}
+        <Stack.Screen 
+          name="WellBeingScreen"
+          component={WellBeingScreen}
+        />
+
+        {/* ---------------- Productivity Timer ---------------- */}
         <Stack.Screen 
           name="TimerScreen"
           component={TimerScreen}
         />
 
-        {/* ---------------- Timetable Components ---------------- */}
+        {/* ---------------- Timetable Screen ---------------- */}
         <Stack.Screen 
           name="TimetableScreen"
           component={TimetableScreen}
@@ -40,6 +58,13 @@ export default function App() {
           name="TimetableSettings"
           component={TimetableSettings}
         />
+
+
+      {/* ---------------- ----------------*/}
+
+      {/* ---------------- ----------------*/}
+
+
       </Stack.Navigator>
     </NavigationContainer>
   );

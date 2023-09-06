@@ -4,11 +4,22 @@ import { KeyboardAvoidingView, StyleSheet, Text, View, TextInput, TouchableOpaci
 
 const HomeScreen = ({navigation}) => { 
     return(
-        <View>
-            <Button
-                title="navigate to second screen"
-                onPress={() => navigation.navigate("Second")}
-            />
+        <View styles={styles.container}>
+
+            <TouchableOpacity style={quotesScreen}>
+                <Text style={styles.quoteText}></Text>
+
+            </TouchableOpacity>
+
+            <View style={styles.bottomRow}>
+
+                <TouchableOpacity style={todoScreen}></TouchableOpacity>
+
+                <TouchableOpacity style={wellbeingScreen}></TouchableOpacity>
+
+            </View>
+
+        
         </View>
     )
 }

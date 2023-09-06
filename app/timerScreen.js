@@ -67,6 +67,7 @@ const TimerScreen = ({navigation}) => {
 
 const textBlack = '#161A25' // modern black text color
 const textGray = '#B1B3B9'  // modern gray text color
+const modernWhite = '#EBEEF6'
 
 const styles = StyleSheet.create({
     container: { // whole screen
