@@ -54,10 +54,15 @@ const Stopwatch = () => { // Stopwatch function
         return `${formattedHours}:${formattedMinutes}:${formattedSeconds}.${formattedMilliseconds}`
     }
 
+
     const lapOrResetPressed = () => {
         if (isRunning) { // lap pressed
             setLaps(prevLaps => [...prevLaps, [formatTime(currentTimeInMilliseconds-latestLapTimeInMilliseconds) ,formatTime(currentTimeInMilliseconds)]])
             setLatestLapTimeInMilliseconds(currentTimeInMilliseconds)
+            setTimeout(() => {
+                flatlistRef.current.scrollToEnd();
+            }, 10);
+            
         } else if (!isRunning) { // reset pressed
             setCurrentTimeInMilliseconds(0)
             setIsRunning(false)
@@ -68,19 +73,16 @@ const Stopwatch = () => { // Stopwatch function
         console.log('after', laps)
     }
 
-    const onPressFunction = () => {
-        flatlistRef.current.scrollToEnd();
-    };
-
     return (
         <View style={styles.container}>
             <View style={styles.timeDisplayContainer}>
                 <Text style={styles.timeText}>{formatTime(currentTimeInMilliseconds)}</Text>
+                <Text style={styles.lapTimeText}>{formatTime(currentTimeInMilliseconds-latestLapTimeInMilliseconds)}</Text>
             </View>
             
             <View style={styles.lapsWrapper}>
             <View style={styles.lapSubheader}>
-                <Text style={styles.lapSubheaderText}>Laps</Text>
+                <Text style={styles.lapSubheaderText}>Lap</Text>
                 <Text style={styles.lapSubheaderText}>Lap Time</Text>
                 <Text style={styles.lapSubheaderText}>Total Time</Text>
             </View>
@@ -136,9 +138,12 @@ const styles = StyleSheet.create({
     timeText: {
         fontSize: SCREEN_HEIGHT/20,
     },
+    lapTimeText: {
+        fontSize: SCREEN_HEIGHT/30,
+        color: '#B1B3B9'
+    },
     lapsWrapper: {
         height: SCREEN_HEIGHT/4,
-        paddingVertical: SCREEN_HEIGHT/60,
         backgroundColor: 'magenta',
     },
     lapSubheader: {
