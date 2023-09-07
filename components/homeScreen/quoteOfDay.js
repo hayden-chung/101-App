@@ -3,10 +3,18 @@ import { KeyboardAvoidingView, StyleSheet, Text, View, TextInput, TouchableOpaci
 import {getRandomQuote} from '../motivationalQuotes/quoteList&Controls'
 
 const QuoteOfDay = ({navigation}) => { 
+    const quoteOfTheDay = getRandomQuote()
+    console.log('quoteOfTheDay', quoteOfTheDay) 
     return(
-        <View styles={styles.container}>
-            <Text>{getRandomQuote()}</Text>
+        <View style={styles.container}>        
+            {quoteOfTheDay && ( // if quoteOfTheDay is not null or undefined. 
+                <View>
+                    <Text>{quoteOfTheDay[0]}</Text>
+                    <Text>- {quoteOfTheDay[1]} -</Text>
+                </View>
+            )}
         </View>
+
     )
 }
 

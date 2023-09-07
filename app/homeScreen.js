@@ -1,14 +1,17 @@
 import React, {useState} from 'react';
 import { KeyboardAvoidingView, StyleSheet, Text, View, TextInput, TouchableOpacity, Keyboard, Button} from 'react-native';
+import { useIsFocused } from '@react-navigation/native'; // Import useIsFocused
 import QuoteOfDay from '../components/homeScreen/quoteOfDay'
 
 const HomeScreen = ({navigation}) => { 
+    const isFocused = useIsFocused(); 
+
     return(
         <View styles={styles.container}>
 
             <TouchableOpacity style={styles.quotesScreen} onPress={() => navigation.navigate("QuoteScreen")}>
-                <Text style={styles.quoteText}>Quote Screen</Text>
-                <QuoteOfDay/>
+                <Text style={styles.quoteOfDayTitle}>QUOTE OF THE DAY</Text>
+                {isFocused && <QuoteOfDay/>}
             </TouchableOpacity>
 
             <View style={styles.bottomRow}>

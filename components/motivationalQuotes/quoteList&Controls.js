@@ -22,10 +22,24 @@ export const quoteToggle = (index, quoteList, setQuoteList) => { // when task is
 };
 
 export const getRandomQuote = () => {
-    listLength = quoteListSaved.length;
-    randomIdx = Math.floor(Math.random()*(listLength-1)) 
-    returnQuote = quoteListSaved[randomIdx]
-    console.log(quoteListSaved)
+    let selectedQuotes = []
+    let returnQuote = null
+    for (let i = 0; i < quoteListSaved.length; i++) {
+        if (quoteListSaved[i][2] === true)  {
+            selectedQuotes.push(quoteListSaved[i])
+        }
+        console.log('i', i)
+    }
+    console.log('selected quotes', )
+
+
+    listLength = selectedQuotes.length;
+    if (listLength !== 0) {
+        randomIdx = Math.floor(Math.random()*(listLength-1)) 
+        returnQuote = selectedQuotes[randomIdx]
+        console.log(selectedQuotes)
+    }
+    
     return returnQuote
 };
 
