@@ -1,12 +1,12 @@
 import React, {useState} from 'react';
 import { KeyboardAvoidingView, StyleSheet, Text, View, TextInput, TouchableOpacity, Keyboard, ScrollView, FlatList, SafeAreaView, Modal, Alert} from 'react-native';
 import Quote from '../components/motivationalQuotes/quote';
-import { quoteToggle } from '../components/motivationalQuotes/quoteControl';
+import { quoteToggle } from '../components/motivationalQuotes/quoteList&Controls';
 import { QuoteModal } from '../components/motivationalQuotes/quoteModal';
 import { MaterialIcons } from '@expo/vector-icons'; 
 import { EditDeleteQuoteModal } from '../components/motivationalQuotes/edit&deleteQuoteModal';
-import {QuoteListItems} from '../components/motivationalQuotes/quoteItemsList';
-import {quoteListSaved} from '../components/motivationalQuotes/quoteItemsList'
+import {QuoteListItems} from '../components/motivationalQuotes/quoteList&Controls';
+import {quoteListSaved} from '../components/motivationalQuotes/quoteList&Controls'
 
 const QuoteScreen = () => { 
     

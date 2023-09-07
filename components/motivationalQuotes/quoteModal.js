@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Dimensions, TextInput, Alert} from 'react-native';
-import { updateQuoteList } from './quoteItemsList';
+import { updateQuoteList } from './quoteList&Controls';
 
 // ------------------------ MODAL SCREEN --------------------------------//
 const WIDTH = Dimensions.get('window').width;

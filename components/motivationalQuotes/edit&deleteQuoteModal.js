@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Dimensions, TextInput, Alert } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
-import { updateQuoteList } from './quoteItemsList';
+import { updateQuoteList } from './quoteList&Controls';
 
 
 // ------------------------ MODAL SCREEN --------------------------------//

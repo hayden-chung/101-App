@@ -19,16 +19,16 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator>
 
-        {/* ---------------- Quote Screen ----------------*/}
-        <Stack.Screen 
-          name="QuoteScreen"
-          component={QuoteScreen}
-        />
-
         {/* ---------------- Home Screen ---------------- */}
         <Stack.Screen 
           name="HomeScreen"
           component={HomeScreen}
+        />
+
+        {/* ---------------- Quote Screen ----------------*/}
+        <Stack.Screen 
+          name="QuoteScreen"
+          component={QuoteScreen}
         />
 
         {/* ---------------- Wellbeing Screen ----------------*/}
@@ -60,7 +60,12 @@ export default function App() {
         />
 
 
-      {/* ---------------- ----------------*/}
+      {/* ---------------- Todo Screen ----------------*/}      
+      <Stack.Screen 
+          name="ToDoScreen"
+          component={ToDoScreen}
+        />
+
 
       {/* ---------------- ----------------*/}
 
