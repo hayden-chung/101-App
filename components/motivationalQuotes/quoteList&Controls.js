@@ -28,9 +28,7 @@ export const getRandomQuote = () => {
         if (quoteListSaved[i][2] === true)  {
             selectedQuotes.push(quoteListSaved[i])
         }
-        console.log('i', i)
     }
-    console.log('selected quotes', )
 
 
     listLength = selectedQuotes.length;

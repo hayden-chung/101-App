@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Dimensions } from 'react-native';
-import {timetable} from './timetableGenerator'
+import {timetableSaved} from '../timetableStore'
 import {fixedSessions} from '../settings/timetableSettingsData'
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
@@ -10,6 +10,7 @@ const TimeBlock = ({item, index}) => {
     const timeBlockName = item[0]
     let startTime = 0
     let endTime = 0
+    const timetable = timetableSaved
     
     // setting start and finish times. Order of time blocks has been set in the timetable generator function, so now we need to set the exact time of the timeblocks (e.g. 15:30-18:30))
     if (item[3]) { // First make sure the timeBlock is a task (not a break)

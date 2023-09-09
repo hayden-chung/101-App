@@ -3,6 +3,7 @@ import { KeyboardAvoidingView, StyleSheet, Text, View, TextInput, TouchableOpaci
 import Task from '../components/todo/task';
 import {addTask, completedTask, deleteTask} from '../components/todo/taskControls'; // import taskControl functions
 import {TaskItemsList} from '../components/todo/taskItemsList';
+import {updateTaskItems} from "../components/todo/taskItemsList"
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = (Dimensions.get('window').height);
@@ -10,7 +11,18 @@ const SCREEN_HEIGHT = (Dimensions.get('window').height);
 const ToDoScreen = () => { // when user clicks on todo button, navigate to this main function of the to-do screen
 
   const [task, setTask] = useState([null, false, false, null]); // useState is a hook that allows you to state variables in functional components. In this case: task = [task name, task completion state, task selected state in timetable generator, estimated completion time ] 
-  const {taskItems, setTaskItems} = TaskItemsList();
+  const {taskItems, setTaskItems} = TaskItemsList(); // task list
+
+  const updateTaskList = () => {
+ 
+    setTimeout(() => {
+      updateTaskItems(taskItems)
+    }, 10);
+    console.log('taskItems', taskItems)
+    console.log(task)
+
+    
+  }
 
   return (
     <View style={styles.container}> 
@@ -28,8 +40,8 @@ const ToDoScreen = () => { // when user clicks on todo button, navigate to this 
             showsVerticalScrollIndicator={false} // Hide scroll bar.
             renderItem={({item, index}) =>       // Item and index no. of task in array. 
               <TouchableOpacity                  // Task is responsive to touches
-                onPress={() => completedTask(index, taskItems, setTaskItems)} // when quote pressed, change completed state (compelted/not completed)
-                onLongPress={() => deleteTask(index, taskItems, setTaskItems)}
+                onPress={() => {completedTask(index, taskItems, setTaskItems); updateTaskList()}} // when quote pressed, change completed state (compelted/not completed)
+                onLongPress={() => {deleteTask(index, taskItems, setTaskItems); updateTaskList()}}
                 > 
                 {/* Task component displays task item. Parameters 'text' (task text) and 'taskState' (checkbox)*/}
                 <Task text={item[0]} timetableGenerator={false} taskStatus={taskItems[index][1]} taskTime={taskItems[index][3]} /> 
@@ -48,7 +60,7 @@ const ToDoScreen = () => { // when user clicks on todo button, navigate to this 
         <TextInput style={styles.textInput} placeholder={'Write a Task'} value={task[0]} onChangeText={text => setTask([text, false, false, null])}/> 
 
         {/* Touchable opacity to add task */}
-        <TouchableOpacity onPress={() => {const { task: updatedTask, taskItems: updatedTaskItems } = addTask(task, taskItems, setTaskItems, setTask)}}>
+        <TouchableOpacity onPress={() => {addTask(task, taskItems, setTaskItems, setTask); updateTaskList()}}>
           
           {/* ADD BUTTON */}
           <View style={styles.addWrapper}>

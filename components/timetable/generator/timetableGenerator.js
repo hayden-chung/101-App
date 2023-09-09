@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react';
+import React, {useState} from 'react';
 import { KeyboardAvoidingView, StyleSheet, Text, View, Dimensions, TouchableOpacity, FlatList, Animated} from 'react-native';
 import Task from '../../todo/task';
 import {TaskItemsList} from '../../todo/taskItemsList';
@@ -6,18 +6,18 @@ import {selectedTask} from '../../todo/taskControls'; // import taskControl func
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import {GenerateTimetable} from './timetableGeneratorAlgorithm';
 import AlertMessage from '../../alertMessage'
+import {getTimetable, updateTimetable} from '../timetableStore'
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = (Dimensions.get('window').height); 
-
-export let timetable = [] 
 
 const TimetableGenerator = ({navigation}) => { 
 
     const {taskItems, setTaskItems} = TaskItemsList();// destructure function (TaskItemsList) into 'taskItems' variable and 'setTaskItems' function.
     const [isAlarmMessage, toggleAlarmMessage] = useState(false); // Alarm message for when user presses task with no estimated time. 
+    const {timetable, setTimetable} = getTimetable();
 
-    // const navigation = useNavigation()
+    
 
     const callbackToFunction = (timetable) => { // send timetable parameter to timetable screen function. 
         navigation.navigate("TimetableScreen", {
@@ -26,9 +26,10 @@ const TimetableGenerator = ({navigation}) => {
     }
 
     const onGenerateTimetablePressed = () => {
-        timetable = []
-        timetable = GenerateTimetable(taskItems, timetable)
-        callbackToFunction(timetable)
+        let newTimetable = GenerateTimetable(taskItems, [], setTimetable)
+        updateTimetable(newTimetable)
+        console.log('FINISHED', newTimetable)
+        callbackToFunction(newTimetable) 
     }
 
     return(

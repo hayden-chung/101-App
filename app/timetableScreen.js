@@ -8,7 +8,8 @@ const TimetableScreen = ({navigation}) => { // navigation object allows users to
 
     const route = useRoute(); // useRoute(), mainly in this context to receive parameter 'timetable' once it's generated. 
 
-    const routeTimetable = route.params?.timetable; // '?' ensures routeTimetable is not null or undefined. 
+    const routeTimetable = route.params?.timetable; // '?' ensures timetable is not null or undefined. 
+    console.log('timetable in screen:',routeTimetable)
 
     return(
         <View style={styles.container}>

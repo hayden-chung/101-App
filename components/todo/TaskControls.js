@@ -1,5 +1,7 @@
+
 export const addTask = (task, taskItems, setTaskItems, setTask) => { // add a new task to to-do list
-    setTaskItems([...taskItems, task]); // assign taskItems with the pre-existing values in the array and the additional 'task'
+    taskItems.push(task);
+    setTaskItems([...taskItems]); // assign taskItems with the pre-existing values in the array and the additional 'task'
     setTask([null, false, false, null]); // task = [null, false, false, null] (reasign task to default value)
     return { task: [null, false, false, null], taskItems: [...taskItems, task] }; // return values to update 
 };

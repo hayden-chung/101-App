@@ -13,7 +13,8 @@ const TimerScreen = ({navigation}) => {
 
     const [activeTab, setActiveTab] = useState('stopwatch')
 
-    const [fontsLoaded] = useFonts({
+    // --- Load Font --- //
+    const [fontsLoaded] = useFonts({ // load font from file
         "OpenSans-Regular": require("../assets/fonts/OpenSans-Regular.ttf")
     });
 
@@ -29,6 +30,7 @@ const TimerScreen = ({navigation}) => {
     } else {
         SplashScreen.hideAsync();
     }
+    // ---------------- //
 
     return(
         <View style={styles.container}>

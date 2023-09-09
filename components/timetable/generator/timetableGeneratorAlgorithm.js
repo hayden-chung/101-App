@@ -20,7 +20,6 @@ const subsetSum = (tasksToPutInTimetable, startAndEndTime) => { //
     availableTimeInMilliseconds = endTime - startTime;
     const availableHours = (availableTimeInMilliseconds/(1000*60*60)).toFixed(2); // convert milliseconds to hours. to 2 d.p.
     const target = Math.round(availableHours*100); // e.g.if available time = 6.5h, target = 650. This is so we can iterate over an integer value as float values don't allow iteration with for loops. Thus, also round to integer after calculation.  
-    console.log('availableHours', availableHours)
     // Create array of booleans to find closest sum to target.  
     let dp = Array(target + 1); // dp (dynamic programming) = array
     for (let i = 0; i< dp.length; i++) { // fill with false values (for number of target + 1). 
@@ -66,7 +65,6 @@ const subsetSum = (tasksToPutInTimetable, startAndEndTime) => { //
             break;
         }
     }
-    console.log(dp)
     return dp[closest_sum].slice(1) // extract the array starting from index 1 to the end. (e.g. [true, ["Task 1", true, true, 300], ["Task 2", false, true, 200]] --> ["Task 1", true, true, 300], ["Task 2", false, true, 200])
 }
 
@@ -127,7 +125,6 @@ const insertSessions = (timetable, breakSession, usedTasks) => {
     if (breakSession !== undefined) {
         timetable.push([breakSession, fixedSessions[breakSession]]) // add break session after the used tasks
     }
-    console.log('timetable', timetable)
     return timetable
 }
 
@@ -136,11 +133,10 @@ const eliminateTasks = (tasksToPutInTimetable, usedTasks) => { // Eliminate task
     for (idx = 0; idx < removeTasks.length; idx++) {
         tasksToPutInTimetable = tasksToPutInTimetable.filter(task => task !== removeTasks[idx])
     }
-    console.log('tasksToPutInTimetable', tasksToPutInTimetable)
     return tasksToPutInTimetable
 }
 
-export const GenerateTimetable = (taskItems, timetable) => {
+export const GenerateTimetable = (taskItems, timetable, setTimetable) => {
     const [sessionsBetweenBreaks, breakOrder] = getSessions()
     // Generating Timetable
     tasksToPutInTimetable = makeSelectedTasksArr(taskItems)
@@ -150,5 +146,8 @@ export const GenerateTimetable = (taskItems, timetable) => {
         tasksToPutInTimetable = eliminateTasks(tasksToPutInTimetable, usedTasks)   // remaining tasks to put in available times. 
     }
     console.log('-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------')
-    return timetable 
+    console.log('final timetable', timetable)
+    setTimetable(timetable)
+    console.log('done', timetable)
+    return timetable  
 }
