@@ -10,6 +10,7 @@ import {wellbeingData, updateWellbeingData} from '../components/wellbeing/wellbe
 import WellbeingDatePicker from '../components/wellbeing/calendar/wellbeingDatePicker';
 import {getCurrentDate} from '../components/wellbeing/wellbeingControls'
 import {handlePreviousDay, handleNextDay, updateCalendarData} from '../components/wellbeing/calendar/calendarControls';
+import TabBar from '../components/tabBar'
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = (Dimensions.get('window').height);
@@ -120,6 +121,9 @@ const WellBeingScreen = ({navigation}) => { // main function for wellbeing scree
         </View>
         {/* ------------------------------------------------ */}
 
+        <View style={styles.pushToBottom}></View>    
+        <TabBar navigation={navigation}/>
+
     </SafeAreaView>
   );
 };
@@ -171,6 +175,9 @@ const styles = StyleSheet.create({
   updateButton: {
 
   },
+  pushToBottom: {
+    flex: 1,    
+},
 });
 
 

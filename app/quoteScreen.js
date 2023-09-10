@@ -7,8 +7,9 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { EditDeleteQuoteModal } from '../components/motivationalQuotes/edit&deleteQuoteModal';
 import {QuoteListItems} from '../components/motivationalQuotes/quoteList&Controls';
 import {quoteListSaved} from '../components/motivationalQuotes/quoteList&Controls'
+import TabBar from '../components/tabBar';
 
-const QuoteScreen = () => { 
+const QuoteScreen = ({navigation}) => { 
     
     const [isQuoteModalVisible, quoteModalVisible] = useState([false, false]); // [modal display (true/false), edit? (true/false)]
     const [isEditDeleteModalVisible, EditDeleteModalVisible] = useState([false, null]); // [edit/delete modal display (true/false), quote index no.]
@@ -83,6 +84,9 @@ const QuoteScreen = () => {
             </Modal>
 
         </View>
+
+        <View style={styles.pushToBottom}></View>
+        <TabBar navigation={navigation}/>
     </SafeAreaView>
     );
 }
@@ -135,6 +139,9 @@ const styles = StyleSheet.create({
     modalBackDrop: { // for empty areas (outside of modal)
         flex: 1, 
         backgroundColor: 'rgba(0, 0, 0, 0.60)', // set opacity to 0.6
+    },
+    pushToBottom: {
+        flex: 1,    
     },
 });
 

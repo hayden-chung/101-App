@@ -7,7 +7,7 @@ import TimeBlock from '../timetable/generator/timeBlocks';
 const MiniTimetable = ({navigation}) => { 
 
     console.log('timetableSaved', timetableSaved)
-    const useTimetable = timetableSaved; // '?' ensures timetable is not null or undefined. 
+    const useTimetable = timetableSaved; 
 
     return(
         <FlatList

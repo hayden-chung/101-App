@@ -9,7 +9,9 @@ import WellBeingScreen from './app/wellbeingScreen'
 import TimetableScreen from './app/timetableScreen'
 import TimetableGenerator from './components/timetable/generator/timetableGenerator';
 import TimetableSettings from './components/timetable/settings/timetableSettings';
-import TimerScreen from './app/timerScreen'
+import TimerScreen from './app/timerScreen';
+import SettingsScreen from './app/settings';
+import TabBar from './components/tabBar'
 
 
 const Stack = createNativeStackNavigator();
@@ -66,8 +68,11 @@ export default function App() {
           component={ToDoScreen}
         />
 
-
-      {/* ---------------- ----------------*/}
+      {/* ---------------- Settings Screen ----------------*/}
+      <Stack.Screen 
+        name="SettingsScreen"
+        component={SettingsScreen}
+      />
 
 
       </Stack.Navigator>

@@ -5,6 +5,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import Timer from '../components/timer/timer'
 import Stopwatch from '../components/timer/stopwatch';
 import PomodoroTimer from '../components/timer/pomodoro';
+import TabBar from '../components/tabBar'
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = Dimensions.get('window').height;
@@ -35,34 +36,41 @@ const TimerScreen = ({navigation}) => {
     return(
         <View style={styles.container}>
 
+            <View style={styles.wrapper}>
 
-            <View style={styles.tabContainer}>
-                <TouchableOpacity style={activeTab === 'stopwatch' ? styles.selectedTab : styles.notSelectedTab} onPress={() => setActiveTab('stopwatch')}>
-                    <Text style={activeTab === 'stopwatch' ? styles.selectedTabText : styles.notSelectedTabText}>Stopwatch</Text>
-                </TouchableOpacity>
+                {/* Timer Selection Tab (stopwatch, timer, pomodoro) */}
+                <View style={styles.tabContainer}>
+                    <TouchableOpacity style={activeTab === 'stopwatch' ? styles.selectedTab : styles.notSelectedTab} onPress={() => setActiveTab('stopwatch')}>
+                        <Text style={activeTab === 'stopwatch' ? styles.selectedTabText : styles.notSelectedTabText}>Stopwatch</Text>
+                    </TouchableOpacity>
 
-                <TouchableOpacity style={activeTab === 'timer' ? styles.selectedTab : styles.notSelectedTab} onPress={() => setActiveTab('timer')}>
-                    <Text style={activeTab === 'timer' ? styles.selectedTabText : styles.notSelectedTabText}>Timer</Text>
-                </TouchableOpacity>
+                    <TouchableOpacity style={activeTab === 'timer' ? styles.selectedTab : styles.notSelectedTab} onPress={() => setActiveTab('timer')}>
+                        <Text style={activeTab === 'timer' ? styles.selectedTabText : styles.notSelectedTabText}>Timer</Text>
+                    </TouchableOpacity>
 
-                <TouchableOpacity style={activeTab === 'pomodoro' ? styles.selectedTab : styles.notSelectedTab} onPress={() => setActiveTab('pomodoro')}>
-                    <Text style={activeTab === 'pomodoro' ? styles.selectedTabText : styles.notSelectedTabText}>Pomodoro</Text>
-                </TouchableOpacity>
+                    <TouchableOpacity style={activeTab === 'pomodoro' ? styles.selectedTab : styles.notSelectedTab} onPress={() => setActiveTab('pomodoro')}>
+                        <Text style={activeTab === 'pomodoro' ? styles.selectedTabText : styles.notSelectedTabText}>Pomodoro</Text>
+                    </TouchableOpacity>
+                </View>
+
+                {/* Main timer component */}
+                <View style={styles.timerComponentContainer}> 
+                    {(() => {
+                        if (activeTab === 'timer'){
+                            return <Timer/>;
+                        } else if (activeTab === 'stopwatch'){
+                            return <Stopwatch/>
+                        } else if (activeTab === 'pomodoro'){
+                            return <PomodoroTimer/>
+                        } else {
+                            return null;
+                        }
+                    })()}
+                </View>
             </View>
 
-            <View style={styles.timerComponentContainer}> 
-                {(() => {
-                    if (activeTab === 'timer'){
-                        return <Timer/>;
-                    } else if (activeTab === 'stopwatch'){
-                        return <Stopwatch/>
-                    } else if (activeTab === 'pomodoro'){
-                        return <PomodoroTimer/>
-                    } else {
-                        return null;
-                    }
-                })()}
-            </View>
+            <View style={styles.pushToBottom}></View>
+            <TabBar navigation={navigation}/>
         </View>
     )
 }
@@ -77,6 +85,12 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: 'red',
+    },
+    wrapper: {
+        height: SCREEN_HEIGHT/1.2,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'yellow',
     },
     
     tabContainer: {
@@ -104,7 +118,7 @@ const styles = StyleSheet.create({
     timerComponentContainer: { // container cosists of timer component (timer/countdown/pomodoro)
         width: SCREEN_WIDTH/1.2,
         height: SCREEN_HEIGHT/2.2,
-        backgroundColor: 'red',
+        backgroundColor: 'black',
     },
 
     selectedTab: {
@@ -131,6 +145,10 @@ const styles = StyleSheet.create({
     notSelectedTabText: {
         color: textGray,
         fontFamily: 'OpenSans-Regular',
+    },
+
+    pushToBottom: {
+        flex: 1,    
     },
 
 });

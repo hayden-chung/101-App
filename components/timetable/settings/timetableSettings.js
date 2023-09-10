@@ -4,12 +4,13 @@ import TimePicker from './timePicker';
 import {AddBreakModal} from './addBreakModal'
 import {fixedSessions} from './timetableSettingsData'
 import { MaterialIcons } from '@expo/vector-icons';
+import TabBar from '../../tabBar';
 
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 
-const TimetableSettings = () => { // Timetable Settings Screen.
+const TimetableSettings = ({navigation}) => { // Timetable Settings Screen.
 
     const [timetableTime, setTimetableTime] = useState(['start-finish'])
     const [breakSessions, setBreakSessions] = useState(Object.keys(fixedSessions).filter(type => type !== 'start-finish')); // Store break sessions only. Filter out start-finish from the list array.
@@ -117,6 +118,9 @@ const TimetableSettings = () => { // Timetable Settings Screen.
                 />
           </Modal>
 
+        <View style={styles.pushToBottom}></View>
+        <TabBar navigation={navigation}/>
+
         </View>
     )
 }
@@ -176,7 +180,10 @@ const styles = StyleSheet.create({
     },
     addBreakText: {
 
-    }
+    },
+    pushToBottom: {
+        flex: 1,    
+    },
 });
 
 export default TimetableSettings;

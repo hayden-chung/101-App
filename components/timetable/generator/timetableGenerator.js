@@ -7,6 +7,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import {GenerateTimetable} from './timetableGeneratorAlgorithm';
 import AlertMessage from '../../alertMessage'
 import {getTimetable, updateTimetable} from '../timetableStore'
+import TabBar from '../../tabBar';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = (Dimensions.get('window').height); 
@@ -67,11 +68,14 @@ const TimetableGenerator = ({navigation}) => {
 
                 {/* ---------- Generate Timetable Button ---------- */}
                 <TouchableOpacity style={styles.generateButton} onPress={() => onGenerateTimetablePressed()}> 
-                    <MaterialCommunityIcons name="gesture-double-tap" size={SCREEN_HEIGHT/10} color="white" />
+                    <MaterialCommunityIcons name="gesture-double-tap" size={SCREEN_HEIGHT/12} color="white" />
                 </TouchableOpacity>
 
                 <Text style={styles.buttonDescription}>GENERATE TIMETABLE</Text>
             </View>
+
+            <View style={styles.pushToBottom}></View>
+            <TabBar navigation={navigation}/>
         </View>
     )
 }
@@ -87,7 +91,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         width: '90%',
         height: '75%',
-        paddingTop: SCREEN_HEIGHT/20,
         // backgroundColor: 'yellow',
     },
     title: {
@@ -103,7 +106,7 @@ const styles = StyleSheet.create({
     },
     taskWrapper: { // container for list of quotes. 
         width: '100%',
-        height: '90%',
+        height: '80%',
         marginTop: SCREEN_HEIGHT/80,
         paddingTop: SCREEN_HEIGHT/100,
         paddingHorizontal: SCREEN_HEIGHT/100,
@@ -128,7 +131,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     generateButton: {
-        marginTop: SCREEN_HEIGHT/50,
+        marginTop: SCREEN_HEIGHT/60,
         padding: SCREEN_HEIGHT/100,
         borderRadius: 200,
         borderWidth: SCREEN_HEIGHT/200,
@@ -140,6 +143,9 @@ const styles = StyleSheet.create({
         fontWeight: '500',
         paddingTop: SCREEN_HEIGHT/50,
         paddingBottom: SCREEN_HEIGHT/50,
+    },
+    pushToBottom: {
+        flex: 1,    
     },
 });
 

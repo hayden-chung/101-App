@@ -3,12 +3,13 @@ import { KeyboardAvoidingView, StyleSheet, Text, View, TextInput, TouchableOpaci
 import Task from '../components/todo/task';
 import {addTask, completedTask, deleteTask} from '../components/todo/taskControls'; // import taskControl functions
 import {TaskItemsList} from '../components/todo/taskItemsList';
-import {updateTaskItems} from "../components/todo/taskItemsList"
+import {updateTaskItems} from "../components/todo/taskItemsList";
+import TabBar from '../components/tabBar';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = (Dimensions.get('window').height);
 
-const ToDoScreen = () => { // when user clicks on todo button, navigate to this main function of the to-do screen
+const ToDoScreen = ({navigation}) => { // when user clicks on todo button, navigate to this main function of the to-do screen
 
   const [task, setTask] = useState([null, false, false, null]); // useState is a hook that allows you to state variables in functional components. In this case: task = [task name, task completion state, task selected state in timetable generator, estimated completion time ] 
   const {taskItems, setTaskItems} = TaskItemsList(); // task list
@@ -68,6 +69,9 @@ const ToDoScreen = () => { // when user clicks on todo button, navigate to this 
           </View>
         </TouchableOpacity>
       </KeyboardAvoidingView>
+
+      <View style={styles.pushToBottom}></View>
+      <TabBar navigation={navigation}/>
     </View>
   );
 }
@@ -78,7 +82,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#E8EAED',
   },
   wrapper: { // Wraps title ('Today's Tasks') and tasks. 
-    paddingTop: 80,
+    height: SCREEN_HEIGHT/1.3,
+    paddingTop: SCREEN_HEIGHT/20,
     paddingHorizontal: 20,
   },
   taskTitle: { // Style title 'Today's Tasks'
@@ -87,11 +92,9 @@ const styles = StyleSheet.create({
   },
   taskItemsContainer: { // container of taskItems
     marginTop: 20,
-    marginBottom: 150,
+    marginBottom: SCREEN_HEIGHT/20,
   }, 
   textInputWrapper: { // Text input and add button. 
-    position: 'absolute',
-    bottom: 30,
     width: '100%',
     flexDirection: 'row',
     justifyContent:'space-around',
@@ -118,6 +121,9 @@ const styles = StyleSheet.create({
   },
   addButtonText: {
     fontSize: SCREEN_WIDTH/10
+  },
+  pushToBottom: {
+    flex: 1,    
   },
 });
 

@@ -131,9 +131,9 @@ const styles = StyleSheet.create({
         backgroundColor: '#90EE90',
     },
     timeDisplayContainer: {
+        height: 100,
         justifyContent: 'center',
         alignItems: 'center',
-        paddingVertical: SCREEN_HEIGHT/10,
     },
     timeText: {
         fontSize: SCREEN_HEIGHT/20,
