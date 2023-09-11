@@ -11,7 +11,8 @@ import TimetableGenerator from './components/timetable/generator/timetableGenera
 import TimetableSettings from './components/timetable/settings/timetableSettings';
 import TimerScreen from './app/timerScreen';
 import SettingsScreen from './app/settings';
-import TabBar from './components/tabBar'
+import PrivacyPolicyScreen from './components/settings/privacyPolicy';
+import HowToUseScreen from './components/settings/howToUse'
 
 
 const Stack = createNativeStackNavigator();
@@ -73,6 +74,16 @@ export default function App() {
         name="SettingsScreen"
         component={SettingsScreen}
       />
+      <Stack.Screen 
+        name="PrivacyPolicyScreen"
+        component={PrivacyPolicyScreen}
+      />
+      <Stack.Screen 
+        name="HowToUseScreen"
+        component={HowToUseScreen}
+      />
+      
+      
 
 
       </Stack.Navigator>

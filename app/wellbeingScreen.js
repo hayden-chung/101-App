@@ -177,7 +177,7 @@ const styles = StyleSheet.create({
   },
   pushToBottom: {
     flex: 1,    
-},
+  },
 });
 
 
