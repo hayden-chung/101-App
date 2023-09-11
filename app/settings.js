@@ -5,6 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
+import {openContactSupport} from '../components/settings/supportContact'
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = (Dimensions.get('window').height);
@@ -88,6 +89,15 @@ const SettingsScreen = ({navigation}) => {
                 <TouchableOpacity style={styles.buttonRow} onPress={() => navigation.navigate("HowToUseScreen")}>
                     <Feather style={styles.icon} name="help-circle" size={ICON_SIZE} color="black" />
                     <Text style={styles.text}>How to Use</Text>
+                    <View style={styles.fillSpaceBetweenTwoItems}></View>
+                    <MaterialIcons name="keyboard-arrow-right" style={styles.arrowRight} size={ARROW_SIZE} color="black" />
+                </TouchableOpacity>
+                <View style={styles.lineDivider}></View>
+
+                {/* ---------- Contact Support ---------- */}
+                <TouchableOpacity style={styles.buttonRow} onPress={() => openContactSupport()}>
+                    <MaterialIcons style={styles.icon} name="quick-contacts-mail" size={ICON_SIZE} color="black" />
+                    <Text style={styles.text}>Contact support</Text>
                     <View style={styles.fillSpaceBetweenTwoItems}></View>
                     <MaterialIcons name="keyboard-arrow-right" style={styles.arrowRight} size={ARROW_SIZE} color="black" />
                 </TouchableOpacity>
