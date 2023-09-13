@@ -69,7 +69,6 @@ const TimerScreen = ({navigation}) => {
                 </View>
             </View>
 
-            <View style={styles.pushToBottom}></View>
             <TabBar navigation={navigation}/>
         </View>
     )
@@ -84,13 +83,13 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'red',
+        backgroundColor: 'white',
     },
     wrapper: {
-        height: SCREEN_HEIGHT/1.2,
+        flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'yellow',
+        marginTop: SCREEN_HEIGHT/10,
     },
     
     tabContainer: {
@@ -99,8 +98,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         width: SCREEN_WIDTH/1.1,
         height: SCREEN_HEIGHT/14,
-        top: -SCREEN_HEIGHT/12,
-
+        marginBottom: SCREEN_HEIGHT/40,
         borderRadius: 10000,
         paddingHorizontal: SCREEN_WIDTH/60,
         backgroundColor: 'white',
@@ -116,9 +114,8 @@ const styles = StyleSheet.create({
     },
 
     timerComponentContainer: { // container cosists of timer component (timer/countdown/pomodoro)
-        width: SCREEN_WIDTH/1.2,
-        height: SCREEN_HEIGHT/2.2,
-        backgroundColor: 'black',
+        width: SCREEN_WIDTH/1.1,
+        height: SCREEN_HEIGHT/1.4,
     },
 
     selectedTab: {

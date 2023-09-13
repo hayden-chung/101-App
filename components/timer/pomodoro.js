@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, Button, StyleSheet, TouchableOpacity, Dimensions, TextInput} from 'react-native';
 import { CountdownCircleTimer } from 'react-native-countdown-circle-timer';
+import { Feather } from '@expo/vector-icons';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = Dimensions.get('window').height;
@@ -9,7 +10,7 @@ const PomodoroTimer = () => { // Pomodoro timer function.
   const [workMinutes, setWorkMinutes] = useState(null); // Initial time in minutes
   const [breakMinutes, setBreakMinutes] = useState(null);
   const [timerDuration, setTimerDuration] = useState(0); // Initial time in seconds
-  const [sessionsCount, setSessionsCount] = useState(0); // number of pomodoro sessions. 
+  const [sessionsCount, setSessionsCount] = useState(1); // number of pomodoro sessions. 
   const [workOrBreak, setWorkOrBreak] = useState(null);
   const [isActive, setIsActive] = useState(false);
   const [isReset, setIsReset] = useState(true); // indicate when time setter can appear or not. false = timer is runnning
@@ -25,7 +26,7 @@ const PomodoroTimer = () => { // Pomodoro timer function.
     setIsReset(true)
     setKey(prevKey => prevKey + 1) // To reset countdown timer back to its intial time value. 
     setIsActive(false); // Timer is not active (running) anymore
-    setSessionsCount(0) 
+    setSessionsCount(1) 
   };
 
   const skipSession = () => { // during break session, if skip button is pressed, skip timer to focus mode. 
@@ -114,16 +115,17 @@ const PomodoroTimer = () => { // Pomodoro timer function.
                     key={key}
                     isPlaying={isActive}
                     duration={timerDuration} // initial time 
-                    colors={['#FF0000', '#008000', '#008000']}
+                    colors={['#8A9AD4', '#008000', '#008000']}
                     colorsTime={[timerDuration, (parseInt(breakMinutes)*60), 0]} // in seconds 
                     strokeWidth={12}
                     trailStrokeWidth={12}
                     trailColor='#FDFEFF'
                     isSmoothColorTransition={false} // smooth color transition
-                    size={SCREEN_WIDTH/1.2} // circumference (width/height) of circle timer. 
+                    size={SCREEN_WIDTH/1.24} // circumference (width/height) of circle timer. 
                     onUpdate={(remainingTime) => { // current status: work or break?
                         if (remainingTime > (parseInt(breakMinutes)*60)) { // if remaining time is greater than the break time, set status to work. 
                             setWorkOrBreak('work')
+                            
                         }
                         else if (remainingTime <= (parseInt(breakMinutes)*60)) { // if remaining time is less or equal to the break time, set status to break. 
                             setWorkOrBreak('break')
@@ -143,43 +145,43 @@ const PomodoroTimer = () => { // Pomodoro timer function.
                 
                 {/* Has timer reset? */}
                 {isReset ? (
+
+                // Set Time & display duration of one cycle
                 <View style={styles.containerInsideTimer}>
 
-                    {/*  */}
+                    {/* Container of time input boxes */}
                     <View style={styles.setTimeContainer}>
-                        <View style={styles.setWorkTime}>
 
-                            <View style={styles.textInputRow}>
-                                {/* Work (minutes) */}
-                                <TextInput 
-                                    style={styles.textInput} 
-                                    placeholder="00"
-                                    value={workMinutes} 
-                                    onChangeText={num => handleInputChange(num, 'work')}
-                                    keyboardType="numeric"
-                                    editable={!isActive}
-                                />
-                                <Text style={styles.timeUnitText}>m  </Text>
+                        <View style={styles.setTimeColumn}>
+                            <View style={styles.setTimeBoxWork}>
+                                    {/* Work (minutes) */}
+                                    <TextInput 
+                                        style={styles.textInput} 
+                                        placeholder="00"
+                                        value={workMinutes} 
+                                        onChangeText={num => handleInputChange(num, 'work')}
+                                        keyboardType="numeric"
+                                        editable={!isActive}
+                                    />
+                                    <Text style={styles.timeUnitText}>Minutes</Text>
                             </View>
-
-                            <Text style={styles.timeInputLabel}>WORK</Text>
+                            <Text style={styles.timeInputLabelWork}>WORK</Text>
                         </View>
 
-                        <View style={styles.setBreakTime}>
-                            <View style={styles.textInputRow}>
-                                {/* Work (minutes) */}
-                                <TextInput 
-                                    style={styles.textInput} 
-                                    placeholder="00"
-                                    value={breakMinutes} 
-                                    onChangeText={num => handleInputChange(num, 'break')}
-                                    keyboardType="numeric"
-                                    editable={!isActive}
-                                />
-                                <Text style={styles.timeUnitText}>m  </Text>
+                        <View style={styles.setTimeColumn}>
+                            <View style={styles.setTimeBoxBreak}>
+                                    {/* Work (minutes) */}
+                                    <TextInput 
+                                        style={styles.textInput} 
+                                        placeholder="00"
+                                        value={breakMinutes} 
+                                        onChangeText={num => handleInputChange(num, 'break')}
+                                        keyboardType="numeric"
+                                        editable={!isActive}
+                                    />
+                                    <Text style={styles.timeUnitText}>Minutes</Text>
                             </View>
-
-                            <Text style={styles.timeInputLabel}>BREAK</Text>
+                            <Text style={styles.timeInputLabelBreak}>BREAK</Text>
                         </View>
 
                     </View>
@@ -204,32 +206,49 @@ const PomodoroTimer = () => { // Pomodoro timer function.
     
         </View>
         
-        
-        {/* Start/Pause Button. Only display when both work and break minutes have a valid time. */}
-        <TouchableOpacity style={parseInt(breakMinutes) > 0 && parseInt(workMinutes) > 0 ? styles.startOrPauseButton : styles.startNotReady} disabled={!(parseInt(breakMinutes) > 0 && parseInt(workMinutes) > 0)} onPress={toggleTimer}>
-        <Text>{isActive ? 'Pause' : 'Start'} </Text>
-        </TouchableOpacity>
+        <View style={styles.buttonRow}>
 
-        {/* Reset Button */}
-        <TouchableOpacity style={styles.resetButton} onPress={resetTimer}>
-            <Text>Reset</Text>
-        </TouchableOpacity >
-
-        {/* Skip Button. when pressed, skip from break to work*/}
-        {workOrBreak !== 'work' ? (
-        <TouchableOpacity style={styles.skipButton} onPress={skipSession}>
-            <Text>Skip</Text>
-        </TouchableOpacity >
-        ):(
-            <TouchableOpacity style={styles.hideSkipButton} disabled={true}>
-                {/* Empty Container (just to fill up space inside container) */}
+            {/* Reset Button */}
+            <TouchableOpacity style={ workOrBreak === 'break' 
+                ? styles.resetButtonSmall
+                : styles.resetButtonLarge
+                } 
+                onPress={resetTimer}>
+                <Text style={styles.resetText}>Reset</Text>
             </TouchableOpacity >
-        )}
+
+            {/* Skip Button. when pressed, skip from break to work*/}
+            {workOrBreak === 'break' ? (
+            <TouchableOpacity style={styles.skipButton} onPress={skipSession}>
+                <Feather name="skip-forward" size={24} color="white" />
+                <Text style={styles.skipText}>Skip</Text>
+            </TouchableOpacity >
+            ):
+            null}
+
+            {/* Start/Pause Button. Only display when both work and break minutes have a valid time. */}
+            <TouchableOpacity style={parseInt(breakMinutes) > 0 && parseInt(workMinutes) > 0 
+                ? workOrBreak === 'work' 
+                    ? styles.startOrPauseButtonLarge 
+                    : styles.startOrPauseButtonSmall
+                : styles.startNotReady
+                } 
+                disabled={!(parseInt(breakMinutes) > 0 && parseInt(workMinutes) > 0)} onPress={toggleTimer}>
+            <Text style={styles.startOrPauseText}>{isActive ? 'Pause' : 'Start'} </Text>
+            </TouchableOpacity>
+
+        </View>
     </View>
   );
 };
 
-const timerBackgroundColor = '#FDFEFF'
+const TIMER_BACKGROUND_COLOR = '#FDFEFF'
+const TIME_INPUT_BOX_WIDTH = SCREEN_WIDTH/4.4;
+const TIME_INPUT_BOX_HEIGHT = SCREEN_HEIGHT/8;
+const BUTTON_WIDTH_LARGE = SCREEN_WIDTH/3;
+const BUTTON_WIDTH_SMALL = SCREEN_WIDTH/3.9;
+const BUTTON_HEIGHT = SCREEN_HEIGHT/12;
+const BUTTON_BORDER_RADIUS = SCREEN_WIDTH/15;
 const textBlack = '#161A25' // modern black text color
 const textGray = '#161A25'  // modern gray text color
 const modernWhite = '#EBEEF6'
@@ -238,30 +257,27 @@ const modernWhite = '#EBEEF6'
 const styles = StyleSheet.create({
     container:{ // main container. consists of all timer components. 
         flex: 1, 
-        justifyContent: 'center', 
+        justifyContent: 'flex-start', 
         alignItems: 'center',
+        backgroundColor: 'white',
     },
-    timerBackgroundCircle: {
+    timerBackgroundCircle: { // back white circle of timer. 
         justifyContent: 'center',
         alignItems: 'center',
-        width: SCREEN_WIDTH/1.1,
-        height: SCREEN_WIDTH/1.1,
-        borderRadius: 1000,
-        backgroundColor: timerBackgroundColor,
         position: 'relative',
+        width: SCREEN_WIDTH/1.15,
+        height: SCREEN_WIDTH/1.15,
+        borderRadius: 1000,
         zIndex: 0,
-
-        shadowColor: 'rgba(0, 0, 0, 0.5)', // Shadow color
-        shadowOffset: { width: 0, height: 0 }, // Shadow offset (x and y)
-        shadowOpacity: 1, // Shadow opacity (0 to 1)
-        shadowRadius: 10, // Shadow blur radius
-        elevation: 10,
+        elevation: 7,
+        backgroundColor: TIMER_BACKGROUND_COLOR,
 
     },
     countdownTimer: { // timer container (timer, start, pause)
         justifyContent: 'center',
         alignItems: 'center',
         zIndex: 1,
+        elevation: 10,
     },
     timerTimeText: {
         fontSize: SCREEN_HEIGHT/20,
@@ -271,38 +287,59 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems:'center',
         position: 'absolute',
-        backgroundColor: timerBackgroundColor,
         zIndex: 2,
     },
     setTimeContainer: { // conatiner for text input and text of: hours, minutes, seconds. 
         flexDirection: 'row',
         alignItems:'center',
-        backgroundColor: timerBackgroundColor,
         zIndex: 2,
+        backgroundColor: 'white',
     },
-    textInputRow: {
-        width: SCREEN_WIDTH/8,
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'flex-end',
-    },
-    setWorkTime: {
+    setTimeColumn: {
+        flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        width: SCREEN_WIDTH/4.5,
-        height: SCREEN_HEIGHT/8,
-        marginHorizontal: SCREEN_WIDTH/30,
-        backgroundColor: '#F0F0F0',
     },
-    setBreakTime: {
+    setTimeBoxWork: {
         justifyContent: 'center',
         alignItems: 'center',
-        width: SCREEN_WIDTH/4.5,
-        height: SCREEN_HEIGHT/8,
-        marginHorizontal: SCREEN_WIDTH/30,
-        backgroundColor: '#F0F0F0',
+        width: TIME_INPUT_BOX_WIDTH,
+        height: TIME_INPUT_BOX_HEIGHT,
+        marginRight: SCREEN_WIDTH/22,
+        borderRadius: SCREEN_HEIGHT/45,
+        elevation: 5,
+        backgroundColor: 'white',
     },
-    timeInputLabel: { // 
+    setTimeBoxBreak: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: TIME_INPUT_BOX_WIDTH,
+        height: TIME_INPUT_BOX_HEIGHT,
+        marginLeft: SCREEN_WIDTH/22,
+        borderRadius: SCREEN_HEIGHT/45,
+        elevation: 5,
+        backgroundColor: 'white',
+    },
+    textInput: { // Style text input boxes. 
+        fontWeight: '500',
+        width: '100%',
+        height: SCREEN_HEIGHT/13,
+        fontSize: SCREEN_WIDTH/13,
+        textAlign: 'center',
+    },
+    timeUnitText: { // displays 'minutes' below time inpput
+        fontSize: SCREEN_WIDTH/27,
+        fontWeight: '400',
+        color: '#B1B3B9',
+    },
+    timeInputLabelWork: { // WORK & BREAK label below time input box. 
+        marginTop: SCREEN_HEIGHT/60,
+        marginRight: SCREEN_WIDTH/22,
+        color: '#808080', 
+    },
+    timeInputLabelBreak: {
+        marginTop: SCREEN_HEIGHT/60,
+        marginLeft: SCREEN_WIDTH/22,
         color: '#808080', 
     },
     totalCycleTime: { // container for total cycle time
@@ -319,48 +356,6 @@ const styles = StyleSheet.create({
         color: '#B4B4B4',
         fontSize: SCREEN_HEIGHT/60,
     },
-    startNotReady: { // Pause/Start button. 
-        justifyContent: 'center',
-        alignItems: 'center',
-        width: 90, 
-        height: 40, 
-        backgroundColor: '#BEE6BE',
-    },
-    startOrPauseButton: { // Pause/Start button. 
-        justifyContent: 'center',
-        alignItems: 'center',
-        width: 90, 
-        height: 40, 
-        backgroundColor: '#90EE90',
-    },
-    resetButton: { // Reset button
-        justifyContent: 'center',
-        alignItems: 'center',
-        width: 90, 
-        height: 40, 
-        backgroundColor: '#ff4747',
-    },
-    skipButton: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        width: 90, 
-        height: 40, 
-        backgroundColor: '#fae69eff',
-    },
-    hideSkipButton: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        width: 90, 
-        height: 40, 
-    },
-    textInput: { // Style text input boxes. 
-        fontWeight: '400',
-        fontSize: SCREEN_WIDTH/15,
-    },
-    timeUnitText: {
-        fontSize: SCREEN_WIDTH/30,
-        paddingLeft: SCREEN_WIDTH/200,
-    },
     workOrBreakLabelContainer: {
         flexDirection: 'column',
         alignItems: 'center',
@@ -374,6 +369,90 @@ const styles = StyleSheet.create({
         fontSize: SCREEN_HEIGHT/35,
         fontWeight: '400',
     },
+
+    // ---- BUTTONS ---- //
+    buttonRow: {
+        width: '100%',
+        flexDirection: 'row',
+        justifyContent: 'space-evenly',
+        marginTop: SCREEN_HEIGHT/20,
+    },
+    startNotReady: { // Pause/Start button. 
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: BUTTON_WIDTH_LARGE,
+        height: BUTTON_HEIGHT,
+        borderRadius: BUTTON_BORDER_RADIUS,
+        backgroundColor: '#BEE6BE',
+        elevation: 4,
+    },
+
+    // Start/Pause
+    startOrPauseButtonLarge: { // Start/Pause button. 
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: BUTTON_WIDTH_LARGE,
+        height: BUTTON_HEIGHT,
+        borderRadius: BUTTON_BORDER_RADIUS,
+        backgroundColor: '#8a8fd4ff',
+        elevation: 4,
+    },
+    startOrPauseButtonSmall: { // Start/Pause button. 
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: BUTTON_WIDTH_SMALL,
+        height: BUTTON_HEIGHT,
+        borderRadius: BUTTON_BORDER_RADIUS,
+        backgroundColor: '#8a8fd4ff',
+        elevation: 4,
+    },
+    startOrPauseText: {
+        color: 'white',
+        fontWeight: '500',
+        fontSize: SCREEN_HEIGHT/50,
+    },
+
+    // Reset
+    resetButtonLarge: { // Reset button
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: BUTTON_WIDTH_LARGE,
+        height: BUTTON_HEIGHT,
+        borderRadius: BUTTON_BORDER_RADIUS,
+        backgroundColor: 'white',
+        elevation: 4,
+    },
+    resetButtonSmall: { // Reset button
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: BUTTON_WIDTH_SMALL,
+        height: BUTTON_HEIGHT,
+        borderRadius: BUTTON_BORDER_RADIUS,
+        backgroundColor: 'white',
+        elevation: 4,
+    },
+    resetText: {
+        color: '#8a8fd4ff',
+        fontWeight: '500',
+        fontSize: SCREEN_HEIGHT/50,
+    },
+
+    // Skip
+    skipButton: { // Reset button
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: BUTTON_WIDTH_SMALL,
+        height: BUTTON_HEIGHT,
+        borderRadius: BUTTON_BORDER_RADIUS,
+        backgroundColor: '#3bba59ff',
+        elevation: 4,
+    },
+    skipText: {
+        color: 'white',
+        fontWeight: '500',
+        fontSize: SCREEN_HEIGHT/50,
+    },
+    // -------------------- //
 })
 
 export default PomodoroTimer;

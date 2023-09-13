@@ -24,9 +24,6 @@ const Timer = () => {
     setKey(prevKey => prevKey + 1) // To reset countdown timer back to its intial time value. 
     setIsActive(false); // Timer is not active (running) anymore
   };
-  const setInitialTime = () => {
-    console.log('setting initial time')
-  }
 
   const formatTime = ({ remainingTime }) => { // Format the countdown timer into 'hour:min:seconds' time. 
     const hours = Math.floor(remainingTime / 3600)
@@ -96,16 +93,20 @@ const Timer = () => {
     <View style={styles.container}>
 
         <View style={styles.countdownTimer}>
+
+            {isReset? (
+                <View style={styles.fillTimer}></View>
+            ): 
             <CountdownCircleTimer
                 key={key}
                 isPlaying={isActive}
                 duration={timerDuration} // initial time 
-                colors={['#FA220C', '#00FF1C']}
+                colors={['#8a8fd4', '#00FF1C']}
                 colorsTime={[timerDuration, 0]}
                 strokeWidth={12}
                 trailStrokeWidth={12}
-                isSmoothColorTransition={true} // smooth color transition
-                size={SCREEN_WIDTH/1.3} // circumference (width/height) of circle timer. 
+                isSmoothColorTransition={false} // smooth color transition
+                size={SCREEN_WIDTH/1.2} // circumference (width/height) of circle timer. 
 
                 onComplete={() => { // When Timer is Over
                     if (isActive) {
@@ -114,114 +115,197 @@ const Timer = () => {
                 }}
             >
                 {/* Display 'hour:min:seconds' format */}
-                {({ remainingTime }) => <Text>{formatTime({remainingTime})}</Text>} 
+                {({ remainingTime }) => <Text style={styles.remainingTimeText}>{formatTime({remainingTime})}</Text>} 
             </CountdownCircleTimer>
+            }
             
+            {/* Display time input only when isReset is true. */}
             {isReset ? (
             <View style={styles.setTimeContainer}>
 
-                {/* Hours */}
-                <TextInput 
-                    style={styles.textInput} 
-                    placeholder="00"
-                    value={hours} 
-                    onChangeText={num => handleInputChange(num, 'hours')}
-                    keyboardType="numeric"
-                    editable={!isActive} // editable should be true when isActive is false (when timer is not running) and vice versa. 
-                />
-                <Text style={styles.timeUnitText}>h  </Text>
+                <View style={styles.header}>
+                    <Text style={styles.headerText}>Set Your Timer</Text>
+                </View>
 
-                {/* Minutes */}
-                <TextInput 
-                    style={styles.textInput} 
-                    placeholder="00"
-                    value={minutes} 
-                    onChangeText={num => handleInputChange(num, 'minutes')}
-                    keyboardType="numeric"
-                    editable={!isActive}
-                />
-                <Text style={styles.timeUnitText}>m  </Text>
+                <View style={styles.timeUnitRow}>
+                    <Text style={styles.timeUnitText}>Hours</Text>
+                    <Text style={styles.timeUnitText}>Minutes</Text>
+                    <Text style={styles.timeUnitText}>Seconds</Text>
+                </View>
 
-                {/* Seconds */}
-                <TextInput 
-                    style={styles.textInput} 
-                    placeholder="00"
-                    value={seconds} 
-                    onChangeText={num => handleInputChange(num, 'seconds')}
-                    keyboardType="numeric"
-                    editable={!isActive}
-                />
-                <Text style={styles.timeUnitText}>s  </Text>
+                <View style={styles.textInputRow}>
+
+                    {/* Hours */}
+                    <TextInput 
+                        style={styles.textInput} 
+                        placeholder="00"
+                        value={hours} 
+                        onChangeText={num => handleInputChange(num, 'hours')}
+                        keyboardType="numeric"
+                        editable={!isActive} // editable should be true when isActive is false (when timer is not running) and vice versa. 
+                    />
+                    <Text style={styles.textInputColon}>:</Text>
+
+                    {/* Minutes */}
+                    <TextInput 
+                        style={styles.textInput} 
+                        placeholder="00"
+                        value={minutes} 
+                        onChangeText={num => handleInputChange(num, 'minutes')}
+                        keyboardType="numeric"
+                        editable={!isActive}
+                    />
+                    <Text style={styles.textInputColon}>:</Text>
+
+                    {/* Seconds */}
+                    <TextInput 
+                        style={styles.textInput} 
+                        placeholder="00"
+                        value={seconds} 
+                        onChangeText={num => handleInputChange(num, 'seconds')}
+                        keyboardType="numeric"
+                        editable={!isActive}
+                    />
+                    
+                </View>
 
             </View>
             ): null}
 
         </View>
         
-        
-        {/* Start/Pause Button */}
-        <TouchableOpacity style={timerDuration === 0 ? styles.startNotReady : styles.startOrPauseButton} disabled={timerDuration===0} onPress={toggleTimer}>
-        <Text>{isActive ? 'Pause' : 'Start'} </Text>
-        </TouchableOpacity>
+        <View style={styles.buttonsContainer}>
+            {/* Reset Button */}
+            <TouchableOpacity style={styles.resetButton} onPress={resetTimer}>
+                <Text style={styles.resetText}>Reset</Text>
+            </TouchableOpacity >
 
-        {/* Reset Button */}
-        <TouchableOpacity style={styles.resetButton} onPress={resetTimer}>
-            <Text>Reset</Text>
-        </TouchableOpacity >
+            {/* Start/Pause Button */}
+            <TouchableOpacity style={timerDuration === 0 ? styles.startNotReady : styles.startOrPauseButton} disabled={timerDuration===0} onPress={toggleTimer}>
+                <Text style={styles.startOrPauseText}>{isActive ? 'Pause' : 'Start'} </Text>
+            </TouchableOpacity>
+        </View>
+        
     </View>
   );
 };
 
-const SetTimeTextSize = SCREEN_WIDTH/18;
+const SET_TIME_TEXT_SIZE = SCREEN_WIDTH/11
+const BUTTON_WIDTH = SCREEN_WIDTH/3;
+const BUTTON_HEIGHT = SCREEN_HEIGHT/12;
+const BUTTON_BORDER_RADIUS = SCREEN_WIDTH/15;
 
 const styles = StyleSheet.create({
     container:{ // main container. consists of all timer components. 
         flex: 1, 
         justifyContent: 'center', 
         alignItems: 'center',
+        backgroundColor: 'white',
     },
     countdownTimer: { // timer container (timer, start, pause)
         justifyContent: 'center',
         alignItems: 'center',
-        position: 'relative',
-        backgroundColor: 'yellow'
     },
+    // fillTimer: {
+    //     height: SCREEN_WIDTH/1.3, 
+    //     width: SCREEN_WIDTH/1.3, 
+    // },
     setTimeContainer: { // conatiner for text input and text of: hours, minutes, seconds. 
-        flexDirection: 'row',
-        height: SCREEN_HEIGHT/15,
+        flexDirection: 'column',
         alignItems:'center',
-        position: 'absolute',
-        backgroundColor: '#90EE90',
+        height: SCREEN_WIDTH/1.2,
     },
-    startNotReady: { // Pause/Start button. 
+    remainingTimeText: {
+        fontSize: SCREEN_WIDTH/13,
+        fontWeight: '500',
+        color: '#8a8fd4ff',
+    },
+    header: {
+        width: '100%',
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+    },
+    headerText: {
+        fontSize: SCREEN_HEIGHT/30,
+        fontWeight: '500',
+        color: '#8a8fd4ff',
+    },
+    timeUnitRow: {
+        flexDirection: 'row',
+        marginBottom: SCREEN_HEIGHT/80,
+    },
+    timeUnitText: {
+        fontSize: SET_TIME_TEXT_SIZE/2,
+        color: '#B1B3B9',
+        paddingHorizontal: SCREEN_WIDTH/20,
+    },
+    textInputRow: {
+        flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        width: 90, 
-        height: 40, 
+        width: SCREEN_WIDTH/1.3,
+        backgroundColor: 'white',
+    },
+    textInput: { // Style text input boxes. 
+        width: SCREEN_WIDTH/5,
+        height: SCREEN_HEIGHT/10,
+        fontWeight: '600',
+        fontSize: SET_TIME_TEXT_SIZE,
+        color: '#8a8fd4ff',
+        paddingHorizontal: SCREEN_WIDTH/30,
+        marginHorizontal: SCREEN_WIDTH/50,
+        borderRadius: SCREEN_WIDTH/40,
+        elevation: 5,
+        backgroundColor: 'white',
+    },
+    textInputColon: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        fontWeight: '800',
+        fontSize: SET_TIME_TEXT_SIZE,
+        color: '#8a8fd4ff',
+    },
+    buttonsContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        width: '100%',
+        marginTop: SCREEN_HEIGHT/30,
+    },
+    startNotReady: { // Start button when no initial time. 
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: BUTTON_WIDTH,
+        height: BUTTON_HEIGHT,
+        borderRadius: BUTTON_BORDER_RADIUS,
         backgroundColor: '#BEE6BE',
     },
     startOrPauseButton: { // Pause/Start button. 
         justifyContent: 'center',
         alignItems: 'center',
-        width: 90, 
-        height: 40, 
-        backgroundColor: '#90EE90',
+        width: BUTTON_WIDTH,
+        height: BUTTON_HEIGHT,
+        borderRadius: BUTTON_BORDER_RADIUS,
+        backgroundColor: '#8a8fd4ff',
+        elevation: 4,
+    },
+    startOrPauseText: {
+        color: 'white',
+        fontWeight: '500',
+        fontSize: SCREEN_HEIGHT/50,
     },
     resetButton: { // Reset button
         justifyContent: 'center',
         alignItems: 'center',
-        width: 90, 
-        height: 40, 
-        backgroundColor: '#ff4747',
+        width: BUTTON_WIDTH,
+        height: BUTTON_HEIGHT,
+        borderRadius: BUTTON_BORDER_RADIUS,
+        backgroundColor: 'white',
+        elevation: 4,
     },
-    textInput: { // Style text input boxes. 
-        width: SCREEN_WIDTH/9,
-        fontWeight: '600',
-        fontSize: SetTimeTextSize,
-    },
-    timeUnitText: {
-        fontSize: SetTimeTextSize,
-        paddingLeft: SCREEN_WIDTH/100,
+    resetText: {
+        color: '#8a8fd4ff',
+        fontWeight: '500',
+        fontSize: SCREEN_HEIGHT/50,
     },
 })
 
