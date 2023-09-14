@@ -206,10 +206,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
-    // fillTimer: {
-    //     height: SCREEN_WIDTH/1.3, 
-    //     width: SCREEN_WIDTH/1.3, 
-    // },
     setTimeContainer: { // conatiner for text input and text of: hours, minutes, seconds. 
         flexDirection: 'column',
         alignItems:'center',

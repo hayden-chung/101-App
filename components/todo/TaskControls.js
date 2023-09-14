@@ -2,8 +2,8 @@
 export const addTask = (task, taskItems, setTaskItems, setTask) => { // add a new task to to-do list
     taskItems.push(task);
     setTaskItems([...taskItems]); // assign taskItems with the pre-existing values in the array and the additional 'task'
-    setTask([null, false, false, null]); // task = [null, false, false, null] (reasign task to default value)
-    return { task: [null, false, false, null], taskItems: [...taskItems, task] }; // return values to update 
+    setTask([null, false, false, null, null]); // task = [null, false, false, null] (reasign task to default value)
+    return { task: [null, false, false, null, null], taskItems: [...taskItems, task] }; // return values to update 
 };
 
 export const completedTask = (index, taskItems, setTaskItems) => { // (To Do Screen) When task is pressed, 
@@ -29,4 +29,11 @@ export const selectedTask = (index, taskItems, setTaskItems, toggleAlarmMessage,
     }
     
     return { taskItems: taskItems, toggleAlarmMessage: toggleAlarmMessage}; // return values to update
+};
+
+export const updateTag = (index, taskItems, setTaskItems, aspect) => {
+    let newTaskItems = taskItems
+    console.log('aspectT', aspect)
+    newTaskItems[index][4] = aspect
+    setTaskItems([...newTaskItems])
 };

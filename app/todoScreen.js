@@ -11,7 +11,7 @@ const SCREEN_HEIGHT = (Dimensions.get('window').height);
 
 const ToDoScreen = ({navigation}) => { // when user clicks on todo button, navigate to this main function of the to-do screen
 
-  const [task, setTask] = useState([null, false, false, null]); // useState is a hook that allows you to state variables in functional components. In this case: task = [task name, task completion state, task selected state in timetable generator, estimated completion time ] 
+  const [task, setTask] = useState([null, false, false, null, null]); // useState is a hook that allows you to state variables in functional components. In this case: task = [task name, task completion state, task selected state in timetable generator, estimated completion time, aspect ] 
   const {taskItems, setTaskItems} = TaskItemsList(); // task list
 
   const updateTaskList = () => {
@@ -45,20 +45,20 @@ const ToDoScreen = ({navigation}) => { // when user clicks on todo button, navig
                 onLongPress={() => {deleteTask(index, taskItems, setTaskItems); updateTaskList()}}
                 > 
                 {/* Task component displays task item. Parameters 'text' (task text) and 'taskState' (checkbox)*/}
-                <Task text={item[0]} timetableGenerator={false} taskStatus={taskItems[index][1]} taskTime={taskItems[index][3]} /> 
+                <Task text={item[0]} timetableGenerator={false} taskStatus={taskItems[index][1]} taskTime={taskItems[index][3]} aspect={taskItems[index][4]} index={index} taskItems={taskItems} setTaskItems={setTaskItems}/> 
               </TouchableOpacity>
           }/>
         </View>
 
       </View>
       
-      {/* Prevent task box and add button from hiding when keyboard appears */}
+      {/* ADD TASK */}
       <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? "padding" : "height"} // if phone plantform is iOS, use padding to push items, else add height. 
       style={styles.textInputWrapper}
       >
         {/* Text input box. placeholder = when box is empty. value = string value when enter button pressed. onChangeText = when textbox changes,   */}
-        <TextInput style={styles.textInput} placeholder={'Write a Task'} value={task[0]} onChangeText={text => setTask([text, false, false, null])}/> 
+        <TextInput style={styles.textInput} placeholder={'Write a Task'} value={task[0]} onChangeText={text => setTask([text, false, false, null, null])}/> 
 
         {/* Touchable opacity to add task */}
         <TouchableOpacity onPress={() => {addTask(task, taskItems, setTaskItems, setTask); updateTaskList()}}>

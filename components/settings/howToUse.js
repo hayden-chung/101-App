@@ -8,7 +8,6 @@ const HowToUseScreen = ({navigation}) => {
 
     return(
         <View style={styles.container}>
-
             
         </View>
     )

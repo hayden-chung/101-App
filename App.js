@@ -83,9 +83,6 @@ export default function App() {
         component={HowToUseScreen}
       />
       
-      
-
-
       </Stack.Navigator>
     </NavigationContainer>
   );
