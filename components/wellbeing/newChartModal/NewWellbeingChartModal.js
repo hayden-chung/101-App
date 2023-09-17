@@ -7,8 +7,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 import NextButton from './modalNextButton';
-import {updateWellbeingDataStorage} from '../wellbeingData';
-import {getCurrentDate} from '../wellbeingControls';
+import {getCurrentDate} from '../calendar/calendarControls';
 import {updateCalendarData} from '../calendar/calendarControls'
 
 
@@ -40,10 +39,7 @@ export const NewWellbeingChartModal = (props) => {
         if (direction === 'right') {                                // If right button pressed
             if (pageNumber < props.wellbeingData.labels.length-1) { // If page number is not larger than the number of aspects (6). (props.wellbeingData.labels.length = 6 and index number starts from 0 so subtract 1) 
                 changePageNumber(pageNumber+1)                      // Increase page number by 1.
-            } else if (pageNumber === 5) {                          // if pg number is 6 (5 for index number)
-                // updateDataHistory(...dataHistory, wellbeingRating)
-                
-                updateWellbeingDataStorage(wellbeingRating);            // Update wellbeing rating.
+            } else if (pageNumber === 5) {                          // if pg number is 6 (5 for index number)                
                 props.wellbeingData.datasets[0].data = wellbeingRating  // Update graph data.
                 updateCalendarData(props.setCalendarData, currentDate, wellbeingRating)  // Save wellbeing rating data into current date.
                 closeModal()                                            // close modal (and update graph).

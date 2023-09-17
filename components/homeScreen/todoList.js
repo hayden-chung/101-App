@@ -12,7 +12,7 @@ const TodoList = ({navigation}) => {
                 showsVerticalScrollIndicator={false} // Hide scroll bar.
                 renderItem={({item, index}) =>       // Item and index no. of task in array. 
                 <View>
-                    <Task text={item[0]} timetableGenerator={false} taskStatus={taskItems[index][1]} taskTime={taskItems[index][3]} /> 
+                    <Task text={item[0]} timetableGenerator={false} taskStatus={taskItems[index][1]} taskTime={taskItems[index][3]} aspect={taskItems[index][4]} index={index} taskItems={taskItems} setTaskItems={setTaskItems}/> 
                 </View>
             }/>
     )

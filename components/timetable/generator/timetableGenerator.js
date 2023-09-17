@@ -48,7 +48,7 @@ const TimetableGenerator = ({navigation}) => {
                         }}>
 
                         {/* Task component displays task item. Parameters 'text' (task text) and 'taskState' (checkbox)*/}
-                        <Task text={item[0]} timetableGenerator={true} taskStatus={taskItems[index][2]} taskTime={taskItems[index][3]} /> 
+                        <Task text={item[0]} timetableGenerator={true} taskStatus={taskItems[index][2]} taskTime={taskItems[index][3]} aspect={taskItems[index][4]} index={index} taskItems={taskItems} setTaskItems={setTaskItems} /> 
                         </TouchableOpacity>
                     }/>
                 </View>

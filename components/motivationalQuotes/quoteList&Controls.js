@@ -10,7 +10,7 @@ export const updateQuoteList = (updatedList) => {
 }
 
 
-export const QuoteListItems = () => {
+export const quoteListItems = () => {
     const [quoteList, setQuoteList] = useState(defaultQuotes); // List of quotes
     return {quoteList, setQuoteList}; 
 } 

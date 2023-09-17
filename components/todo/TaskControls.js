@@ -6,6 +6,12 @@ export const addTask = (task, taskItems, setTaskItems, setTask) => { // add a ne
     return { task: [null, false, false, null, null], taskItems: [...taskItems, task] }; // return values to update 
 };
 
+export const updateTask = (updatedTask, index, taskItems, setTaskItems) => {
+    taskItems[index][0] = updatedTask
+    setTaskItems([...taskItems]);
+    console.log('updated')
+};
+
 export const completedTask = (index, taskItems, setTaskItems) => { // (To Do Screen) When task is pressed, 
     taskItems[index][1] =!taskItems[index][1]; // inverse the boolean state (if false --> true, if true --> false)
     setTaskItems([...taskItems]); // update the taskItems array 
@@ -27,7 +33,6 @@ export const selectedTask = (index, taskItems, setTaskItems, toggleAlarmMessage,
         toggleAlarmMessage(true); // set alarm message to asppear
         console.log('cannot select')
     }
-    
     return { taskItems: taskItems, toggleAlarmMessage: toggleAlarmMessage}; // return values to update
 };
 

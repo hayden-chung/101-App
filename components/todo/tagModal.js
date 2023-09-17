@@ -11,6 +11,8 @@ const SCREEN_HEIGHT = (Dimensions.get('window').height);
 
 const TagModal = ({setTagModalVisible, setAspect, index, taskItems, setTaskItems}) => {
 
+  console.log('taskItems from tagModal', taskItems)
+
   const handlePressed = (aspect) => { // return aspect and close modal
     setAspect(aspect);
     updateTag(index, taskItems, setTaskItems, aspect);

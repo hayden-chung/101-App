@@ -5,7 +5,7 @@ import { quoteToggle } from '../components/motivationalQuotes/quoteList&Controls
 import { QuoteModal } from '../components/motivationalQuotes/quoteModal';
 import { MaterialIcons } from '@expo/vector-icons'; 
 import { EditDeleteQuoteModal } from '../components/motivationalQuotes/edit&deleteQuoteModal';
-import {QuoteListItems} from '../components/motivationalQuotes/quoteList&Controls';
+import {quoteListItems} from '../components/motivationalQuotes/quoteList&Controls';
 import {quoteListSaved} from '../components/motivationalQuotes/quoteList&Controls'
 import TabBar from '../components/tabBar';
 
@@ -13,7 +13,7 @@ const QuoteScreen = ({navigation}) => {
     
     const [isQuoteModalVisible, quoteModalVisible] = useState([false, false]); // [modal display (true/false), edit? (true/false)]
     const [isEditDeleteModalVisible, EditDeleteModalVisible] = useState([false, null]); // [edit/delete modal display (true/false), quote index no.]
-    const {quoteList, setQuoteList} = QuoteListItems(); // destructure function (QuoteListItems) into 'quoteList' variable and 'setQuoteList' function.
+    const {quoteList, setQuoteList} = quoteListItems(); // destructure function (quoteListItems) into 'quoteList' variable and 'setQuoteList' function.
 
     console.log('quoteList', quoteListSaved)
 

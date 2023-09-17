@@ -8,8 +8,8 @@ import { MaterialIcons } from '@expo/vector-icons';
 import {NewWellbeingChartModal} from '../components/wellbeing/newChartModal/newWellbeingChartModal';
 import {wellbeingData, updateWellbeingData} from '../components/wellbeing/wellbeingData';
 import WellbeingDatePicker from '../components/wellbeing/calendar/wellbeingDatePicker';
-import {getCurrentDate} from '../components/wellbeing/wellbeingControls'
-import {handlePreviousDay, handleNextDay, updateCalendarData} from '../components/wellbeing/calendar/calendarControls';
+import {getCurrentDate} from '../components/wellbeing/calendar/calendarControls'
+import {handlePreviousDay, handleNextDay, updateCalendarData, savedCalendarData} from '../components/wellbeing/calendar/calendarControls';
 import TabBar from '../components/tabBar'
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
@@ -19,9 +19,11 @@ const WellBeingScreen = ({navigation}) => { // main function for wellbeing scree
   const [isNewChartModalVisible, newChartModalVisible] = useState(false); // Is 'new chart' modal visible. 
   const [isCalendarVisible, setCalendarVisible] = useState(false); // Is calendar modal visible.
   const [selectedDate, setSelectedDate] = useState(getCurrentDate()); // Selected date from date picker (calendar).
-  const [calendarData, setCalendarData] = useState({"2023-08-02": [10, 1, 2, 5, 1, 1]}); // data type = object (key value (like dictionary in python))
+  const [calendarData, setCalendarData] = useState(savedCalendarData); // data type = object (key value (like dictionary in python))
 
-  updateWellbeingData(selectedDate, calendarData) // Update 
+  updateWellbeingData(selectedDate, calendarData) 
+
+  console.log(savedCalendarData)
 
   return (
     // SafeAreaView renders content within the visible boundaries of the device (iOS only).
