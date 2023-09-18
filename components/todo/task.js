@@ -40,7 +40,7 @@ const Task = ({text, timetableGenerator, taskStatus, taskTime, aspect, index, ta
                 )}
 
                 {/*  Task Text */}
-                <Text style={[styles.taskText, taskStatus ? { textDecorationLine: 'line-through' }: {}]}>{text}</Text> 
+                <Text style={[styles.taskText, taskStatus && timetableGenerator === false ? { textDecorationLine: 'line-through' }: {}]}>{text}</Text> 
             </View>
 
             <View style={styles.itemsRight}>
@@ -55,7 +55,7 @@ const Task = ({text, timetableGenerator, taskStatus, taskTime, aspect, index, ta
                 </View>
                 ): 
                 // Display an icon
-                <TouchableOpacity style={styles.addBoxTag} onPress={() => setTagModalVisible(true)}>
+                <TouchableOpacity style={styles.taggedBox} onPress={() => setTagModalVisible(true)}>
                     <View>
                         {isAspect === 'work' && (
                             <Entypo name={'suitcase'} size={SCREEN_WIDTH/15} color="#3a46bf" />
@@ -95,11 +95,13 @@ const Task = ({text, timetableGenerator, taskStatus, taskTime, aspect, index, ta
                 </Modal>
 
                 {/* ----- ESTIMATED TIME ------ */}
+                {/* If estimated time exists */}
                 {taskTime !== null ? (
-                    <TouchableOpacity style={styles.addBoxTime} onPress={() => setEstimatedTimeVisible(true)}>
+                    <TouchableOpacity style={styles.timeBox} onPress={() => setEstimatedTimeVisible(true)}>
                         <Text style={styles.estimatedTime}> {taskTime}h </Text>
                     </TouchableOpacity> 
                 ) : 
+                // No estimated time
                 <View style={styles.addTagContainer}>
                     <TouchableOpacity style={styles.addBoxTime} onPress={() => setEstimatedTimeVisible(true)}>
                         <Text style={styles.addBoxText}>+</Text>
@@ -134,18 +136,18 @@ const styles = StyleSheet.create({
     itemLeft: { 
         flexDirection: 'row',
         alignItems: 'center',
-        width: '70%',
+        width: '65%',
     },
     itemsRight: {
         flexDirection: 'row',
         alignItems: 'center',
-        width: '30%',
+        paddingRight: SCREEN_WIDTH/40,
     },
     checkbox: {
         marginRight: 15,
     },
     taskText:{
-        maxWidth: '70%',
+        maxWidth: '65%',
     },
     estimatedTime: {
         color: 'gray',
@@ -163,6 +165,15 @@ const styles = StyleSheet.create({
         borderRadius: SCREEN_HEIGHT/120,
         borderWidth: SCREEN_HEIGHT/400,
     },
+    taggedBox: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: SCREEN_WIDTH/12,
+        height: SCREEN_WIDTH/12,
+        borderRadius: SCREEN_HEIGHT/120,
+        borderWidth: SCREEN_HEIGHT/400,
+        borderColor: '#d1d1d1',
+    },
     addBoxTime: {
         justifyContent: 'center',
         alignItems: 'center',
@@ -171,6 +182,16 @@ const styles = StyleSheet.create({
         borderRadius: SCREEN_HEIGHT/120,
         borderWidth: SCREEN_HEIGHT/400,
         marginLeft: SCREEN_WIDTH/30,
+    },
+    timeBox: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: SCREEN_WIDTH/6.6,
+        height: SCREEN_WIDTH/12,
+        borderRadius: SCREEN_HEIGHT/120,
+        borderWidth: SCREEN_HEIGHT/400,
+        borderColor: '#d1d1d1',
+        marginLeft: SCREEN_WIDTH/30,    
     },
     addBoxText: {
         fontSize: SCREEN_HEIGHT/30,

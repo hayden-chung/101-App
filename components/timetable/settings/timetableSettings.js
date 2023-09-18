@@ -29,80 +29,83 @@ const TimetableSettings = ({navigation}) => { // Timetable Settings Screen.
 
     return(
         <View style={styles.container}>
-
-            {/* Display header text of screen. */}
-            <View style={styles.header}>
-                <Text style={styles.headerText}>Timetable Settings</Text>
-            </View>
-
-            {/* Display start & finish time of timetable */}
-            <View style={styles.timetableStartFinishContainer}>
-                <Text style={styles.startFinishTitleText}>Timetable Start-Finish</Text>
-
-                
-
-                    <FlatList
-                        data={timetableTime}
-                        renderItem={({item}) => {
-                            return (
-                            <View style={styles.startFinishWrapper}>
-                                <Text style={styles.startFinishText}>Start</Text>
-                                {/* sessionType='start-finish because we want to display the start-finish time of timetable. startOrFinish={0} so we can display the start time */}
-                                <TimePicker sessionType={item} startOrFinish={0} updateAndReRender={updateAndReRender}/> 
-
-                                <Text style={styles.startFinishText}>Finish</Text>
-                                {/* startOrFinish={1} so we can display the finish time of timetable. */}
-                                <TimePicker sessionType={item} startOrFinish={1} updateAndReRender={updateAndReRender}/>  
-                            </View>
-                        )}}
-                    />
-
-                
-            </View>
-
-            {/* Display the rest of break sessions */}
-            <View style={styles.breakSessionsContainer}>
-
-                {/* Break sessions header */}
-                <Text style={styles.breakSessionsHeader}>Break Sessions</Text>
-                <View style={styles.breakSessionsWrapper}>
-
-                    {/* FlatList to iterate over the breakSessions array */}
-                    <FlatList
-                        data={breakSessions}        // input data 'breakSessions' with all the break sessions. 
-                        renderItem={({item}) => {
-                        
-                            return (   // item = string value of break sessions (e.g. 'break 1')
-                            <View style={styles.breakSessionItems}>
-                                {/* Name of break session */}
-                                <Text>{item}</Text>
-
-
-                                {/* Start time of break session */}
-                                <Text style={styles.startFinishText}>Start</Text>
-                                <TimePicker sessionType={item} startOrFinish={0} updateAndReRender={updateAndReRender}/> 
-
-                                {/* Finish time of break session */}
-                                <Text style={styles.startFinishText}>Finish</Text>
-                                <TimePicker sessionType={item} startOrFinish={1} updateAndReRender={updateAndReRender}/>  
-
-                                {/* Delete Button (with trash can icon button. When pressed, call deleteBreak to delete the break session and call updateAndReRender to update the breakSessions array after deleted.  */}
-                                <TouchableOpacity style={styles.removeBreak} onPress={() => {deleteBreak(item), updateAndReRender()}} >
-                                    <MaterialIcons name="delete" size={24} color="black" />
-                                </TouchableOpacity>
-        
-                            </View>
-                        )}
-                    }
-
-                    />
+            <View style={styles.wrapper}>
+                {/* Display header text of screen. */}
+                <View style={styles.header}>
+                    <Text style={styles.headerText}>Timetable Settings</Text>
                 </View>
-            </View>
+
+                {/* Display start & finish time of timetable */}
+                <View style={styles.timetableStartFinishContainer}>
+                    <Text style={styles.startFinishTitleText}>Timetable</Text>
+
+                    
+
+                        <FlatList
+                            data={timetableTime}
+                            renderItem={({item}) => {
+                                return (
+                                <View style={styles.startFinishWrapper}>
+                                    <Text style={styles.startFinishText}>Start</Text>
+                                    {/* sessionType='start-finish because we want to display the start-finish time of timetable. startOrFinish={0} so we can display the start time */}
+                                    <TimePicker sessionType={item} startOrFinish={0} updateAndReRender={updateAndReRender}/> 
+
+                                    <Text style={styles.startFinishText}>Finish</Text>
+                                    {/* startOrFinish={1} so we can display the finish time of timetable. */}
+                                    <TimePicker sessionType={item} startOrFinish={1} updateAndReRender={updateAndReRender}/>  
+                                </View>
+                            )}}
+                        />
+
+                    
+                </View>
+
+                {/* Display the rest of break sessions */}
+                <View style={styles.breakSessionsContainer}>
+
+                    {/* Break sessions header */}
+                    <Text style={styles.breakSessionsHeaderText}>Break Sessions</Text>
+                    <View style={styles.breakSessionsWrapper}>
+
+                        {/* FlatList to iterate over the breakSessions array */}
+                        <FlatList
+                            data={breakSessions}        // input data 'breakSessions' with all the break sessions. 
+                            showsVerticalScrollIndicator={false}
+                            renderItem={({item}) => {
+                            
+                                return (   // item = string value of break sessions (e.g. 'break 1')
+                                <View style={styles.breakSessionItem}>
+                                    {/* Name of break session */}
+                                    <View style={styles.itemRow1}>
+                                        <Text style={styles.breakTitleText}>{item}</Text>
+                                    </View>
+
+                                    <View style={styles.itemRow2}>
+                                        {/* Start time of break session */}
+                                        <TimePicker sessionType={item} startOrFinish={0} updateAndReRender={updateAndReRender}/> 
+                                        <Text style={styles.toText}>to</Text>
+                                        {/* Finish time of break session */}
+                                        <TimePicker sessionType={item} startOrFinish={1} updateAndReRender={updateAndReRender}/>  
+
+                                        {/* Delete Button (with trash can icon button. When pressed, call deleteBreak to delete the break session and call updateAndReRender to update the breakSessions array after deleted.  */}
+                                        <TouchableOpacity style={styles.removeBreak} onPress={() => {deleteBreak(item), updateAndReRender()}} >
+                                            <MaterialIcons name="delete" size={24} color="black" />
+                                        </TouchableOpacity>
+                                    </View>
             
-            {/* Add new break session button. When pressed, open setNewBreakModalVisible modal */}
-            <TouchableOpacity style={styles.addBreakButton} onPress={() => {setNewBreakModalVisible(true)}}>
-                <Text style={styles.addBreakText}>Add Break</Text>
-            </TouchableOpacity>
+                                </View>
+                            )}
+                        }
+
+                        />
+                    </View>
+                </View>
+                
+                {/* Add new break session button. When pressed, open setNewBreakModalVisible modal */}
+                <TouchableOpacity style={styles.addBreakButton} onPress={() => {setNewBreakModalVisible(true)}}>
+                    <Text style={styles.addBreakText}>Add Break</Text>
+                </TouchableOpacity>
+            </View>
             
             {/* <Modal/> component ensures <AddBreakModal/> is only viisble when visible={true} */}
             <Modal
@@ -128,58 +131,105 @@ const TimetableSettings = ({navigation}) => { // Timetable Settings Screen.
 const styles = StyleSheet.create({
     container: { // container = whole screen of timetable settings 
         flex: 1,
-        paddingTop: SCREEN_HEIGHT/20,
         alignItems: 'center', // flexDirection: 'column'
-        backgroundColor: 'green',
     }, 
+    wrapper: {
+        marginTop: SCREEN_HEIGHT/20,
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: '95%',
+        height: SCREEN_HEIGHT/1.1
+    },
     header: {
-        
+        marginBottom: SCREEN_HEIGHT/40,
     },
     headerText: { // style header text (Timetable Settings)
-        fontSize: SCREEN_HEIGHT/20,
+        fontSize: SCREEN_HEIGHT/23,
+        fontWeight: '500',
     },
     timetableStartFinishContainer: { // Container for displaying start/finish time of timetable. 
-        width: '100%',
+        width: '95%',
         padding: SCREEN_HEIGHT/50,
         flexDirection: 'column',
         alignContent: 'flex-start',
+        borderRadius: 13,
+        elevation: 5,
         backgroundColor: 'white',
     },
     startFinishTitleText: {
+        fontSize: SCREEN_HEIGHT/38,
+        fontWeight: '400',
+        color: '#7A7A7A',
     },
     startFinishWrapper: { // Wrapper for start/finish time of timetable. 
         flexDirection: 'row',
-        justifyContent: 'center',
+        justifyContent: 'space-between',
         alignItems: 'center',
     },
     startFinishText: { // Text displays start or finish (for time).
         fontSize: SCREEN_WIDTH/20,
     },
     breakSessionsContainer: { // container for listing break sessions. 
-        height: 400,
-        backgroundColor: '#D3D3D3',
+        marginTop: SCREEN_HEIGHT/50,
+        height: SCREEN_HEIGHT/2,
+        width: '95%',
+        borderRadius: 10,
+        elevation: 10,
+        backgroundColor: 'white',
+    },
+    breakSessionsHeaderText: {
+        paddingTop: SCREEN_HEIGHT/70,
+        paddingLeft: SCREEN_WIDTH/30,
+        fontSize: SCREEN_WIDTH/20,
     },
     breakSessionsWrapper: { // wrapper for list of break sessions. 
-        padingBottom: SCREEN_HEIGHT/2,
-    },
-    breakSessionItems: { // Individual item of break sessions. 
-        width: SCREEN_WIDTH/1.2,
-        height: SCREEN_HEIGHT/10,
-        margin: SCREEN_HEIGHT/100,
-        flexDirection: 'row',
+        flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'yellow',
+    },
+    breakSessionItem: { // Individual item of break sessions. 
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: SCREEN_WIDTH/1.2,
+        margin: SCREEN_HEIGHT/100,
+        paddingVertical: SCREEN_HEIGHT/70,
+        paddingLeft: SCREEN_WIDTH/30,
+        borderRadius: 10,
+        elevation: 6,
+        backgroundColor: 'white',
+    },
+    itemRow1: {
+        flexDirection: 'row',
+        width: '100%',
+    },
+    breakTitleText: {
+        color: '#7A7A7A',
+    },
+    itemRow2: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingLeft: SCREEN_WIDTH/30,
+        width: '100%',
+        paddingRight: SCREEN_WIDTH/20,
+    },
+    toText: {
+        backgroundColor: 'white',
     },
     addBreakButton: { // Button styling for adding break session. 
         alignItems: 'center',
         justifyContent: 'center',
-        width: SCREEN_WIDTH/1.2,
-        height: SCREEN_HEIGHT/10,
-        backgroundColor: 'pink',
+        width: '95%',
+        height: SCREEN_HEIGHT/15,
+        borderRadius: 14,
+        marginTop: SCREEN_HEIGHT/30,
+        backgroundColor: '#8EC685',
     },
     addBreakText: {
-
+        color: 'white',
+        fontWeight: '500',
+        fontSize: SCREEN_HEIGHT/40,
     },
     pushToBottom: {
         flex: 1,    

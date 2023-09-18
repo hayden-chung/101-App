@@ -1,4 +1,7 @@
 
+
+
+
 export const addTask = (task, taskItems, setTaskItems, setTask) => { // add a new task to to-do list
     taskItems.push(task);
     setTaskItems([...taskItems]); // assign taskItems with the pre-existing values in the array and the additional 'task'
@@ -7,9 +10,10 @@ export const addTask = (task, taskItems, setTaskItems, setTask) => { // add a ne
 };
 
 export const updateTask = (updatedTask, index, taskItems, setTaskItems) => {
-    taskItems[index][0] = updatedTask
-    setTaskItems([...taskItems]);
-    console.log('updated')
+    if (updatedTask !== null && updatedTask.trim() !== '') {
+        taskItems[index][0] = updatedTask
+        setTaskItems([...taskItems]);
+    }
 };
 
 export const completedTask = (index, taskItems, setTaskItems) => { // (To Do Screen) When task is pressed, 

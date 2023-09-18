@@ -26,17 +26,14 @@ const subsetSum = (tasksToPutInTimetable, startAndEndTime) => { //
         dp[i] = [false];
     }
     dp[0][0] = true;
-
     // Subset Sum Algorithm
     for (let num=0; num < tasksToPutInTimetable.length; num++) { // iterate for length of selectedTasks
 
-        capacityOfCurrentTask = tasksToPutInTimetable[num][3]
-
+        const capacityOfCurrentTask = Math.round(tasksToPutInTimetable[num][3])
         for (let i = target; i >= capacityOfCurrentTask; i--) { // repeat for amount of available time (e.g. idx 3 of ["Test task", false, true, 100])
             dp[i][0] = dp[i][0] // If dp[i][0] is true, set to true. dp[i][0] is so that on the next outer for loop with the next num, the true values won't be re-set to false. 
-            
             if (dp[i-capacityOfCurrentTask][0]) { // # if current pos - amount of available time of task = true, (dp[i-selectedTasks[num][3]][0] is True), set to True.
-                
+                console.log(i-capacityOfCurrentTask)
                 dp[i][0] = dp[i-capacityOfCurrentTask][0] // set dp[i][0] to true
 
                 // to prevent more tasks being added than the target value. 
@@ -45,15 +42,12 @@ const subsetSum = (tasksToPutInTimetable, startAndEndTime) => { //
                 for (let j = 0; j < lengthOfTasks; j++) { // add up the value of all  tasks currently added in that index 
                     sumOfTasks = sumOfTasks + dp[i][j+1][3]
                 }
-
             
                 if ((sumOfTasks + capacityOfCurrentTask) <= target){ // if sum of all tasks + new task is equal or less than target. 
                     dp[i].push(...dp[i-capacityOfCurrentTask].slice(1)); // add tasks required to make sum of i-selectedTasks[num][3]
                     dp[i].push(tasksToPutInTimetable[num]) // add task required to make sum of i.
                 }
-
             }
-
         }
     }
 
@@ -73,6 +67,7 @@ export const getSessions = () => { // get (available) session times apart from b
     let sessionsBetweenBreaks = []
     let breakOrder = []
     breaks = Object.keys(fixedSessionsCopy).filter(type => type !== 'start-finish')
+    console.log('break', breaks)
     timetableStart = fixedSessionsCopy['start-finish'][0]
     timetableEnd = fixedSessionsCopy['start-finish'][1]
 

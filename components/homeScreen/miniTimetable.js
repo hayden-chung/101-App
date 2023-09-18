@@ -6,7 +6,6 @@ import TimeBlock from '../timetable/generator/timeBlocks';
 
 const MiniTimetable = ({navigation}) => { 
 
-    console.log('timetableSaved', timetableSaved)
     const useTimetable = timetableSaved; 
 
     return(

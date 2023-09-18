@@ -181,16 +181,15 @@ const TimePicker = ({sessionType, startOrFinish, updateAndReRender}) => { // Dis
         <View style={styles.item}>
             
             {/* When time text pressed, open time picker by calling showMode */}
-            <TouchableOpacity style={{margin:20}} onPress={() => showMode()}> 
+            <TouchableOpacity style={styles.time} onPress={() => showMode()}> 
                 {/* If time text is not empty, display the assigned times. If there is not assigned time, display 'Empty' instead.  */}
                 {time !== 'Empty' ? (
-                <Text> 
+                <Text style={styles.text}> 
                     {time.getHours() < 12 // Determine whether time is am or pm. 
                     ? `${time.getHours()}:${time.getMinutes()}am`
                     : time.getHours() === 12 
                         ? `${time.getHours()}:${time.getMinutes()}pm` // If 12pm, don't subtract 12, else subtract 12 to display pm time. 
                         : `${time.getHours()-12}:${time.getMinutes()}pm`
-                        
                     }
                     </Text> 
                 ) : (
@@ -218,6 +217,11 @@ const styles = StyleSheet.create({
     item: {
         
     },
+    time: {
+    },
+    text: {
+        fontSize: SCREEN_HEIGHT/40,
+    }
 });
 
 export default TimePicker;

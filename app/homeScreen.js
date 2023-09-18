@@ -61,6 +61,7 @@ const HomeScreen = ({navigation}) => {
                 </View>
             </View>
 
+            <View style={styles.pushToBottom}></View>    
             <TabBar navigation={navigation}/>
         </View>
     )
@@ -127,6 +128,9 @@ const styles = StyleSheet.create({
     },
     timetableText: {
         
+    },
+    pushToBottom: {
+        flex: 1,    
     },
 
 });

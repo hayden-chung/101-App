@@ -17,6 +17,7 @@ const ToDoScreen = ({navigation}) => { // when user clicks on todo button, navig
 
   const [task, setTask] = useState([null, false, false, null, null]); // useState is a hook that allows you to state variables in functional components. In this case: task = [task name, task completion state, task selected state in timetable generator, estimated completion time, aspect ] 
   const {taskItems, setTaskItems} = TaskItemsList(); // task list
+  console.log('in screen', task)
 
   const [isEditOrDeleteModalVisible, setEditOrDeleteModalVisible] = useState(false);
   const [isEdit, setEdit] = useState(false);
@@ -90,7 +91,7 @@ const ToDoScreen = ({navigation}) => { // when user clicks on todo button, navig
         {/* Complete Tasks */}
         <View style={styles.completedtaskItemsContainer}>
           <Text style={styles.completedText}>Completed</Text>
-          {/* iterate over taskItems array using map() function */}
+          {/* iterate over taskItems array */}
           <FlatList   
             data = {taskItems}                   // Data being inputted for flatlist to access.
             showsVerticalScrollIndicator={false} // Hide scroll bar.
@@ -149,10 +150,8 @@ const ToDoScreen = ({navigation}) => { // when user clicks on todo button, navig
         {/* Text input box. placeholder = when box is empty. value = string value when enter button pressed. onChangeText = when textbox changes,   */}
         <TextInput style={styles.textInput} placeholder={'Write a Task'} value={task[0]} onChangeText={text => setTask([text, false, false, null, null])}/> 
 
-        {/* Touchable opacity to add task */}
-        <TouchableOpacity onPress={() => {addTask(task, taskItems, setTaskItems, setTask); updateTaskList()}}>
-          
-          {/* ADD BUTTON */}
+        {/* ADD TASK BUTTON */}
+        <TouchableOpacity onPress={() => {if (task[0] !== null) {if (task[0].trim() !== '') {addTask(task, taskItems, setTaskItems, setTask); updateTaskList()}}}}>
           <View style={styles.addWrapper}>
             <Text style={styles.addButtonText}>+</Text>
           </View>
@@ -192,7 +191,7 @@ const styles = StyleSheet.create({
     marginBottom: SCREEN_HEIGHT/70,
   },
   textInputWrapper: { // Text input and add button. 
-    width: '100%',
+    flex: 1,
     flexDirection: 'row',
     justifyContent:'space-around',
     alignItems: 'center',

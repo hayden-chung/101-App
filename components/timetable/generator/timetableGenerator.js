@@ -4,6 +4,7 @@ import Task from '../../todo/task';
 import {TaskItemsList} from '../../todo/taskItemsList';
 import {selectedTask} from '../../todo/taskControls'; // import taskControl functions
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 import {GenerateTimetable} from './timetableGeneratorAlgorithm';
 import AlertMessage from '../../alertMessage'
 import {getTimetable, updateTimetable} from '../timetableStore'
@@ -18,7 +19,7 @@ const TimetableGenerator = ({navigation}) => {
     const [isAlarmMessage, toggleAlarmMessage] = useState(false); // Alarm message for when user presses task with no estimated time. 
     const {timetable, setTimetable} = getTimetable();
 
-    
+    console.log('TIMETABLE', timetable)
 
     const callbackToFunction = (timetable) => { // send timetable parameter to timetable screen function. 
         navigation.navigate("TimetableScreen", {
@@ -36,7 +37,17 @@ const TimetableGenerator = ({navigation}) => {
     return(
         <View style={styles.container}>
             <View style={styles.wrapper}>
-                <Text style={styles.subTitle}>Select today's tasks...</Text>
+                
+                <View style={styles.headerContainer}>
+                    <Text style={styles.header}>Timetable Generator</Text>
+
+                    <TouchableOpacity style={styles.timetableSettingsButton} onPress={() => navigation.navigate("TimetableSettings")}>
+                        <Ionicons name="ios-settings-sharp" size={SCREEN_HEIGHT/23} color="black" />
+                    </TouchableOpacity>
+                </View>
+
+                <Text style={styles.subHeader}>Select today's tasks...</Text>
+   
                 <View style={styles.taskWrapper}>
                     <FlatList   
                     data = {taskItems}                   // Data being inputted for flatlist to access.
@@ -61,10 +72,6 @@ const TimetableGenerator = ({navigation}) => {
                     fontSize={1}
                     fontColor={'white'}
                 />
-                
-                <TouchableOpacity style={styles.timetableSettingsButton} onPress={() => navigation.navigate("TimetableSettings")}>
-                    <Text>Timetable Settings</Text>
-                </TouchableOpacity>
 
                 {/* ---------- Generate Timetable Button ---------- */}
                 <TouchableOpacity style={styles.generateButton} onPress={() => onGenerateTimetablePressed()}> 
@@ -87,19 +94,26 @@ const styles = StyleSheet.create({
         backgroundColor: '#FF7276',
     },
     wrapper: {
+        paddingTop: SCREEN_HEIGHT/20,
         flexDirection: 'column',
         alignItems: 'center',
         width: '90%',
         height: '75%',
         // backgroundColor: 'yellow',
     },
-    title: {
-        fontSize: SCREEN_HEIGHT/25,
-        fontWeight: '600',
+    headerContainer: {
+        paddingHorizontal: SCREEN_WIDTH/20,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        width: '100%',
+    },
+    header: {
+        fontSize: SCREEN_HEIGHT/30,
+        fontWeight: '500',
         color: 'white',
     },
-    subTitle: {
-        paddingTop: SCREEN_HEIGHT/80,
+    subHeader: {
         fontSize: SCREEN_HEIGHT/40,
         fontWeight: '500',
         color: 'white',
@@ -113,7 +127,7 @@ const styles = StyleSheet.create({
         borderRadius: 15,
         borderWidth: 5, 
         backgroundColor: '#E8EAED',
-        borderColor: 'black',
+        borderColor: 'white',
     },
     breakCheckBoxWrapper: {
         flexDirection: 'row',
@@ -125,9 +139,10 @@ const styles = StyleSheet.create({
         color: 'white',
     },
     timetableSettingsButton: {
-        width: SCREEN_WIDTH/1.5,
-        height: SCREEN_HEIGHT/30,
-        backgroundColor: 'yellow',
+        padding: SCREEN_HEIGHT/300,
+        borderRadius: 8,
+        borderWidth: 3,
+        backgroundColor: 'white',
         alignItems: 'center',
     },
     generateButton: {

@@ -7,17 +7,23 @@ import { TimerPickerModal } from "react-native-timer-picker";
 const PickEstimatedTime = ({setEstimatedTimeVisible, isEstimatedTimeVisible, taskItems, setTaskItems, index}) => {
 
     
-    onConfirmPressed = (pickedDuration) => {
-        const hours = pickedDuration['hours']
-        const minutes = pickedDuration['minutes']
-        const timeValue = (hours + minutes/60).toFixed(2)
-        let updatedList = [...taskItems]
-        updatedList[index][3] = timeValue
-        setTaskItems(updatedList)
+    const onConfirmPressed = (pickedDuration) => {
+        console.log('pickedDuration: ', pickedDuration)
+        if ((pickedDuration['hours'] + pickedDuration['minutes']) !== 0) {
+            const hours = pickedDuration['hours']
+            const minutes = pickedDuration['minutes']
+            const timeValue = (hours + minutes/60).toFixed(2)
+            let updatedList = [...taskItems]
+            updatedList[index][3] = timeValue
+            setTaskItems(updatedList)
+        }
+
     }
 
     return (
+            // https://github.com/troberts-28/react-native-timer-picker#timerpickermodal
             <TimerPickerModal
+                modalTitle="Estimated Time"
                 visible={isEstimatedTimeVisible}
                 hideSeconds
                 setIsVisible={setEstimatedTimeVisible}
@@ -26,7 +32,6 @@ const PickEstimatedTime = ({setEstimatedTimeVisible, isEstimatedTimeVisible, tas
                     onConfirmPressed(pickedDuration)
                     setEstimatedTimeVisible(false);
                 }}
-                modalTitle="Set Alarm"
                 onCancel={() => setEstimatedTimeVisible(false)}
                 closeOnOverlayPress
                 LinearGradient={LinearGradient}

@@ -33,14 +33,14 @@ const addBreakIfAvailable = (breakName) => { // Add break if there is available 
             let availableTime = new Date(sessionsBetweenBreaks[i][1]) - new Date(sessionsBetweenBreaks[i][0]) // available time in between one break time to another. 
             let availableTimeInMinutes = availableTime/(1000*60) // convert from ms to minutes. 
             if (availableTimeInMinutes >= 10) { // add break only if there is more than 10 mins of available time.
-                startTime=new Date(sessionsBetweenBreaks[i][0])         // Set to beginning of break.
+                startTime=new Date(sessionsBetweenBreaks[i][0])         
                 endTime = new Date(startTime.getTime() + 1 * 60 * 1000) // Set 1 min more than start time. 
                 fixedSessions[breakName] = [startTime, endTime]    // add [current time, time 10min after current] to set the break session in the beginning.
             }
         }
     } else if (breakOrder.length === 0){ // if there are no breaks, a break can be added. 
         console.log('option 2')
-        startTime = new Date(fixedSessions['start-finish'][0]) // set start time to start time of timetable.
+        startTime = new Date(fixedSessions['start-finish'][0]) 
         endTime = new Date(startTime.getTime() + 1*60*1000) // set end time to 1 min more than start time. 
         fixedSessions[breakName] = [startTime, endTime]    // add [current time, time 10min after current] to set the break session in the beginning.
     }

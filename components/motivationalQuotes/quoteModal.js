@@ -3,8 +3,8 @@ import { StyleSheet, Text, View, TouchableOpacity, Dimensions, TextInput, Alert}
 import { updateQuoteList } from './quoteList&Controls';
 
 // ------------------------ MODAL SCREEN --------------------------------//
-const WIDTH = Dimensions.get('window').width;
-const HEIGHT_MODAL = (Dimensions.get('window').height)/2;
+const SCREEN_WIDTH = Dimensions.get('window').width;
+const SCREEN_HEIGHT = (Dimensions.get('window').height);
 
 export const QuoteModal = (props) => {
 
@@ -80,7 +80,7 @@ export const QuoteModal = (props) => {
                     </TouchableOpacity>
 
                     {/* Ok/Add Button */}
-                    <TouchableOpacity style={styles.touchableOpacity} onPress={() => closeModal(true)}>
+                    <TouchableOpacity style={styles.buttonsStyling} onPress={() => closeModal(true)}>
                         <Text style={[styles.modalButtonText, {color: 'blue',}]}>
                             {/* if editing mode, display 'Ok', 'Add' for button */}
                             {props.isQuoteModalVisible[1] ? 'Ok': 'Add'} 
@@ -103,8 +103,8 @@ const styles= StyleSheet.create({
         justifyContent: 'center',
     }, 
     modal: { // Modal Container
-        height: HEIGHT_MODAL, 
-        width: WIDTH -80, 
+        height: SCREEN_HEIGHT/2.4, 
+        width: SCREEN_WIDTH -80, 
         paddingTop: 10, 
         backgroundColor: 'white',
         borderColor: 'white',
@@ -114,12 +114,12 @@ const styles= StyleSheet.create({
     modalTextContainer: { // Consists of text input title & text input box 
         flex: 1, 
         alignItems: 'center',
-        // backgroundColor: 'yellow',
     }, 
     textInput: { // Text Input Container
         width: '80%',
         borderWidth: 2,
         borderRadius: 10,
+        borderColor: '#adadad',
         padding: 10,
     },
     modalTitle: { // Title of modal (e.g. Add Quote, Edit Quote)
@@ -130,6 +130,8 @@ const styles= StyleSheet.create({
     buttonsContainer: { // Button Container
         width: '100%', 
         flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
     }, 
     textInputHeaderQuote: { // Title of quote input.
         width: '80%',
