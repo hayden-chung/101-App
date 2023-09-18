@@ -60,6 +60,7 @@ const ToDoScreen = ({navigation}) => { // when user clicks on todo button, navig
       savedCalendarData[currentDate][aspectIndex] = savedCalendarData[currentDate][aspectIndex]+1
     }
   };
+  console.log('task added,', task)
 
   return (
     <View style={styles.container}> 
