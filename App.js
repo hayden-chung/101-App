@@ -14,7 +14,6 @@ import SettingsScreen from './app/settings';
 import PrivacyPolicyScreen from './components/settings/privacyPolicy';
 import HowToUseScreen from './components/settings/howToUse'
 
-
 const Stack = createNativeStackNavigator();
 
 export default function App() {

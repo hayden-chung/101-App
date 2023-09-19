@@ -15,7 +15,6 @@ const QuoteScreen = ({navigation}) => {
     const [isEditDeleteModalVisible, EditDeleteModalVisible] = useState([false, null]); // [edit/delete modal display (true/false), quote index no.]
     const {quoteList, setQuoteList} = quoteListItems(); // destructure function (quoteListItems) into 'quoteList' variable and 'setQuoteList' function.
 
-    console.log('quoteList', quoteListSaved)
 
     return (
     <SafeAreaView style={styles.container}>

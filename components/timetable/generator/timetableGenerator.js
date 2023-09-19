@@ -19,8 +19,6 @@ const TimetableGenerator = ({navigation}) => {
     const [isAlarmMessage, toggleAlarmMessage] = useState(false); // Alarm message for when user presses task with no estimated time. 
     const {timetable, setTimetable} = getTimetable();
 
-    console.log('TIMETABLE', timetable)
-
     const callbackToFunction = (timetable) => { // send timetable parameter to timetable screen function. 
         navigation.navigate("TimetableScreen", {
             timetable: timetable // reference variable: variable to send

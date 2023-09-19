@@ -37,7 +37,7 @@ export const NewWellbeingChartModal = (props) => {
     // ----------- Change Page in Modal ------------ //
     const changePage = (direction) => {                             // When right button pressed. 
         if (direction === 'right') {                                // If right button pressed
-            if (pageNumber < props.wellbeingData.labels.length-1) { // If page number is not larger than the number of aspects (6). (props.wellbeingData.labels.length = 6 and index number starts from 0 so subtract 1) 
+            if (pageNumber < props.wellbeingData.label.length-1) { // If page number is not larger than the number of aspects (6). (props.wellbeingData.labels.length = 6 and index number starts from 0 so subtract 1) 
                 changePageNumber(pageNumber+1)                      // Increase page number by 1.
             } else if (pageNumber === 5) {                          // if pg number is 6 (5 for index number)                
                 props.wellbeingData.datasets[0].data = wellbeingRating  // Update graph data.
@@ -62,7 +62,7 @@ export const NewWellbeingChartModal = (props) => {
 
                 {/* Modal Title */}
                 <View style={styles.modalHeader}>
-                    <Text style={[styles.headerText, {fontSize: 20}]}>Create New Wellbeing Chart</Text>
+                    <Text style={[styles.headerText, {fontSize: 20}]}>New Wellbeing Chart</Text>
                 </View> 
 
                 {/* Wellbeing Name */}
@@ -95,7 +95,7 @@ export const NewWellbeingChartModal = (props) => {
                     )}
                     </View>
 
-                    <Text style={styles.wellbeingNameText}>{props.wellbeingData.labels[pageNumber]}: {wellbeingRating[pageNumber]}/10</Text>
+                    <Text style={styles.wellbeingNameText}>{props.wellbeingData.label[pageNumber]}: {wellbeingRating[pageNumber]}/10</Text>
 
                 </View>
 
@@ -160,11 +160,12 @@ const styles= StyleSheet.create({
         flex: 1, 
         alignItems: 'center', 
         justifyContent: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.60)', // set opacity to 0.6
     }, 
     modal: { // Modal styling.
         alignItem: 'center',
         justifyContent: 'center',
-        height: SCREEN_HEIGHT/1.3, 
+        height: SCREEN_HEIGHT/1.5, 
         width: SCREEN_WIDTH/1.1, 
         paddingTop: 5, 
         backgroundColor: 'white',

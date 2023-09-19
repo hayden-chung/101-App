@@ -4,7 +4,6 @@ import {getRandomQuote} from '../motivationalQuotes/quoteList&Controls'
 
 const QuoteOfDay = ({navigation}) => { 
     const quoteOfTheDay = getRandomQuote()
-    console.log('quoteOfTheDay', quoteOfTheDay) 
     return(
         <View style={styles.container}>        
             {quoteOfTheDay && ( // if quoteOfTheDay is not null or undefined. 

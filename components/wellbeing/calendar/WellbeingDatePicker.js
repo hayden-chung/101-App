@@ -71,6 +71,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.60)', // set opacity to 0.6
     },
     modalContainer: { // modal container
         width: SCREEN_WIDTH/1.2,
