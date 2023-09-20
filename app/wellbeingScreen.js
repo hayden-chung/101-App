@@ -1,23 +1,19 @@
 import React, {useState} from 'react';
 import { StyleSheet, View, Text, Image, Dimensions, SafeAreaView, TouchableOpacity, Modal} from 'react-native';
-import {BarChart, PieChart, ContributionGraph} from 'react-native-chart-kit'; // charts from third party library.
 import { Ionicons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { MaterialIcons } from '@expo/vector-icons';
-import { FontAwesome5 } from '@expo/vector-icons';
 import {NewWellbeingChartModal} from '../components/wellbeing/newChartModal/newWellbeingChartModal';
 import {wellbeingData, updateWellbeingData} from '../components/wellbeing/wellbeingData';
 import WellbeingDatePicker from '../components/wellbeing/calendar/wellbeingDatePicker';
 import {getCurrentDate} from '../components/wellbeing/calendar/calendarControls'
-import {handlePreviousDay, handleNextDay, updateCalendarData, savedCalendarData} from '../components/wellbeing/calendar/calendarControls';
+import {handlePreviousDay, handleNextDay, savedCalendarData} from '../components/wellbeing/calendar/calendarControls';
 import TabBar from '../components/tabBar'
 import Feedback from '../components/wellbeing/feedback'
+import WellbeingChart from '../components/wellbeing/wellbeingChart'
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = (Dimensions.get('window').height);
-const ICON_SIZE = SCREEN_WIDTH/17
 
 const WellBeingScreen = ({navigation}) => { // main function for wellbeing screen  
   const [isNewChartModalVisible, newChartModalVisible] = useState(false); // Is 'new chart' modal visible. 
@@ -35,11 +31,9 @@ const WellBeingScreen = ({navigation}) => { // main function for wellbeing scree
 
   const formatDateForControlBar = () => {
     let formattedDate = new Date(new Date(selectedDate))
-
   }
+
   const date = new Date("Wed Sep 20 2023 12:00:00 GMT+1200");
-  console.log('selectedDate: ' + selectedDate)
-  console.log(calendarData[selectedDate] )
 
   return (
     // SafeAreaView renders content within the visible boundaries of the device (iOS only).
@@ -124,30 +118,9 @@ const WellBeingScreen = ({navigation}) => { // main function for wellbeing scree
             </Modal>
           </View>
         
-          {/* --------------- WELLBEING CHART (Pie Chart) --------------- */}
+          {/* --------------- WELLBEING CHART (bar chart) --------------- */}
           <View style={styles.chartWrapper}>
-            <Text style={styles.chartTitleText}>My Wellbeing</Text>
-            <BarChart
-              data={wellbeingData} // import wellbeing data to display 
-              width={SCREEN_WIDTH/1.2} // width of chart
-              height={SCREEN_HEIGHT/3.5}                    // height of chart
-              yAxisLabel={''}                 // to put in fron of y axis labels (e.g. '$')
-              verticalLabelRotation={-20}     // rotate y axis labels.
-              fromZero={true}                 // start y axis from 0
-              showBarTops={false}
-              chartConfig={chartConfig}
-              fromNumber={10}       
-              yAxisInterval={3}       
-              style={styles.chart}
-            />
-            <View style={styles.iconRowContainer}>
-              <Entypo name={'suitcase'} size={ICON_SIZE} color="#3a46bf" />
-              <MaterialIcons name={'fitness-center'} size={ICON_SIZE} color="orange" />
-              <FontAwesome5 name="coffee" size={ICON_SIZE} color="#50bfd1" />
-              <Entypo name={'chat'} size={ICON_SIZE} color="#9e32db" />
-              <MaterialCommunityIcons name={'power-sleep'} size={ICON_SIZE} color="#f0ca00" />
-              <MaterialCommunityIcons name={'head-cog'} size={ICON_SIZE} color="#21a177" />
-            </View>
+            <WellbeingChart sizeBig={true}/>
           </View>
           {/* ------------------------------------------------ */}
 
@@ -263,18 +236,13 @@ const styles = StyleSheet.create({
   calendarButton: {
     
   },
-  chartWrapper: {
-    alignItems: 'center',
-    width: '100%',
-    marginTop: SCREEN_HEIGHT/70,
-    paddingRight: SCREEN_WIDTH/20,
-    backgroundColor: 'white',
-    borderRadius: 12,
-    elevation: 5,
-  },
+
   chartTitleText: {
     fontSize: SCREEN_HEIGHT/35,
     fontWeight: '500',
+  },
+  chartWrapper: {
+    width: '100%',
   },
   chart: {
     width: '100%',
@@ -297,6 +265,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#D1D1D1',
   },
   noFeedbackWrapper: {
+    flex: 1,
     alignItems: 'center',
     width: '80%',
   },

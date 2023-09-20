@@ -96,6 +96,7 @@ const styles = StyleSheet.create({
         flex: 1, 
     },
     wrapper: {
+        marginTop: SCREEN_HEIGHT/25,
         marginHorizontal: SCREEN_WIDTH/40,
     },
     pushToBottom: {

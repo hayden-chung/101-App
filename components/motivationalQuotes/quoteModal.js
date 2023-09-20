@@ -14,19 +14,19 @@ export const QuoteModal = (props) => {
 
     const CheckEmptyText = () => { // Check if text input box is empty.
         if (quote[1].trim().length == 0) { // when all whitespaces are removed (trim) and string length == 0, this means string is empty. (quote[1] = author)
-            quote[1] = 'Unknown'; // replace empty string with 'Unkown'.
+            quote[1] = 'Anonymous'; // replace empty string with 'Unkown'.
         }
     }
 
     const closeModal = (update) => {                // update = add/edit quote (boolean).
         CheckEmptyText(quote)                       // check if author is empty.
-        if (update) {                               // if udpate is true:
+        if (update) {                               // if edit pressed:
             let updateList = props.quoteList
             if (props.isQuoteModalVisible[1]) {     // edit quote.
                 props.quoteList[quoteIndex] = quote // edit (update) exisitng string value (quote).
                 updateList[quoteIndex] = quote
                 
-            } else {    // add new quote.
+            } else {    // add pressed.
                 props.setQuoteList([...props.quoteList, quote]) 
                 updateList.push(quote)
             }

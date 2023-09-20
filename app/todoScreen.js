@@ -22,10 +22,24 @@ const ToDoScreen = ({navigation}) => { // when user clicks on todo button, navig
   const [isEdit, setEdit] = useState(false);
   const [editingIndex, setEditingIndex] = useState(null);
 
+  // Find number of uncompleted tasks
+  let numberOfUncompletedTasks = 0 
+  for (let i = 0; i < taskItems.length; i++) {
+    if (taskItems[i][1] === false) {
+      numberOfUncompletedTasks += 1
+    }
+  }
+
   const updateTaskList = () => { // Update task list with a 10ms delay to ensure the updated taskItems is inputted. 
     setTimeout(() => {
       updateTaskItems(taskItems)
     }, 10);
+    let numberOfUncompletedTasks = 0 
+    for (let i = 0; i < taskItems.length; i++) {
+      if (taskItems[i][1] === false) {
+        numberOfUncompletedTasks += 1
+      }
+    }
   };
 
   const getAspectIndex = (index) => {
@@ -66,23 +80,24 @@ const ToDoScreen = ({navigation}) => { // when user clicks on todo button, navig
       <View style={styles.wrapper}> 
 
         {/* TITLE of screen */}
-        <Text style={styles.taskTitle}>Today's Tasks</Text> 
+        <Text style={styles.taskTitle}>To Do</Text> 
+        <Text style={styles.subHeaderNumberOfTasksText}>You have {numberOfUncompletedTasks} task(s) today</Text>
 
         {/* enable scrolling using ScrollView */}
         <View style={styles.taskItemsContainer}> 
 
-          {/* iterate over taskItems to display task items */}
+          {/* To Do Tasks */}
           <FlatList   
             data = {taskItems} // Data being inputted for flatlist to access.
             showsVerticalScrollIndicator={false} // Hide scroll bar.
             renderItem={({item, index}) =>       // Item and index no. of task in array. 
               taskItems[index][1] === false ? (
               <TouchableOpacity                  // Task is responsive to touches
-                onPress={() => {completedTask(index, taskItems, setTaskItems); updateWellbeingRating(index); updateTaskList()}} // when quote pressed, change completed state (compelted/not completed)
+                activeOpacity={1} 
                 onLongPress={() => {setEditOrDeleteModalVisible(true); setEditingIndex(index)}}
                 > 
                 {/* Task component displays task item. Parameters 'text' (task text) and 'taskState' (checkbox)*/}
-                <Task text={item[0]} timetableGenerator={false} taskStatus={taskItems[index][1]} taskTime={taskItems[index][3]} aspect={taskItems[index][4]} index={index} taskItems={taskItems} setTaskItems={setTaskItems}/> 
+                <Task text={item[0]} timetableGenerator={false} taskStatus={taskItems[index][1]} taskTime={taskItems[index][3]} aspect={taskItems[index][4]} index={index} taskItems={taskItems} setTaskItems={setTaskItems} completedTask={completedTask} updateWellbeingRating={updateWellbeingRating} updateTaskList={updateTaskList}/> 
               </TouchableOpacity>
               ) : null
           }/>
@@ -98,68 +113,69 @@ const ToDoScreen = ({navigation}) => { // when user clicks on todo button, navig
             renderItem={({item, index}) =>       // Item and index no. of task in array. 
               taskItems[index][1] === true ? (
               <TouchableOpacity                  // Task is responsive to touches
-                onPress={() => {completedTask(index, taskItems, setTaskItems); updateTaskList()}} // when quote pressed, change completed state (compelted/not completed)
+                activeOpacity={1} 
                 onLongPress={() => {setEditOrDeleteModalVisible(true); setEditingIndex(index)}}
                 > 
                 {/* Task component displays task item. Parameters 'text' (task text) and 'taskState' (checkbox)*/}
-                <Task text={item[0]} timetableGenerator={false} taskStatus={taskItems[index][1]} taskTime={taskItems[index][3]} aspect={taskItems[index][4]} index={index} taskItems={taskItems} setTaskItems={setTaskItems}/> 
+                <Task text={item[0]} timetableGenerator={false} taskStatus={taskItems[index][1]} taskTime={taskItems[index][3]} aspect={taskItems[index][4]} index={index} taskItems={taskItems} setTaskItems={setTaskItems} completedTask={completedTask} updateWellbeingRating={updateWellbeingRating} updateTaskList={updateTaskList}/> 
               </TouchableOpacity>
               ) : null
           }/>
         </View>
+
+        {/* ADD TASK */}
+        <KeyboardAvoidingView
+        enabled={true}
+        behavior={Platform.OS === 'ios' ? "padding" : "height"} // if phone plantform is iOS, use padding to push items, else add height. 
+        style={styles.textInputRow}
+        >
+          {/* Text input box. placeholder = when box is empty. value = string value when enter button pressed. onChangeText = when textbox changes,   */}
+          <TextInput style={styles.textInput} placeholder={'Write a Task'} value={task[0]} onChangeText={text => setTask([text, false, false, null, null])}/> 
+
+          {/* ADD TASK BUTTON */}
+          <TouchableOpacity onPress={() => {if (task[0] !== null) {if (task[0].trim() !== '') {addTask(task, taskItems, setTaskItems, setTask); updateTaskList()}}}}>
+            <View style={styles.addWrapper}>
+              <Text style={styles.addButtonText}>+</Text>
+            </View>
+          </TouchableOpacity>
+        </KeyboardAvoidingView>
       </View>
 
-        {/* Edit or Delete task modal */}
-        <Modal
-          transparent ={true} // covers screen completely but allows transparency in empty areas. 
-          animationType='fade' // fade animation when appearing/disappearing.
-          visible={isEditOrDeleteModalVisible} // modal is visible (true/false)
-          onRequestClose={() => setEditOrDeleteModalVisible(false)}
-        >
-          <EditOrDeleteModal
-              setEdit={setEdit}
-              setEditOrDeleteModalVisible={setEditOrDeleteModalVisible}
-              index={editingIndex}
-              taskItems={taskItems}
-              setTaskItems={setTaskItems}
-              updateTaskList={updateTaskList}
-          />
-        </Modal>
-
-        {/* Edit modal */}
-        <Modal
-          transparent ={true} // covers screen completely but allows transparency in empty areas. 
-          animationType='fade' // fade animation when appearing/disappearing.
-          visible={isEdit} // modal is visible (true/false)
-          onRequestClose={() => setEdit(false)}
-        >
-          <EditModal
+      {/* Edit or Delete task modal */}
+      <Modal
+        transparent ={true} // covers screen completely but allows transparency in empty areas. 
+        animationType='fade' // fade animation when appearing/disappearing.
+        visible={isEditOrDeleteModalVisible} // modal is visible (true/false)
+        onRequestClose={() => setEditOrDeleteModalVisible(false)}
+      >
+        <EditOrDeleteModal
             setEdit={setEdit}
+            setEditOrDeleteModalVisible={setEditOrDeleteModalVisible}
             index={editingIndex}
             taskItems={taskItems}
             setTaskItems={setTaskItems}
             updateTaskList={updateTaskList}
-          />
-        </Modal>
-      
-      {/* ADD TASK */}
-      <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? "padding" : "height"} // if phone plantform is iOS, use padding to push items, else add height. 
-      style={styles.textInputWrapper}
+        />
+      </Modal>
+
+      {/* Edit modal */}
+      <Modal
+        transparent ={true} // covers screen completely but allows transparency in empty areas. 
+        animationType='fade' // fade animation when appearing/disappearing.
+        visible={isEdit} // modal is visible (true/false)
+        onRequestClose={() => setEdit(false)}
       >
-        {/* Text input box. placeholder = when box is empty. value = string value when enter button pressed. onChangeText = when textbox changes,   */}
-        <TextInput style={styles.textInput} placeholder={'Write a Task'} value={task[0]} onChangeText={text => setTask([text, false, false, null, null])}/> 
-
-        {/* ADD TASK BUTTON */}
-        <TouchableOpacity onPress={() => {if (task[0] !== null) {if (task[0].trim() !== '') {addTask(task, taskItems, setTaskItems, setTask); updateTaskList()}}}}>
-          <View style={styles.addWrapper}>
-            <Text style={styles.addButtonText}>+</Text>
-          </View>
-        </TouchableOpacity>
-      </KeyboardAvoidingView>
-
-      <View style={styles.pushToBottom}></View>
-      <TabBar navigation={navigation}/>
+        <EditModal
+          setEdit={setEdit}
+          index={editingIndex}
+          taskItems={taskItems}
+          setTaskItems={setTaskItems}
+          updateTaskList={updateTaskList}
+        />
+      </Modal>
+      <View style={styles.navBar}>
+        <TabBar navigation={navigation}/>
+      </View>
     </View>
   );
 }
@@ -170,56 +186,73 @@ const styles = StyleSheet.create({
     backgroundColor: '#E8EAED',
   },
   wrapper: { // Wraps title ('Today's Tasks') and tasks. 
-    height: SCREEN_HEIGHT/1.3,
-    paddingTop: SCREEN_HEIGHT/80,
-    paddingHorizontal: 20,
+    flex: 1,
+    marginTop: SCREEN_HEIGHT/20,
   },
   taskTitle: { // Style title 'Today's Tasks'
-    fontWeight: 'bold',
-    fontSize: 24,
+    fontSize: SCREEN_HEIGHT/22,
+    fontWeight: '400',
+    paddingHorizontal: SCREEN_WIDTH/30,
+  },
+  subHeaderNumberOfTasksText: {
+    color: '#8C8C8C',
+    fontSize: SCREEN_HEIGHT/40,
+    paddingHorizontal: SCREEN_WIDTH/30,
   },
   taskItemsContainer: { // container of taskItems
-    height: SCREEN_HEIGHT/2.5,
-    marginTop: 20,
+    width: SCREEN_WIDTH,
+    maxHeight: SCREEN_HEIGHT/2.5,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: SCREEN_HEIGHT/80,
   }, 
   completedtaskItemsContainer: {
-    height: SCREEN_HEIGHT/2.5,
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: SCREEN_HEIGHT/40,
   },
   completedText: {
-    fontSize: SCREEN_HEIGHT/40,
-    fontWeight: '500',
+    width: '100%',
+    textAlign: 'left',
+    fontSize: SCREEN_HEIGHT/35,
+    fontWeight: '400',
     marginBottom: SCREEN_HEIGHT/70,
+    paddingHorizontal: SCREEN_WIDTH/30,
   },
-  textInputWrapper: { // Text input and add button. 
-    flex: 1,
+  textInputRow: { // Text input and add button. 
     flexDirection: 'row',
     justifyContent:'space-around',
     alignItems: 'center',
+    marginBottom: SCREEN_HEIGHT/30,
   },
   textInput: { // Text input (for tasks)
-    paddingVertical: 15, 
-    paddingHorizontal: 15,
+    paddingHorizontal: 15, 
+    height: SCREEN_HEIGHT/15,
+    borderRadius: SCREEN_HEIGHT/80,
+    width: SCREEN_WIDTH/1.48,
+    elevation: 5,
     backgroundColor: '#FFF',
-    borderRadius: 60,
-    borderColor: '#C0C0C0',
-    borderWidth: 1,
-    width: 250,
   },
   addWrapper: { // Add button
-    height: SCREEN_WIDTH/6, 
+    height: SCREEN_HEIGHT/15,
     width: SCREEN_WIDTH/6,
     backgroundColor: '#FFF',
     justifyContent: 'center',
     alignItems: 'center',
-    borderColor: 'black',
-    borderWidth: SCREEN_WIDTH/90,
     borderRadius: 100, // any high value i.e. >60 will create a circular shape.  
+    elevation: 5,
   },
   addButtonText: {
-    fontSize: SCREEN_WIDTH/10
+    color: '#4B4B4B',
+    fontSize: SCREEN_WIDTH/10,
+    top: -SCREEN_HEIGHT/290,
   },
   pushToBottom: {
     flex: 1,    
+  },
+  navBar: {
+    
   },
 });
 

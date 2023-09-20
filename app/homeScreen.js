@@ -4,12 +4,14 @@ import { useIsFocused } from '@react-navigation/native';
 import QuoteOfDay from '../components/homeScreen/quoteOfDay'
 import TodoList from '../components/homeScreen/todoList'
 import MiniTimetable from '../components/homeScreen/miniTimetable'
+import MiniWellbeingScreen from '../components/homeScreen/miniWellbeingScreen'
 import TabBar from '../components/tabBar'
+import Carousel from '../components/homeScreen/carousel';
 import { Ionicons } from '@expo/vector-icons';
 import { Touchable } from 'react-native';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
-const SCREEN_HEIGHT = (Dimensions.get('window').height);
+const SCREEN_HEIGHT = Dimensions.get('window').height;
 
 const HomeScreen = ({navigation}) => { 
     const isFocused = useIsFocused(); // determine current focus state of screen. 
@@ -17,96 +19,90 @@ const HomeScreen = ({navigation}) => {
     return(
         <View style={styles.container}>
 
-            <View style={styles.dashboardContainer}>
+            <View style={styles.wrapper}>
+                <Text style={styles.header}>Dashboard</Text>
                 <View style={styles.row1Container}>
                     <View style={styles.row1Wrapper}>
                         {/* --------------------- QUOTE OF THE DAY --------------------- */}
                         <TouchableOpacity style={styles.quoteContainer} onPress={() => navigation.navigate("QuoteScreen")}>
-                            <Text style={styles.quoteOfDayTitle}>QUOTE OF THE DAY</Text>
-
                             {/* If screen focus changes, re-render QuoteOfDay */}
                             {isFocused && <QuoteOfDay/>} 
                         </TouchableOpacity>
 
                         {/* --------------------- WELLBEING --------------------- */}
-                        <TouchableOpacity style={styles.wellbeingScreen} onPress={() => navigation.navigate("WellBeingScreen")}>
-                            <Text styles={styles.todoText}>Wellbeing Screen</Text>
+                        <TouchableOpacity style={styles.wellbeingContainer} onPress={() => navigation.navigate("WellBeingScreen")}>
+                            <MiniWellbeingScreen/>
                         </TouchableOpacity>
                     </View>
                 </View>
 
 
                 <View style={styles.row2Container}>
+                    <Text></Text>
                     <View style={styles.row2Wrapper}>
-                        {/* --------------------- TODO --------------------- */}
-                        <View style={styles.todoScreenContainer}>
-                            <TouchableOpacity style={styles.todoHeader} onPress={() => navigation.navigate("ToDoScreen")}>
-                                <Text styles={styles.todoText}>Todo Screen</Text> 
-                                <Ionicons name="open-outline" size={24} color="black" />
-                            </TouchableOpacity>
-                            <View style={styles.todoListWrapper}>
-                                {isFocused && <TodoList/>}
-                            </View>
-                        </View>
-
-                        {/* --------------------- TIMETABLE --------------------- */}
-                        <View style={styles.timetableContainer}>
-                            <TouchableOpacity style={styles.timetableHeader} onPress={() => navigation.navigate("TimetableScreen")}>
-                                <Text styles={styles.timetableText}>Timetable Screen</Text> 
-                                <Ionicons name="open-outline" size={24} color="black" />
-                            </TouchableOpacity>
-                            <MiniTimetable/>
-                        </View>
+                        <Carousel navigation={navigation}/> 
                     </View>
                 </View>
             </View>
 
-            <View style={styles.pushToBottom}></View>    
             <TabBar navigation={navigation}/>
         </View>
     )
 }
 
-const todoAndTimetableContainerHeight = SCREEN_HEIGHT/2.4;
+const todoAndTimetableContainerHeight = SCREEN_HEIGHT/1.6;
 const todoAndTimetableHeaderHeight = SCREEN_HEIGHT/19;
 const todoAndTimetableListWrapperHeight = todoAndTimetableContainerHeight - todoAndTimetableHeaderHeight;
+const quoteAndWellbeingContainerHeight = SCREEN_HEIGHT/4
 
 const styles = StyleSheet.create({
 
     container: {
         flex: 1,
     },
-    dashboardContainer: {
-        height: SCREEN_HEIGHT/1.2
+    wrapper: {
+        flex: 1, 
     },
 
     // ---------- ROW 1 ---------- // 
     row1Container: {
         justifyContent: 'center',
-        height: '50%',
-        backgroundColor: 'yellow',
+        flex: 1,
     },
     row1Wrapper: {
         flexDirection: 'row',
-        backgroundColor: 'red',
+        justifyContent: 'space-around',
+        alignItems: 'center',
         width: '100%',
         height: SCREEN_HEIGHT/3,
     },
     quoteContainer: {
-        flex: 1,
-
+        width: SCREEN_WIDTH/2.1,
+        height: quoteAndWellbeingContainerHeight,
+        borderRadius: SCREEN_HEIGHT/30,
+        elevation: 5,
+        overflow: 'hidden',
+        backgroundColor: 'green',
     },
-    wellbeingScreen: {
-        flex: 1,
+    wellbeingContainer: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: quoteAndWellbeingContainerHeight,
+        width: SCREEN_WIDTH/2.1, 
+        borderRadius: SCREEN_HEIGHT/30,
+        elevation: 5,
+        overflow: 'hidden',
+        backgroundColor: 'white',
     },
 
     // ---------- ROW 2 ---------- //
     row2Container: {
         height: todoAndTimetableContainerHeight,
-        backgroundColor: 'magenta',
     },
     row2Wrapper: {
+        flex: 1,
         flexDirection: 'row',
+        marginVertical: SCREEN_HEIGHT/20,
     },
 
     todoScreenContainer: {

@@ -13,14 +13,14 @@ const SCREEN_HEIGHT = (Dimensions.get('window').height);
 
 let checkIconSize = SCREEN_HEIGHT/30
 
-const Task = ({text, timetableGenerator, taskStatus, taskTime, aspect, index, taskItems, setTaskItems}) => {
+const Task = ({text, timetableGenerator, taskStatus, taskTime, aspect, index, taskItems, setTaskItems, completedTask, updateWellbeingRating, updateTaskList}) => {
 
     const [isTagModalVisible, setTagModalVisible] = useState(false);
     const [isAspect, setAspect] = useState(aspect);
     const [isEstimatedTimeVisible, setEstimatedTimeVisible] = useState(false);
 
     return (
-        <View style={styles.item}>
+        <View style={[styles.item, taskStatus === true && timetableGenerator === false ? {backgroundColor:'#ededed'}:null, timetableGenerator === false ? {elevation: 5, marginHorizontal: SCREEN_HEIGHT/70,}:null]}>
             <View style={styles.itemLeft}>
                 
                 {/* In timetable generator */}
@@ -32,11 +32,16 @@ const Task = ({text, timetableGenerator, taskStatus, taskTime, aspect, index, ta
                     )
                 ) : (
                 // In to-do screen
-                    taskStatus ? ( // (To-Do Screen) If taskStatus = true, display checked checkbox, else display empty checkbox 
-                        <Ionicons name="checkbox-sharp" size={checkIconSize} color="black" style={styles.checkbox} />
-                    ) : (
-                        <Ionicons name="checkbox-outline" size={checkIconSize} color="black" style={styles.checkbox}/>
-                    )
+                    <TouchableOpacity
+                        onPress={() => {completedTask(index, taskItems, setTaskItems); updateWellbeingRating(index); updateTaskList()}} // when quote pressed, change completed state (compelted/not completed)
+                    >
+                    {taskStatus ? ( // (To-Do Screen) If taskStatus = true, display checked checkbox, else display empty checkbox 
+                            <Ionicons name="checkbox-sharp" size={checkIconSize} color="black" style={styles.checkbox} />
+                        ) : (
+                            <Ionicons name="checkbox-outline" size={checkIconSize} color="black" style={styles.checkbox}/>
+                        )
+                    }
+                    </TouchableOpacity>
                 )}
 
                 {/*  Task Text */}
@@ -51,7 +56,7 @@ const Task = ({text, timetableGenerator, taskStatus, taskTime, aspect, index, ta
                     <TouchableOpacity style={styles.addBoxTag} onPress={() => setTagModalVisible(true)}>
                         <Text style={styles.addBoxText}>+</Text>
                     </TouchableOpacity> 
-                    <Text style={styles.tagText}>Tag</Text>
+                    <Text style={styles.belowBoxText}>Tag</Text>
                 </View>
                 ): 
                 // Display an icon
@@ -106,7 +111,7 @@ const Task = ({text, timetableGenerator, taskStatus, taskTime, aspect, index, ta
                     <TouchableOpacity style={styles.addBoxTime} onPress={() => setEstimatedTimeVisible(true)}>
                         <Text style={styles.addBoxText}>+</Text>
                     </TouchableOpacity> 
-                    <Text style={styles.tagText}>Time</Text>
+                    <Text style={styles.belowBoxText}>Time</Text>
                 </View>
                 }
                 {/* Timer Picker Modal */}
@@ -125,15 +130,19 @@ const Task = ({text, timetableGenerator, taskStatus, taskTime, aspect, index, ta
 
 const styles = StyleSheet.create({
     item: { // quote Item
-        padding: SCREEN_HEIGHT/60,
-        borderRadius: 10,
-        backgroundColor: 'white',
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent:'space-between',
+        paddingTop: SCREEN_HEIGHT/1000,
+        paddingHorizontal: SCREEN_HEIGHT/70,
+        paddingBottom: SCREEN_HEIGHT/70,
+        borderRadius: 5,
         marginBottom: 10,
+        backgroundColor: 'white',
+
     },
     itemLeft: { 
+        paddingTop: SCREEN_HEIGHT/80,
         flexDirection: 'row',
         alignItems: 'center',
         width: '65%',
@@ -198,8 +207,9 @@ const styles = StyleSheet.create({
         lineHeight: SCREEN_HEIGHT / 27, 
         textAlignVertical: 'center',
     },
-    tagText: {
-        fontSize: SCREEN_HEIGHT/60,
+    belowBoxText: {
+        fontSize: SCREEN_HEIGHT/70,
+        marginLeft: SCREEN_WIDTH/40,    
     },
 });
 

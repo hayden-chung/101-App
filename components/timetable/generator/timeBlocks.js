@@ -123,7 +123,7 @@ const TimeBlock = ({item, index}) => {
 const styles = StyleSheet.create({
     item: { // quote Item
         flexDirection: 'column',
-        width: SCREEN_WIDTH/1.15,
+        width: '100%',
         padding: 20,
         borderRadius: 10,  
         borderWidth: 3,
