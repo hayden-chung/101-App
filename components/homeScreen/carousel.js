@@ -10,7 +10,7 @@ const SCREEN_HEIGHT = Dimensions.get('window').height;
 
 const Carousel = ({navigation}) => { 
     const data = [ 
-        {object: 'item'},{object: 'item'},{object: 'item'},{object: 'item'}, 
+        {object: 'item'},{object: 'item'},  
     ];
     
     const [newData] = useState([{ // create space for left and right end of carousel.
@@ -39,14 +39,12 @@ const Carousel = ({navigation}) => {
             decelerationRate="fast"
             onScroll={onScroll}>
             {newData.map((item, index) => {
-                console.log(index)
                 const style= useAnimatedStyle(() => {
                     const scale = interpolate(
                         x.value, 
                         [(index-2) * SIZE, (index-1) * SIZE, index * SIZE], 
                         [0.8, 1, 0.8]
                     );
-                    console.log(x.value)
                     return{
                         transform: [{scale}],
                     }
@@ -77,14 +75,14 @@ const Carousel = ({navigation}) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        paddingVertical: SCREEN_HEIGHT/80,
         height: SCREEN_HEIGHT/2,
-    },
-    boxContainer: {
-        height: '100%',
+        
     },
     componentContainer: {
         borderRadius: 34, 
         overflow: 'hidden',
+        elevation: 5,
         backgroundColor: 'white',
     },
     componentTitle: {

@@ -11,7 +11,6 @@ const SCREEN_HEIGHT = Dimensions.get('window').height;
 const MiniTimetable = ({navigation, small}) => { 
 
     const useTimetable = timetableSaved; 
-    console.log('HERE', small)
 
 return (
     <View style={small ? styles.containerSmall : styles.containerBig}>

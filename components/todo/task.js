@@ -13,7 +13,7 @@ const SCREEN_HEIGHT = (Dimensions.get('window').height);
 
 let checkIconSize = SCREEN_HEIGHT/30
 
-const Task = ({text, timetableGenerator, taskStatus, taskTime, aspect, index, taskItems, setTaskItems, completedTask, updateWellbeingRating, updateTaskList}) => {
+const Task = ({item, text, timetableGenerator, taskStatus, taskTime, aspect, index, taskItems, setTaskItems, completedTask, updateWellbeingRating, updateTaskList}) => {
 
     const [isTagModalVisible, setTagModalVisible] = useState(false);
     const [isAspect, setAspect] = useState(aspect);

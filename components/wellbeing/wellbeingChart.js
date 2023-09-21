@@ -14,13 +14,6 @@ const SCREEN_HEIGHT = (Dimensions.get('window').height);
 const ICON_SIZE = SCREEN_WIDTH/17
 
 const WellbeingChart = ({sizeBig}) => { // main function for wellbeing screen  
-  console.log("SIZE BIG", sizeBig) 
-  const onPress = () => {
-    console.log("SIZE BIG", sizeBig) 
-  }
-
-
-
   
   return (
           

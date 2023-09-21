@@ -73,7 +73,23 @@ const ToDoScreen = ({navigation}) => { // when user clicks on todo button, navig
       savedCalendarData[currentDate][aspectIndex] = savedCalendarData[currentDate][aspectIndex]+1
     }
   };
+
+  let orderedList = []
+  console.log('taskItems', taskItems)
+
+  for (let i = 0; i < taskItems.length; i++) {
+    if (taskItems[i][1] === false) {
+      orderedList.push(taskItems[i])
+    }
+  }
+  for (let i = 0; i < taskItems.length; i++) {
+    if (taskItems[i][1] === true) {
+      orderedList.push(taskItems[i])
+    }
+  }
+  
   console.log('task added,', task)
+  console.log('orderdList', orderedList)
 
   return (
     <View style={styles.container}> 
@@ -88,38 +104,16 @@ const ToDoScreen = ({navigation}) => { // when user clicks on todo button, navig
 
           {/* To Do Tasks */}
           <FlatList   
-            data = {taskItems} // Data being inputted for flatlist to access.
+            data = {orderedList} // Data being inputted for flatlist to access.
             showsVerticalScrollIndicator={false} // Hide scroll bar.
-            renderItem={({item, index}) =>       // Item and index no. of task in array. 
-              taskItems[index][1] === false ? (
+            renderItem={({item, index}) => 
               <TouchableOpacity                  // Task is responsive to touches
-                activeOpacity={1} 
+                activeOpacity={1}  
                 onLongPress={() => {setEditOrDeleteModalVisible(true); setEditingIndex(index)}}
                 > 
                 {/* Task component displays task item. Parameters 'text' (task text) and 'taskState' (checkbox)*/}
-                <Task text={item[0]} timetableGenerator={false} taskStatus={taskItems[index][1]} taskTime={taskItems[index][3]} aspect={taskItems[index][4]} index={index} taskItems={taskItems} setTaskItems={setTaskItems} completedTask={completedTask} updateWellbeingRating={updateWellbeingRating} updateTaskList={updateTaskList}/> 
-              </TouchableOpacity>
-              ) : null
-          }/>
-        </View>
-        
-        {/* Complete Tasks */}
-        <View style={styles.completedtaskItemsContainer}>
-          <Text style={styles.completedText}>Completed</Text>
-          {/* iterate over taskItems array */}
-          <FlatList   
-            data = {taskItems}                   // Data being inputted for flatlist to access.
-            showsVerticalScrollIndicator={false} // Hide scroll bar.
-            renderItem={({item, index}) =>       // Item and index no. of task in array. 
-              taskItems[index][1] === true ? (
-              <TouchableOpacity                  // Task is responsive to touches
-                activeOpacity={1} 
-                onLongPress={() => {setEditOrDeleteModalVisible(true); setEditingIndex(index)}}
-                > 
-                {/* Task component displays task item. Parameters 'text' (task text) and 'taskState' (checkbox)*/}
-                <Task text={item[0]} timetableGenerator={false} taskStatus={taskItems[index][1]} taskTime={taskItems[index][3]} aspect={taskItems[index][4]} index={index} taskItems={taskItems} setTaskItems={setTaskItems} completedTask={completedTask} updateWellbeingRating={updateWellbeingRating} updateTaskList={updateTaskList}/> 
-              </TouchableOpacity>
-              ) : null
+                <Task item={item} text={item[0]} timetableGenerator={false} taskStatus={orderedList[index][1]} taskTime={orderedList[index][3]} aspect={orderedList[index][4]} index={index} taskItems={orderedList} setTaskItems={setTaskItems} completedTask={completedTask} updateWellbeingRating={updateWellbeingRating} updateTaskList={updateTaskList}/> 
+              </TouchableOpacity> 
           }/>
         </View>
 
@@ -200,8 +194,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: SCREEN_WIDTH/30,
   },
   taskItemsContainer: { // container of taskItems
-    width: SCREEN_WIDTH,
-    maxHeight: SCREEN_HEIGHT/2.5,
+    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: SCREEN_HEIGHT/80,
