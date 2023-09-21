@@ -9,12 +9,11 @@ import {updateTag} from './taskControls';
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = (Dimensions.get('window').height);
 
-const TagModal = ({setTagModalVisible, setAspect, index, taskItems, setTaskItems}) => {
+const TagModal = ({setTagModalVisible, index, taskItems, setTaskItems}) => {
 
   console.log('taskItems from tagModal', taskItems)
 
   const handlePressed = (aspect) => { // return aspect and close modal
-    setAspect(aspect);
     updateTag(index, taskItems, setTaskItems, aspect);
     setTagModalVisible(false);
   }
@@ -32,33 +31,51 @@ const TagModal = ({setTagModalVisible, setAspect, index, taskItems, setTaskItems
         </View>
 
         <TouchableOpacity style={styles.aspectBox} onPress={() => handlePressed('work')}>
-          <Entypo name={'suitcase'} size={SCREEN_WIDTH/15} color="#3a46bf" />
+          <View style={styles.iconBox}>
+            <Entypo name={'suitcase'} size={SCREEN_WIDTH/15} color="#3a46bf" />
+          </View>
           <Text style={[styles.aspectText, { color: "#3a46bf"}]}>Work</Text>
+          <View style={styles.spaceRight}></View>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.aspectBox} onPress={() => handlePressed('exercise&nutrition')}>
-          <MaterialIcons name={'fitness-center'} size={SCREEN_WIDTH/15} color="orange" />
+          <View style={styles.iconBox}>
+            <MaterialIcons name={'fitness-center'} size={SCREEN_WIDTH/15} color="orange" />
+          </View>
           <Text style={[styles.aspectText, { color: "orange"}]}>Exercise & Nutrition</Text>
+          <View style={styles.spaceRight}></View>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.aspectBox} onPress={() => handlePressed('relaxation')}>
-          <FontAwesome5 name="coffee" size={SCREEN_WIDTH/15} color="#50bfd1" />
+          <View style={styles.iconBox}>
+            <FontAwesome5 name="coffee" size={SCREEN_WIDTH/15} color="#50bfd1" />
+          </View>
           <Text style={[styles.aspectText, { color: "#50bfd1"}]}>Relaxation</Text>
+          <View style={styles.spaceRight}></View>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.aspectBox} onPress={() => handlePressed('relationships')}>
-          <Entypo name={'chat'} size={SCREEN_WIDTH/15} color="#9e32db" />
+          <View style={styles.iconBox}>
+            <Entypo name={'chat'} size={SCREEN_WIDTH/15} color="#9e32db" />
+          </View>
           <Text style={[styles.aspectText, { color: "#9e32db"}]}>Relationships</Text>
+          <View style={styles.spaceRight}></View>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.aspectBox} onPress={() => handlePressed('sleep')}>
-          <MaterialCommunityIcons name={'power-sleep'} size={SCREEN_WIDTH/15} color="#f0ca00" />
+          <View style={styles.iconBox}>
+            <MaterialCommunityIcons name={'power-sleep'} size={SCREEN_WIDTH/15} color="#f0ca00" />
+          </View>
           <Text style={[styles.aspectText, { color: "#f0ca00"}]}>Sleep</Text>
+          <View style={styles.spaceRight}></View>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.aspectBox} onPress={() => handlePressed('personaldevelopment')}>
-          <MaterialCommunityIcons name={'head-cog'} size={SCREEN_WIDTH/15} color="#21a177" />
+          <View style={styles.iconBox}>
+            <MaterialCommunityIcons name={'head-cog'} size={SCREEN_WIDTH/15} color="#21a177" />
+          </View>
           <Text style={[styles.aspectText, { color: "#21a177"}]}>Personal Development</Text>
+          <View style={styles.spaceRight}></View>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.aspectBox} onPress={() => handlePressed(null)}>
@@ -114,6 +131,14 @@ const styles = StyleSheet.create({
   },
   aspectText: {
     
+  },
+  iconBox: {
+    flex: 1,
+    alignItems: 'flex-start',
+    left: SCREEN_WIDTH/10,
+  },
+  spaceRight: {
+    flex: 1,
   },
   removeTagText: {
     color: '#f70000',

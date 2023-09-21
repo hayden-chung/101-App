@@ -10,11 +10,10 @@ const SCREEN_HEIGHT = (Dimensions.get('window').height);
 const WIDTH_MODAL = (Dimensions.get('window').width)/1.5;
 const HEIGHT_MODAL = (Dimensions.get('window').height)/4;
 
-export const EditModal = ({setEdit, index, taskItems, setTaskItems, updateTaskList}) => { // edit and delete quotes
+export const EditModal = ({setEdit, index, taskItems, setTaskItems}) => { // edit and delete quotes
 
 
     const [updatedTask, setUpdatedTask] = useState(taskItems[index][0]);
-    console.log('taskItems', taskItems)
 
     const closeModal = () => { // Close modal 
         setEdit(false);
@@ -103,7 +102,7 @@ const styles= StyleSheet.create({
         height: SCREEN_HEIGHT/20,
         borderRadius: SCREEN_HEIGHT/90,
         elevation: 5,
-        backgroundColor: 'green',
+        backgroundColor: 'white',
     },
     updateButton: {
         flexDirection: 'row',
@@ -112,7 +111,8 @@ const styles= StyleSheet.create({
         width: '40%',
         height: SCREEN_HEIGHT/20,
         borderRadius: SCREEN_HEIGHT/90,
-        backgroundColor: 'green',
+        elevation: 5,
+        backgroundColor: 'white',
     },
 
 })

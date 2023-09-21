@@ -6,19 +6,19 @@ import {fixedSessions} from '../components/timetable/settings/timetableSettingsD
 import TimeBlock from '../components/timetable/generator/timeBlocks'
 import TabBar from '../components/tabBar';
 import { MaterialIcons } from '@expo/vector-icons';
-import { Touchable } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = (Dimensions.get('window').height);
 
-const formatTime = (timeObject) => {
+const formatTime = (timeObject) => { // format time (e.g. 12:30pm)
     timeString = ''
     const minutes = timeObject.getMinutes()
     let hours = 0
-    if ((timeObject.getHours() - 12) > 0) {
+    if ((timeObject.getHours() - 12) > 0) { // format in pm if more than 12
         hours = timeObject.getHours()-12
         return `${hours}:${minutes}pm`
-    } else {
+    } else { // else format in am
         hours = timeObject.getHours()
         return `${hours}:${minutes}am`
     }
@@ -56,6 +56,11 @@ const TimetableScreen = ({navigation}) => { // navigation object allows users to
             ) : (
                 <View style={styles.timetableWrapper}> 
                     <View style={styles.timetableHeaderRow}>
+
+                        <TouchableOpacity style={styles.goBackHomeButton} onPress={() => navigation.goBack()}>  
+                            <Ionicons name="chevron-back" size={SCREEN_HEIGHT/20} color="black"/>
+                        </TouchableOpacity>
+
                         <Text style={styles.timetableHeaderText}>Today's Timetable</Text> 
 
                         <TouchableOpacity onPress={() => navigation.navigate("TimetableGenerator")} style={styles.newTimetableButton}>
@@ -113,7 +118,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         width: '100%',
-        paddingHorizontal: SCREEN_WIDTH/30,
+        paddingRight: SCREEN_WIDTH/30,
     },
     noTimetableImage: {
         resizeMode: 'contain',

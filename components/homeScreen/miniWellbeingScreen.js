@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: SCREEN_WIDTH/50,
-
+        top: -SCREEN_HEIGHT/50,
     },
 
 });

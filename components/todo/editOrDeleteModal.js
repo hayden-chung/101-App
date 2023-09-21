@@ -8,7 +8,7 @@ import {deleteTask} from './taskControls'
 const WIDTH_MODAL = (Dimensions.get('window').width)/1.8;
 const HEIGHT_MODAL = (Dimensions.get('window').height)/7;
 
-export const EditOrDeleteModal = ({setEdit, setEditOrDeleteModalVisible, index, taskItems, setTaskItems, updateTaskList}) => { // edit and delete quotes
+export const EditOrDeleteModal = ({setEdit, setEditOrDeleteModalVisible, index, taskItems, setTaskItems}) => { // edit and delete quotes
 
     const closeModal = () => { // Close modal 
         setEditOrDeleteModalVisible(false);

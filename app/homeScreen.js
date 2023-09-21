@@ -1,14 +1,12 @@
 import React, {useState} from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Dimensions} from 'react-native';
 import { useIsFocused } from '@react-navigation/native'; 
-import QuoteOfDay from '../components/homeScreen/quoteOfDay'
-import TodoList from '../components/homeScreen/todoList'
-import MiniTimetable from '../components/homeScreen/miniTimetable'
+import { AntDesign } from '@expo/vector-icons';
+import MiniQuote from '../components/homeScreen/miniQuote'
 import MiniWellbeingScreen from '../components/homeScreen/miniWellbeingScreen'
 import TabBar from '../components/tabBar'
 import Carousel from '../components/homeScreen/carousel';
-import { Ionicons } from '@expo/vector-icons';
-import { Touchable } from 'react-native';
+
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = Dimensions.get('window').height;
@@ -20,28 +18,21 @@ const HomeScreen = ({navigation}) => {
         <View style={styles.container}>
 
             <View style={styles.wrapper}>
-                <Text style={styles.header}>Dashboard</Text>
+                <View style={styles.header}>
+                    <AntDesign name="home" size={24} color="black" />
+                    <Text style={styles.headerText}>Dashboard</Text>
+                </View>
+                
                 <View style={styles.row1Container}>
-                    <View style={styles.row1Wrapper}>
-                        {/* --------------------- QUOTE OF THE DAY --------------------- */}
-                        <TouchableOpacity style={styles.quoteContainer} onPress={() => navigation.navigate("QuoteScreen")}>
-                            {/* If screen focus changes, re-render QuoteOfDay */}
-                            {isFocused && <QuoteOfDay/>} 
-                        </TouchableOpacity>
-
-                        {/* --------------------- WELLBEING --------------------- */}
-                        <TouchableOpacity style={styles.wellbeingContainer} onPress={() => navigation.navigate("WellBeingScreen")}>
-                            <MiniWellbeingScreen/>
-                        </TouchableOpacity>
-                    </View>
+                    {/* --------------------- WELLBEING --------------------- */}
+                    <TouchableOpacity style={styles.wellbeingContainer} onPress={() => navigation.navigate("WellBeingScreen")}>
+                        <MiniWellbeingScreen/>
+                    </TouchableOpacity>
                 </View>
 
 
                 <View style={styles.row2Container}>
-                    <Text></Text>
-                    <View style={styles.row2Wrapper}>
                         <Carousel navigation={navigation}/> 
-                    </View>
                 </View>
             </View>
 
@@ -61,34 +52,41 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     wrapper: {
+        alignItems: 'center',
+        paddingTop: SCREEN_HEIGHT/30,
+        paddingVertical: SCREEN_HEIGHT/40,
         flex: 1, 
+        backgroundColor: 'white',
+    },
+    header: {
+        width: '100%',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    headerText: {
+        textAlign: 'center',
+        fontSize: SCREEN_HEIGHT/25,
+        color: 'black',
+        paddingLeft: SCREEN_WIDTH/20,
+        marginBottom:SCREEN_HEIGHT/80,
     },
 
     // ---------- ROW 1 ---------- // 
     row1Container: {
-        justifyContent: 'center',
         flex: 1,
-    },
-    row1Wrapper: {
         flexDirection: 'row',
-        justifyContent: 'space-around',
+        justifyContent: 'center',
         alignItems: 'center',
-        width: '100%',
-        height: SCREEN_HEIGHT/3,
-    },
-    quoteContainer: {
-        width: SCREEN_WIDTH/2.1,
-        height: quoteAndWellbeingContainerHeight,
-        borderRadius: SCREEN_HEIGHT/30,
-        elevation: 5,
-        overflow: 'hidden',
-        backgroundColor: 'green',
+        width: '90%',
+        height: SCREEN_HEIGHT/2.8,
+        paddingHorizontal: SCREEN_WIDTH/15,
     },
     wellbeingContainer: {
         justifyContent: 'center',
         alignItems: 'center',
-        height: quoteAndWellbeingContainerHeight,
-        width: SCREEN_WIDTH/2.1, 
+        flex: 1,
+        paddingVertical: SCREEN_HEIGHT/50,
         borderRadius: SCREEN_HEIGHT/30,
         elevation: 5,
         overflow: 'hidden',
@@ -97,36 +95,9 @@ const styles = StyleSheet.create({
 
     // ---------- ROW 2 ---------- //
     row2Container: {
-        height: todoAndTimetableContainerHeight,
-    },
-    row2Wrapper: {
-        flex: 1,
         flexDirection: 'row',
-        marginVertical: SCREEN_HEIGHT/20,
-    },
-
-    todoScreenContainer: {
-        flex: 1,
-    },
-    todoListWrapper: {
-        height: todoAndTimetableListWrapperHeight,
-    },
-    todoHeader: {
-        flexDirection: 'row',
-        height: todoAndTimetableHeaderHeight,
-    },
-
-    timetableContainer: {
-        flex: 1,
-    },
-    timetableHeader: {
-        flexDirection: 'row',
-    },
-    timetableText: {
-        
-    },
-    pushToBottom: {
-        flex: 1,    
+        justifyContent: 'center',
+        height: '62%',
     },
 
 });

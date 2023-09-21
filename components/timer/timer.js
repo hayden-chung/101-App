@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, Button, StyleSheet, TouchableOpacity, Dimensions, TextInput} from 'react-native';
 import { CountdownCircleTimer } from 'react-native-countdown-circle-timer';
+import {triggerVibration, stopVibration} from '../vibration'
+import {vibration} from '../settings/vibrationState'
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = Dimensions.get('window').height;
@@ -13,6 +15,8 @@ const Timer = () => {
   const [isActive, setIsActive] = useState(false);
   const [isReset, setIsReset] = useState(true); // indicate when time setter can appear or not. 
   const [key, setKey] = useState(0);
+
+  console.log('vibration state:', vibration)
   
   const toggleTimer = () => { // 
     setIsActive(!isActive);
@@ -44,17 +48,13 @@ const Timer = () => {
 
     if (unit === 'seconds') { // setting seconds
         setSeconds(timeValue);
-        console.log('new seconds', seconds)
     }
     else if (unit === 'minutes') { // setting minutes 
         setMinutes(timeValue)
-        console.log('new minutes', minutes)
     }
     else if (unit === 'hours') { // setting hours
         setHours(timeValue)
-        console.log('new hours', hours)
     }
-
   };
 
   useEffect(() => { // when hours, minutes, or seconds is changed, update timer duration. 
@@ -67,7 +67,6 @@ const Timer = () => {
         let intValue = parseInt(value, 10)
 
         if (!isNaN(intValue)) {
-            
             return true
         } else {
             return false
@@ -111,6 +110,9 @@ const Timer = () => {
                 onComplete={() => { // When Timer is Over
                     if (isActive) {
                         setIsActive(false);
+                        if (vibration) {
+                            triggerVibration(true)
+                        }
                     }
                 }}
             >
@@ -176,7 +178,7 @@ const Timer = () => {
         
         <View style={styles.buttonsContainer}>
             {/* Reset Button */}
-            <TouchableOpacity style={styles.resetButton} onPress={resetTimer}>
+            <TouchableOpacity style={styles.resetButton} onPress={() => {resetTimer(); stopVibration(); }}>
                 <Text style={styles.resetText}>Reset</Text>
             </TouchableOpacity >
 

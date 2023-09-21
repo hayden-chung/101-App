@@ -1,14 +1,13 @@
 import React, {useState} from 'react';
 import { KeyboardAvoidingView, StyleSheet, Text, View, TextInput, TouchableOpacity, Dimensions, FlatList, Modal, ScrollView} from 'react-native';
 import Task from '../components/todo/task';
-import {addTask, completedTask, deleteTask} from '../components/todo/taskControls'; // import taskControl functions
+import {addTask, completedTask, getAspectIndex} from '../components/todo/taskControls'; // import taskControl functions
 import {TaskItemsList} from '../components/todo/taskItemsList';
 import {updateTaskItems} from "../components/todo/taskItemsList";
 import TabBar from '../components/tabBar';
 import {EditOrDeleteModal} from '../components/todo/editOrDeleteModal';
 import {EditModal} from '../components/todo/editModal'
-import {savedCalendarData} from '../components/wellbeing/calendar/calendarControls'
-import {getCurrentDate} from '../components/wellbeing/calendar/calendarControls'
+import {savedCalendarData, getCurrentDate} from '../components/wellbeing/calendar/calendarControls'
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = (Dimensions.get('window').height);
@@ -17,7 +16,6 @@ const ToDoScreen = ({navigation}) => { // when user clicks on todo button, navig
 
   const [task, setTask] = useState([null, false, false, null, null]); // useState is a hook that allows you to state variables in functional components. In this case: task = [task name, task completion state, task selected state in timetable generator, estimated completion time, aspect ] 
   const {taskItems, setTaskItems} = TaskItemsList(); // task list
-  console.log('in screen', task)
   const [isEditOrDeleteModalVisible, setEditOrDeleteModalVisible] = useState(false);
   const [isEdit, setEdit] = useState(false);
   const [editingIndex, setEditingIndex] = useState(null);
@@ -30,52 +28,22 @@ const ToDoScreen = ({navigation}) => { // when user clicks on todo button, navig
     }
   }
 
-  const updateTaskList = () => { // Update task list with a 10ms delay to ensure the updated taskItems is inputted. 
-    setTimeout(() => {
-      updateTaskItems(taskItems)
-    }, 10);
-    let numberOfUncompletedTasks = 0 
-    for (let i = 0; i < taskItems.length; i++) {
-      if (taskItems[i][1] === false) {
-        numberOfUncompletedTasks += 1
-      }
-    }
-  };
-
-  const getAspectIndex = (index) => {
-    if (taskItems[index][4] === 'work') {
-      return 0
-    }
-    else if (taskItems[index][4] === 'exercise&nutrition') {
-      return 1
-    }
-    else if (taskItems[index][4] === 'relaxation') {
-      return 2
-    }
-    else if (taskItems[index][4] === 'relationships') {
-      return 3
-    }
-    else if (taskItems[index][4] === 'sleep') {
-      return 4
-    }
-    else if (taskItems[index][4] === 'personaldevelopment') {
-      return 5
-    }
-  }
-
   const updateWellbeingRating = (index) => { // If task is tagged to an aspect, increase the aspect by 1 when task completed. 
+    console.log('it existsss', taskItems, index)
     if (taskItems[index][4] !== null) {
       const currentDate = getCurrentDate()
+      console.log('CURRENT DATE', currentDate)
       if (savedCalendarData[currentDate] === undefined) {
         savedCalendarData[currentDate] = [1, 1, 1, 1, 1, 1]
       }
-      const aspectIndex = getAspectIndex(index)
-      savedCalendarData[currentDate][aspectIndex] = savedCalendarData[currentDate][aspectIndex]+1
+      const aspectIndex = getAspectIndex(index, taskItems)
+      if (savedCalendarData[currentDate][aspectIndex] !== 10) {
+        savedCalendarData[currentDate][aspectIndex] = savedCalendarData[currentDate][aspectIndex]+1
+      }
     }
   };
 
   let orderedList = []
-  console.log('taskItems', taskItems)
 
   for (let i = 0; i < taskItems.length; i++) {
     if (taskItems[i][1] === false) {
@@ -87,16 +55,15 @@ const ToDoScreen = ({navigation}) => { // when user clicks on todo button, navig
       orderedList.push(taskItems[i])
     }
   }
+  console.log('ordered', orderedList)
   
-  console.log('task added,', task)
-  console.log('orderdList', orderedList)
-
   return (
     <View style={styles.container}> 
       <View style={styles.wrapper}> 
 
         {/* TITLE of screen */}
         <Text style={styles.taskTitle}>To Do</Text> 
+        {/* Number of tasks remaining */}
         <Text style={styles.subHeaderNumberOfTasksText}>You have {numberOfUncompletedTasks} task(s) today</Text>
 
         {/* enable scrolling using ScrollView */}
@@ -112,7 +79,7 @@ const ToDoScreen = ({navigation}) => { // when user clicks on todo button, navig
                 onLongPress={() => {setEditOrDeleteModalVisible(true); setEditingIndex(index)}}
                 > 
                 {/* Task component displays task item. Parameters 'text' (task text) and 'taskState' (checkbox)*/}
-                <Task item={item} text={item[0]} timetableGenerator={false} taskStatus={orderedList[index][1]} taskTime={orderedList[index][3]} aspect={orderedList[index][4]} index={index} taskItems={orderedList} setTaskItems={setTaskItems} completedTask={completedTask} updateWellbeingRating={updateWellbeingRating} updateTaskList={updateTaskList}/> 
+                <Task item={item} text={item[0]} timetableGenerator={false} taskStatus={orderedList[index][1]} taskTime={orderedList[index][3]} aspect={orderedList[index][4]} index={index} taskItems={orderedList} setTaskItems={setTaskItems} completedTask={completedTask} updateWellbeingRating={updateWellbeingRating} /> 
               </TouchableOpacity> 
           }/>
         </View>
@@ -127,9 +94,9 @@ const ToDoScreen = ({navigation}) => { // when user clicks on todo button, navig
           <TextInput style={styles.textInput} placeholder={'Write a Task'} value={task[0]} onChangeText={text => setTask([text, false, false, null, null])}/> 
 
           {/* ADD TASK BUTTON */}
-          <TouchableOpacity onPress={() => {if (task[0] !== null) {if (task[0].trim() !== '') {addTask(task, taskItems, setTaskItems, setTask); updateTaskList()}}}}>
+          <TouchableOpacity onPress={() => {if (task[0] !== null) {if (task[0].trim() !== '') {addTask(task, taskItems, setTaskItems, setTask)}}}}>
             <View style={styles.addWrapper}>
-              <Text style={styles.addButtonText}>+</Text>
+              <Text style={styles.addButtonText}>+</Text> 
             </View>
           </TouchableOpacity>
         </KeyboardAvoidingView>
@@ -148,7 +115,6 @@ const ToDoScreen = ({navigation}) => { // when user clicks on todo button, navig
             index={editingIndex}
             taskItems={taskItems}
             setTaskItems={setTaskItems}
-            updateTaskList={updateTaskList}
         />
       </Modal>
 
@@ -164,12 +130,9 @@ const ToDoScreen = ({navigation}) => { // when user clicks on todo button, navig
           index={editingIndex}
           taskItems={taskItems}
           setTaskItems={setTaskItems}
-          updateTaskList={updateTaskList}
         />
       </Modal>
-      <View style={styles.navBar}>
-        <TabBar navigation={navigation}/>
-      </View>
+      <TabBar navigation={navigation}/>
     </View>
   );
 }
@@ -197,22 +160,8 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: SCREEN_HEIGHT/80,
+    marginVertical: SCREEN_HEIGHT/70,
   }, 
-  completedtaskItemsContainer: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: SCREEN_HEIGHT/40,
-  },
-  completedText: {
-    width: '100%',
-    textAlign: 'left',
-    fontSize: SCREEN_HEIGHT/35,
-    fontWeight: '400',
-    marginBottom: SCREEN_HEIGHT/70,
-    paddingHorizontal: SCREEN_WIDTH/30,
-  },
   textInputRow: { // Text input and add button. 
     flexDirection: 'row',
     justifyContent:'space-around',
@@ -240,9 +189,6 @@ const styles = StyleSheet.create({
     color: '#4B4B4B',
     fontSize: SCREEN_WIDTH/10,
     top: -SCREEN_HEIGHT/290,
-  },
-  pushToBottom: {
-    flex: 1,    
   },
   navBar: {
     

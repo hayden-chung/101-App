@@ -1,8 +1,9 @@
 import React, {useState} from 'react';
 import { StatusBar, StyleSheet, Text, View, Image, Dimensions, ScrollView, useWindowDimensions} from 'react-native';
 import Animated, {useSharedValue, useAnimatedStyle, useAnimatedScrollHandler, interpolate} from 'react-native-reanimated';
-import TodoList from './todoList';
+import MiniTodoList from './miniTodoList';
 import MiniTimetable from './miniTimetable';
+import MiniQuote from './miniQuote'
 import { TouchableOpacity } from 'react-native';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
@@ -10,19 +11,14 @@ const SCREEN_HEIGHT = Dimensions.get('window').height;
 
 const Carousel = ({navigation}) => { 
     const data = [ 
-        {object: 'item'},{object: 'item'},  
+        {key: 'spacer'}, {key: 'quote'}, {key: 'timetable'},{key: 'todo'},{key: 'spacer'},   
     ];
-    
-    const [newData] = useState([{ // create space for left and right end of carousel.
-        key: 'spacer-left'}, 
-        ...data, 
-        {key: 'spacer-right'}])
 
     const {width} = useWindowDimensions(); // width of screen
     const SIZE = width * 0.77; // width of component
     const SPACER = (width-SIZE) / 2;
     const x = useSharedValue(0); // allows variable (x value of object in this case) to be shared and manipulated in different places. 
-    const onScroll = useAnimatedScrollHandler({
+    const onScroll = useAnimatedScrollHandler({ // when carousel is scrolled, change x pos of container. 
         onScroll: event => {
             x.value = event.contentOffset.x;
         }
@@ -33,12 +29,14 @@ const Carousel = ({navigation}) => {
     return(     
         <Animated.ScrollView 
             horizontal 
+            overScrollMode="never"
             showsHorizontalScrollIndicator={false} 
             scrollEventThrottle={16}
             snapToInterval={SIZE} // snap at every interval value: SIZE
             decelerationRate="fast"
             onScroll={onScroll}>
-            {newData.map((item, index) => {
+            {/* render list of components (todo and timetable screen) */}
+            {data.map((item, index) => {
                 const style= useAnimatedStyle(() => {
                     const scale = interpolate(
                         x.value, 
@@ -49,18 +47,22 @@ const Carousel = ({navigation}) => {
                         transform: [{scale}],
                     }
                 })
-                if(!item.object){ // if item.object doesn't exist
+                if(item.key === 'spacer'){ // if item.object doesn't exist
                     return <View style={{width: SPACER}} key={index}/>;
                 }
                 return (
-                    <View> 
+                    <View key={index}> 
                         <View style={[styles.container, {width: SIZE}]} key={index}>
                             <Animated.View style={[styles.componentContainer, style]}>
 
-                                {index % 2 === 0 ?( // if index num is even, display todo list.
-                                    <TodoList navigation={navigation}/>
-                                ) :  // if index num is odd, display timetable. 
+                                {item.key === 'todo' ? ( // if index num is even, display todo list.
+                                    <MiniTodoList navigation={navigation}/>
+                                ) : item.key === 'timetable' ? (
+                                     // if index num is odd, display timetable. 
                                     <MiniTimetable navigation={navigation} small={true}/>
+                                ) : item.key === 'quote' ? (
+                                    <MiniQuote navigation={navigation}/>
+                                ) : null
                                 }
                             </Animated.View>
                         </View>
@@ -80,7 +82,7 @@ const styles = StyleSheet.create({
         
     },
     componentContainer: {
-        borderRadius: 34, 
+        borderRadius: 30, 
         overflow: 'hidden',
         elevation: 5,
         backgroundColor: 'white',

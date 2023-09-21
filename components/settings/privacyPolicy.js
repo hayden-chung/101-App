@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
-import { StyleSheet, ScrollView, View, TouchableOpacity, Dimensions} from 'react-native';
+import { StyleSheet, ScrollView, View, TouchableOpacity, Dimensions, Text} from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import RenderHtml from 'react-native-render-html';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
@@ -7,7 +8,6 @@ const SCREEN_HEIGHT = (Dimensions.get('window').height);
 
 const PRIVACY_POLICY = {
     html: `
-    <h1>Privacy Policy</h1>
     <p>Last updated: September 11, 2023</p>
     <p>This Privacy Policy describes Our policies and procedures on the collection, use and disclosure of Your information when You use the Service and tells You about Your privacy rights and how the law protects You.</p>
     <p>We use Your Personal data to provide and improve the Service. By using the Service, You agree to the collection and use of information in accordance with this Privacy Policy. This Privacy Policy has been created with the help of the <a href="https://www.termsfeed.com/privacy-policy-generator/" target="_blank">Privacy Policy Generator</a>.</p>
@@ -78,11 +78,22 @@ const PRIVACY_POLICY = {
 };
 
 
-const PrivacyPolicyScreen = ({navigation}) => { 
+const PrivacyPolicyScreen = ({navigation}) => { // Privacy Policy Screen
 
     return(
         <View style={styles.container}>
             <View style={styles.wrapper}>
+
+                {/* Container for back button and header text */}
+                <View style={styles.headerRow}>
+                    {/* Return to settings screen */}
+                    <TouchableOpacity style={styles.goBackHomeButton} onPress={() => navigation.goBack()}>  
+                        <Ionicons name="chevron-back" size={SCREEN_HEIGHT/20} color="black"/>
+                    </TouchableOpacity>
+                    <Text style={styles.headerText}>Privacy Policy</Text>
+                </View>
+
+                {/* Privacy Policy Content */}
                 <ScrollView>
                     <RenderHtml contentWidth={SCREEN_WIDTH} source={PRIVACY_POLICY} />
                 </ScrollView>
@@ -94,10 +105,19 @@ const PrivacyPolicyScreen = ({navigation}) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1, 
+        backgroundColor: 'white',
     },
     wrapper: {
-        marginTop: SCREEN_HEIGHT/25,
+        marginTop: SCREEN_HEIGHT/20,
         marginHorizontal: SCREEN_WIDTH/40,
+    },
+    headerRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    headerText: {
+        fontSize: SCREEN_HEIGHT/20,
+        fontWeight: '500',
     },
     pushToBottom: {
         flex: 1,    

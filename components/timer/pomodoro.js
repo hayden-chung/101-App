@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, Button, StyleSheet, TouchableOpacity, Dimensions, TextInput} from 'react-native';
 import { CountdownCircleTimer } from 'react-native-countdown-circle-timer';
 import { Feather } from '@expo/vector-icons';
+import {triggerVibration} from '../vibration';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = Dimensions.get('window').height;
@@ -12,7 +13,7 @@ const PomodoroTimer = () => { // Pomodoro timer function.
   const [timerDuration, setTimerDuration] = useState(0); // Initial time in seconds
   const [sessionsCount, setSessionsCount] = useState(1); // number of pomodoro sessions. 
   const [workOrBreak, setWorkOrBreak] = useState(null);
-  const [isActive, setIsActive] = useState(false);
+  const [isActive, setIsActive] = useState(false); // has timer been started
   const [isReset, setIsReset] = useState(true); // indicate when time setter can appear or not. false = timer is runnning
   const [key, setKey] = useState(0);
   
@@ -39,6 +40,7 @@ const PomodoroTimer = () => { // Pomodoro timer function.
 
   const formatTime = ({ remainingTime }) => { // Format the countdown timer into 'hour:min:seconds' time. 
     
+    // Get remaining time of current session
     let remainingTimeForThisSession = 0
     if (workOrBreak === 'work') {
         remainingTimeForThisSession = remainingTime - (breakMinutes * 60);
@@ -80,31 +82,31 @@ const PomodoroTimer = () => { // Pomodoro timer function.
   }, [workMinutes, breakMinutes])
 
 
-  const updateTimerDuration = () => { // Set new duration of time (work or break).
+    const updateTimerDuration = () => { // Set new duration of time (work or break).
 
-    const isIntergerNumbers = (value) => { // Function to check if value = integer
-        let intValue = parseInt(value, 10) // parseInt = convert to integer
+        const isIntergerNumbers = (value) => { // Function to check if value = integer
+            let intValue = parseInt(value, 10) // parseInt = convert to integer
 
-        if (!isNaN(intValue)) { // if not a 'none' type:
-            return true
-        } else {
-            return false
+            if (!isNaN(intValue)) { // if not a 'none' type:
+                return true
+            } else {
+                return false
+            }
+        }
+
+        if (isIntergerNumbers(workMinutes) && isIntergerNumbers(breakMinutes)) { // if both workMinutes and breakMinutes are valid
+            setTimerDuration(parseInt(workMinutes*60) + parseInt(breakMinutes*60))
+        } 
+        else if (isIntergerNumbers(workMinutes) && isIntergerNumbers(breakMinutes) === false) { // if only workMinutes is valid
+            setTimerDuration(parseInt(workMinutes*60))
+        }
+        else if (isIntergerNumbers(workMinutes) === false && isIntergerNumbers(breakMinutes)) { // if only breakMinutes is valid
+            setTimerDuration(parseInt(breakMinutes*60))
+        }
+        else if (isIntergerNumbers(workMinutes) === false && isIntergerNumbers(breakMinutes) === false){ // if both are not valid
+            setTimerDuration(0)
         }
     }
-
-    if (isIntergerNumbers(workMinutes) && isIntergerNumbers(breakMinutes)) { // if both workMinutes and breakMinutes are valid
-        setTimerDuration(parseInt(workMinutes*60) + parseInt(breakMinutes*60))
-    } 
-    else if (isIntergerNumbers(workMinutes) && isIntergerNumbers(breakMinutes) === false) { // if only workMinutes is valid
-        setTimerDuration(parseInt(workMinutes*60))
-    }
-    else if (isIntergerNumbers(workMinutes) === false && isIntergerNumbers(breakMinutes)) { // if only breakMinutes is valid
-        setTimerDuration(parseInt(breakMinutes*60))
-    }
-    else if (isIntergerNumbers(workMinutes) === false && isIntergerNumbers(breakMinutes) === false){ // if both are not valid
-        setTimerDuration(0)
-    }
-  }
 
   return (
     <View style={styles.container}>
@@ -125,7 +127,6 @@ const PomodoroTimer = () => { // Pomodoro timer function.
                     onUpdate={(remainingTime) => { // current status: work or break?
                         if (remainingTime > (parseInt(breakMinutes)*60)) { // if remaining time is greater than the break time, set status to work. 
                             setWorkOrBreak('work')
-                            
                         }
                         else if (remainingTime <= (parseInt(breakMinutes)*60)) { // if remaining time is less or equal to the break time, set status to break. 
                             setWorkOrBreak('break')
@@ -199,7 +200,7 @@ const PomodoroTimer = () => { // Pomodoro timer function.
 
             {isReset === false ? ( // If reset is not true
                 <View style={styles.workOrBreakLabelContainer}>
-                    <Text style={styles.workOrBreakLabel}> {workOrBreak === 'work' ? ( 'FOCUS MODE' ) : 'REST'} </Text>
+                    <Text style={styles.workOrBreakLabelText}> {workOrBreak === 'work' ? ( 'FOCUS MODE' ) : 'REST'} </Text>
                     <Text style={styles.remainingTimeText}> Pomodoro # : {sessionsCount} </Text>
                 </View>
             ): null}
@@ -218,7 +219,7 @@ const PomodoroTimer = () => { // Pomodoro timer function.
             </TouchableOpacity >
 
             {/* Skip Button. when pressed, skip from break to work*/}
-            {workOrBreak === 'break' ? (
+            {workOrBreak === 'break' && isActive ? (
             <TouchableOpacity style={styles.skipButton} onPress={skipSession}>
                 <Feather name="skip-forward" size={24} color="white" />
                 <Text style={styles.skipText}>Skip</Text>
@@ -279,10 +280,10 @@ const styles = StyleSheet.create({
         zIndex: 1,
         elevation: 10,
     },
-    timerTimeText: {
+    timerTimeText: { // remaining time
         fontSize: SCREEN_HEIGHT/20,
     },
-    containerInsideTimer: {
+    containerInsideTimer: { // container and components inside timer. 
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems:'center',
@@ -295,12 +296,12 @@ const styles = StyleSheet.create({
         zIndex: 2,
         backgroundColor: 'white',
     },
-    setTimeColumn: {
+    setTimeColumn: { // column for time text and time text input
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
     },
-    setTimeBoxWork: {
+    setTimeBoxWork: { // Time input box for work
         justifyContent: 'center',
         alignItems: 'center',
         width: TIME_INPUT_BOX_WIDTH,
@@ -310,7 +311,7 @@ const styles = StyleSheet.create({
         elevation: 5,
         backgroundColor: 'white',
     },
-    setTimeBoxBreak: {
+    setTimeBoxBreak: { // Time input box for break.
         justifyContent: 'center',
         alignItems: 'center',
         width: TIME_INPUT_BOX_WIDTH,
@@ -332,12 +333,12 @@ const styles = StyleSheet.create({
         fontWeight: '400',
         color: '#B1B3B9',
     },
-    timeInputLabelWork: { // WORK & BREAK label below time input box. 
+    timeInputLabelWork: { // WORK label below time input box. 
         marginTop: SCREEN_HEIGHT/60,
         marginRight: SCREEN_WIDTH/22,
         color: '#808080', 
     },
-    timeInputLabelBreak: {
+    timeInputLabelBreak: { // BREAK label below time input box. 
         marginTop: SCREEN_HEIGHT/60,
         marginLeft: SCREEN_WIDTH/22,
         color: '#808080', 
@@ -349,21 +350,21 @@ const styles = StyleSheet.create({
         top: SCREEN_HEIGHT/30,
         zIndex: 2,
     },
-    totalCycleTimeText: {
+    totalCycleTimeText: { // total cycle text
         color: '#808080',
     },
-    remainingTimeText: {
+    remainingTimeText: { // displays remaining time of timer
         color: '#B4B4B4',
         fontSize: SCREEN_HEIGHT/60,
     },
-    workOrBreakLabelContainer: {
+    workOrBreakLabelContainer: { // container of work and break label 
         flexDirection: 'column',
         alignItems: 'center',
         bottom: SCREEN_HEIGHT/11,
         zIndex: 2,
         position: 'absolute',
     },
-    workOrBreakLabel: {
+    workOrBreakLabelText: { // Text displays work or break 
         marginBottom: SCREEN_HEIGHT/60,
         color: '#808080',
         fontSize: SCREEN_HEIGHT/35,
@@ -406,7 +407,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#8a8fd4ff',
         elevation: 4,
     },
-    startOrPauseText: {
+    startOrPauseText: { 
         color: 'white',
         fontWeight: '500',
         fontSize: SCREEN_HEIGHT/50,

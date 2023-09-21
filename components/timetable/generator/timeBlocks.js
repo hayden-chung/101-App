@@ -11,15 +11,16 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = (Dimensions.get('window').height);
 
-const TimeBlock = ({item, index}) => {
+const TimeBlock = ({item, index, miniScreen}) => { // Time block to display on timetable
     let startTime = 0
     let endTime = 0
     const timetable = timetableSaved
     const isBreak = Array.isArray(item[1])
     let timeInHours = null
-    if (isBreak) {
+
+    if (isBreak) { // method to get timeInHours if it is break
         timeInHours = ((item[1][1]-item[1][0])/(1000*60*60)).toFixed(2) // finish time - start time. Convert to hours from ms and round to 2dp. 
-    } else {
+    } else { // method to get timeInHours if it is a task (not break)
         timeInHours = item[3]/100
     }
 
@@ -42,7 +43,6 @@ const TimeBlock = ({item, index}) => {
                 for (k=i-1; k > 0; k--) { 
                     addTime = addTime + timetable[index-k][3]
                 }
-
                 startTime = new Date(fixedSessions['start-finish'][0].getTime() + addTime*60*60*10)
                 endTime = new Date(startTime.getTime() + item[3]*60*60*10)
             
@@ -63,12 +63,16 @@ const TimeBlock = ({item, index}) => {
     }
 
     return (
-        <View style={{...styles.item, borderColor: isBreak? '#a1cc9f' : '#f59999'}}> 
+        !miniScreen ? ( // if NOT MINIT SCREEN (hence, main timetable screen)
+
+        // Border color depends on task (red) or break (green)
+        <View style={{...styles.item, borderColor: isBreak? '#a1cc9f' : '#f59999', width: '100%'}}> 
 
             <View style={styles.row1}>
                 {/* Task name */}
                 <Text style={styles.taskText}>{item[0]}</Text> 
 
+                {/* Display aspect icon (if valid) */}
                 {item[4] === 'work' && (
                     <Entypo name={'suitcase'} size={SCREEN_WIDTH/15} color="#3a46bf" />
                 )}
@@ -93,9 +97,10 @@ const TimeBlock = ({item, index}) => {
             </View>
  
             <View style={styles.row2}>
-
+                {/* Estimated Time */}
                 <Text>({timeInHours}h)</Text>
                 
+                {/* Start ~ Finish Time */}
                 {startTime !== 0 && startTime !== undefined && startTime !== null && (
                     <Text>
                         {startTime.getHours() < 12 // Determine whether time is am or pm. 
@@ -117,14 +122,43 @@ const TimeBlock = ({item, index}) => {
             </View>
             
         </View>
+        ): (
+
+        // if MINI SCREEN (task name and time range only)
+        <View style={{...styles.item, borderColor: isBreak? '#a1cc9f' : '#f59999', width: SCREEN_WIDTH/1.4}}> 
+
+            <View style={styles.miniTimetableRow}>
+                {/* Task name */}
+                <Text style={styles.taskText}>{item[0]}</Text> 
+
+                {startTime !== 0 && startTime !== undefined && startTime !== null && (
+                    <Text>
+                        {startTime.getHours() < 12 // Determine whether time is am or pm. 
+                            ? `${startTime.getHours()}:${displayStartTimeMinutes}am`
+                            : startTime.getHours() === 12 
+                                ? `${startTime.getHours()}:${displayStartTimeMinutes}pm` // If 12pm, don't subtract 12, else subtract 12 to display pm time. 
+                                : `${startTime.getHours()-12}:${displayStartTimeMinutes}pm`
+                        }
+                        ~
+                        {endTime.getHours() < 12 // Determine whether time is am or pm. 
+                            ? `${endTime.getHours()}:${displayEndTimeMinutes}am`
+                            : endTime.getHours() === 12 
+                                ? `${endTime.getHours()}:${displayEndTimeMinutes}pm` // If 12pm, don't subtract 12, else subtract 12 to display pm time. 
+                                : `${endTime.getHours()-12}:${displayEndTimeMinutes}pm`
+                        }
+                    </Text> 
+                )}
+            </View>            
+        </View>
+        )
+        
     );
 }
 
 const styles = StyleSheet.create({
-    item: { // quote Item
+    item: {
         flexDirection: 'column',
-        width: '100%',
-        padding: 20,
+        padding: SCREEN_HEIGHT/35,
         borderRadius: 10,  
         borderWidth: 3,
         marginBottom: 10,
@@ -144,6 +178,12 @@ const styles = StyleSheet.create({
     row2: {
         flexDirection: 'row',
         justifyContent: 'space-between',
+        width: '100%',
+    },
+    miniTimetableRow: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
         width: '100%',
     },
 });

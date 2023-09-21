@@ -1,13 +1,17 @@
 import React, {useState} from 'react';
-import { KeyboardAvoidingView, StyleSheet, Text, View, TextInput, TouchableOpacity, Keyboard, ScrollView, FlatList, SafeAreaView, Modal, Alert} from 'react-native';
+import { KeyboardAvoidingView, StyleSheet, Text, View, Dimensions, TouchableOpacity, Keyboard, ScrollView, FlatList, SafeAreaView, Modal, Alert} from 'react-native';
 import Quote from '../components/motivationalQuotes/quote';
 import { quoteToggle } from '../components/motivationalQuotes/quoteList&Controls';
 import { QuoteModal } from '../components/motivationalQuotes/quoteModal';
 import { MaterialIcons } from '@expo/vector-icons'; 
+import { Ionicons } from '@expo/vector-icons';
 import { EditDeleteQuoteModal } from '../components/motivationalQuotes/edit&deleteQuoteModal';
 import {quoteListItems} from '../components/motivationalQuotes/quoteList&Controls';
 import {quoteListSaved} from '../components/motivationalQuotes/quoteList&Controls'
 import TabBar from '../components/tabBar';
+
+const SCREEN_WIDTH = Dimensions.get('window').width;
+const SCREEN_HEIGHT = (Dimensions.get('window').height);
 
 const QuoteScreen = ({navigation}) => { 
     
@@ -20,6 +24,12 @@ const QuoteScreen = ({navigation}) => {
     <SafeAreaView style={styles.container}>
         <View style={styles.wrapper}>
             <View style={styles.header}>
+
+                {/* Return to Home Dashboard Button */}
+                <TouchableOpacity style={styles.goBackHomeButton} onPress={() => navigation.goBack()}>  
+                    <Ionicons name="chevron-back" size={SCREEN_HEIGHT/20} color="black"/>
+                </TouchableOpacity>
+
                 <Text style={styles.quoteTitle}>QUOTE LIST</Text> 
 
                 {/* Add Quote Button. When button pressed, open modal by setting variable to 'true' */}

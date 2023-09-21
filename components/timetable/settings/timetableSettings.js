@@ -4,6 +4,7 @@ import TimePicker from './timePicker';
 import {AddBreakModal} from './addBreakModal'
 import {fixedSessions} from './timetableSettingsData'
 import { MaterialIcons } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 import TabBar from '../../tabBar';
 
 
@@ -32,6 +33,9 @@ const TimetableSettings = ({navigation}) => { // Timetable Settings Screen.
             <View style={styles.wrapper}>
                 {/* Display header text of screen. */}
                 <View style={styles.header}>
+                    <TouchableOpacity style={styles.goBackHomeButton} onPress={() => navigation.goBack()}>  
+                        <Ionicons name="chevron-back" size={SCREEN_HEIGHT/20} color="white"/>
+                    </TouchableOpacity>
                     <Text style={styles.headerText}>Timetable Settings</Text>
                 </View>
 
@@ -132,20 +136,25 @@ const styles = StyleSheet.create({
     container: { // container = whole screen of timetable settings 
         flex: 1,
         alignItems: 'center', // flexDirection: 'column'
+        backgroundColor: '#fdb386',
     }, 
     wrapper: {
         marginTop: SCREEN_HEIGHT/20,
         justifyContent: 'center',
         alignItems: 'center',
         width: '95%',
-        height: SCREEN_HEIGHT/1.1
+        height: SCREEN_HEIGHT/1.2,
     },
     header: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
         marginBottom: SCREEN_HEIGHT/40,
     },
     headerText: { // style header text (Timetable Settings)
         fontSize: SCREEN_HEIGHT/23,
-        fontWeight: '500',
+        fontWeight: '600',
+        color: 'white',
     },
     timetableStartFinishContainer: { // Container for displaying start/finish time of timetable. 
         width: '95%',

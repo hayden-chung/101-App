@@ -6,6 +6,8 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
 import {openContactSupport} from '../components/settings/supportContact'
+import {triggerVibration} from '../components/vibration'
+import {vibration, updateVibrationState} from '../components/settings/vibrationState'
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = (Dimensions.get('window').height);
@@ -15,15 +17,15 @@ const ARROW_SIZE = SCREEN_WIDTH/11;
 
 const SettingsScreen = ({navigation}) => { 
 
-    const [notificationState, setNotificationState] = useState(false);
-    const [vibrationState, setVibrationState] = useState(false);
+    const [vibrationState, setVibrationState] = useState(vibration);
     
-    const toggleNotificationSwitch = (value) => {
-        setNotificationState(value);
-    }
 
-    const toggleVibrationSwitch = (value) => {
+    const toggleVibrationSwitch = (value) => { 
         setVibrationState(value);
+        updateVibrationState(value)
+        if (value) {
+            triggerVibration(false)
+        }
     }
 
     return(
@@ -31,28 +33,7 @@ const SettingsScreen = ({navigation}) => {
 
             <View style={styles.wrapper}>
 
-                {/* ---------- Notifications ---------- */}
-                <View style={styles.buttonRow}>
-
-                    {/* if notificationState is true, display icon1, else icon2 */}
-                    {notificationState 
-                    ? <Ionicons name="notifications" style={styles.icon} size={ICON_SIZE} color="black" />
-                    : <Ionicons name="notifications-off" style={styles.icon} size={ICON_SIZE} color="black" 
-                    />}
-
-                    <Text style={styles.text}>Notifications</Text>
-
-                    <View style={styles.fillSpaceBetweenTwoItems}></View>
-
-                    <Switch
-                        trackColor={{false:"#767577", true: "#4ed164ff"}}
-                        thumbColor={notificationState ? "#f4f3f4" : "#f4f3f4"}
-                        onValueChange={toggleNotificationSwitch}
-                        value={notificationState}
-                        style={styles.switch}
-                    />
-                </View>
-                <View style={styles.lineDivider}></View>
+                <Text style={styles.headerText}>Settings</Text>
 
                 {/* ---------- Vibration ---------- */}
                 <View style={styles.buttonRow}>
@@ -115,16 +96,24 @@ const SettingsScreen = ({navigation}) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1, 
+        backgroundColor: 'white',
     },
     wrapper: {
+        paddingHorizontal: SCREEN_WIDTH/20,
         marginTop: SCREEN_HEIGHT/20,
+    },
+    headerText: {
+        textAlign: 'center',
+        fontSize: SCREEN_HEIGHT/30,
+        marginBottom: SCREEN_HEIGHT/20,
+        marginTop: SCREEN_HEIGHT/20,
+        fontWeight: '500',
     },
     buttonRow: {
         flexDirection: 'row',
         alignItems: 'center',
         paddingLeft: SCREEN_WIDTH/20,
         marginBottom: SCREEN_HEIGHT/80,
-
     },
     icon: {
         marginRight: SCREEN_WIDTH/20,
@@ -143,7 +132,7 @@ const styles = StyleSheet.create({
         marginRight: SCREEN_WIDTH/10,
     },
     lineDivider: {
-        backgroundColor: 'gray',
+        backgroundColor: '#d9d9d9',
         height: SCREEN_HEIGHT/1000,
         width: '90%',
         marginHorizontal: SCREEN_WIDTH/30,

@@ -17,6 +17,7 @@ export const updateTask = (updatedTask, index, taskItems, setTaskItems) => {
 };
 
 export const completedTask = (index, taskItems, setTaskItems) => { // (To Do Screen) When task is pressed, 
+    console.log('taskItems in functino', taskItems)
     taskItems[index][1] =!taskItems[index][1]; // inverse the boolean state (if false --> true, if true --> false)
     setTaskItems([...taskItems]); // update the taskItems array 
     return { taskItems: taskItems}; // return values to update
@@ -46,3 +47,25 @@ export const updateTag = (index, taskItems, setTaskItems, aspect) => {
     newTaskItems[index][4] = aspect
     setTaskItems([...newTaskItems])
 };
+
+export const getAspectIndex = (index, taskItems) => { // get index number of wellbeing aspect
+    console.log('TEST:', taskItems)
+    if (taskItems[index][4] === 'work') {
+      return 0
+    }
+    else if (taskItems[index][4] === 'exercise&nutrition') {
+      return 1
+    }
+    else if (taskItems[index][4] === 'relaxation') {
+      return 2
+    }
+    else if (taskItems[index][4] === 'relationships') {
+      return 3
+    }
+    else if (taskItems[index][4] === 'sleep') {
+      return 4
+    }
+    else if (taskItems[index][4] === 'personaldevelopment') {
+      return 5
+    }
+  }

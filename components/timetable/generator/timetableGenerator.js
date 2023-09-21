@@ -28,7 +28,6 @@ const TimetableGenerator = ({navigation}) => {
     const onGenerateTimetablePressed = () => {
         let newTimetable = GenerateTimetable(taskItems, [], setTimetable)
         updateTimetable(newTimetable)
-        console.log('FINISHED', newTimetable)
         callbackToFunction(newTimetable) 
     }
 
@@ -37,6 +36,11 @@ const TimetableGenerator = ({navigation}) => {
             <View style={styles.wrapper}>
                 
                 <View style={styles.headerContainer}>
+
+                    <TouchableOpacity style={styles.goBackHomeButton} onPress={() => navigation.goBack()}>  
+                        <Ionicons name="chevron-back" size={SCREEN_HEIGHT/20} color="white"/>
+                    </TouchableOpacity>
+
                     <Text style={styles.header}>Timetable Generator</Text>
 
                     <TouchableOpacity style={styles.timetableSettingsButton} onPress={() => navigation.navigate("TimetableSettings")}>
@@ -62,14 +66,15 @@ const TimetableGenerator = ({navigation}) => {
                     }/>
                 </View>
 
-
-                <AlertMessage 
-                    isAlarmMessage={isAlarmMessage}
-                    toggleAlarmMessage={toggleAlarmMessage}
-                    text={'You can only select tasks with an estimated time'}
-                    fontSize={1}
-                    fontColor={'white'}
-                />
+                <View style={styles.alertMessage}>
+                    <AlertMessage 
+                        isAlarmMessage={isAlarmMessage}
+                        toggleAlarmMessage={toggleAlarmMessage}
+                        text={'You can only select tasks with estimated times'}
+                        fontSize={SCREEN_HEIGHT/40}
+                        fontColor={'white'}
+                    />
+                </View>
 
                 {/* ---------- Generate Timetable Button ---------- */}
                 <TouchableOpacity style={styles.generateButton} onPress={() => onGenerateTimetablePressed()}> 
@@ -89,7 +94,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1, 
         alignItems: 'center',
-        backgroundColor: '#FF7276',
+        backgroundColor: '#fdb386',
     },
     wrapper: {
         paddingTop: SCREEN_HEIGHT/20,
@@ -100,7 +105,7 @@ const styles = StyleSheet.create({
         // backgroundColor: 'yellow',
     },
     headerContainer: {
-        paddingHorizontal: SCREEN_WIDTH/20,
+        paddingRight: SCREEN_WIDTH/20,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
@@ -108,7 +113,7 @@ const styles = StyleSheet.create({
     },
     header: {
         fontSize: SCREEN_HEIGHT/30,
-        fontWeight: '500',
+        fontWeight: '600',
         color: 'white',
     },
     subHeader: {
@@ -127,6 +132,10 @@ const styles = StyleSheet.create({
         backgroundColor: '#E8EAED',
         borderColor: 'white',
     },
+    alertMessage: {
+        position: 'absolute',
+        top: SCREEN_HEIGHT/2,
+    },
     breakCheckBoxWrapper: {
         flexDirection: 'row',
         paddingTop: SCREEN_HEIGHT/70,
@@ -138,6 +147,7 @@ const styles = StyleSheet.create({
     },
     timetableSettingsButton: {
         padding: SCREEN_HEIGHT/300,
+        marginLeft: SCREEN_WIDTH/40,
         borderRadius: 8,
         borderWidth: 3,
         backgroundColor: 'white',

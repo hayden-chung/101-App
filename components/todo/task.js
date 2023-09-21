@@ -13,27 +13,28 @@ const SCREEN_HEIGHT = (Dimensions.get('window').height);
 
 let checkIconSize = SCREEN_HEIGHT/30
 
-const Task = ({item, text, timetableGenerator, taskStatus, taskTime, aspect, index, taskItems, setTaskItems, completedTask, updateWellbeingRating, updateTaskList}) => {
+const Task = ({text, timetableGenerator, taskStatus, taskTime, aspect, index, taskItems, setTaskItems, completedTask, updateWellbeingRating, miniScreen}) => {
 
     const [isTagModalVisible, setTagModalVisible] = useState(false);
-    const [isAspect, setAspect] = useState(aspect);
     const [isEstimatedTimeVisible, setEstimatedTimeVisible] = useState(false);
 
+
     return (
-        <View style={[styles.item, taskStatus === true && timetableGenerator === false ? {backgroundColor:'#ededed'}:null, timetableGenerator === false ? {elevation: 5, marginHorizontal: SCREEN_HEIGHT/70,}:null]}>
+        <View style={[styles.item, taskStatus === true && timetableGenerator === false ? {backgroundColor:'#ededed'}:null, timetableGenerator === false ? {elevation: 5, marginHorizontal: SCREEN_HEIGHT/70,}:null, miniScreen?{borderWidth: 5, borderColor: '#e6ecf7'}:null]}>
             <View style={styles.itemLeft}>
                 
-                {/* In timetable generator */}
+                {/* Check box in timetable generator (circle fill) */}
                 {timetableGenerator ? ( 
                     taskStatus ? ( // (Timetable Generator) If taskStatus = true, display selected circle, else display empty circle
-                        <MaterialIcons name="radio-button-checked" size={checkIconSize} color="black" style={styles.checkbox}/>
+                        <MaterialIcons name="radio-button-checked" size={checkIconSize} color="black" style={[styles.checkbox, {marginLeft: SCREEN_WIDTH/50}]}/>
                     ) : (
-                        <MaterialIcons name="radio-button-unchecked" size={checkIconSize} color="black" style={styles.checkbox}/>
+                        <MaterialIcons name="radio-button-unchecked" size={checkIconSize} color="black" style={[styles.checkbox, {marginLeft: SCREEN_WIDTH/50}]}/>
                     )
                 ) : (
-                // In to-do screen
+                // Check box in to-do screen (square check)
                     <TouchableOpacity
-                        onPress={() => {completedTask(index, taskItems, setTaskItems); updateWellbeingRating(index); updateTaskList()}} // when quote pressed, change completed state (compelted/not completed)
+                        style={styles.checkButton}
+                        onPress={() => {completedTask(index, taskItems, setTaskItems); updateWellbeingRating(index); }} // when quote pressed, change completed state (compelted/not completed)
                     >
                     {taskStatus ? ( // (To-Do Screen) If taskStatus = true, display checked checkbox, else display empty checkbox 
                             <Ionicons name="checkbox-sharp" size={checkIconSize} color="black" style={styles.checkbox} />
@@ -48,9 +49,10 @@ const Task = ({item, text, timetableGenerator, taskStatus, taskTime, aspect, ind
                 <Text style={[styles.taskText, taskStatus && timetableGenerator === false ? { textDecorationLine: 'line-through' }: {}]}>{text}</Text> 
             </View>
 
+            { !miniScreen ? (
             <View style={styles.itemsRight}>
                 {/* ----- WELLBEING TAG ----- */}
-                {isAspect === null ? (
+                {aspect === null ? (
                 // Display an empty box 
                 <View style={styles.addTagContainer}>
                     <TouchableOpacity style={styles.addBoxTag} onPress={() => setTagModalVisible(true)}>
@@ -62,22 +64,22 @@ const Task = ({item, text, timetableGenerator, taskStatus, taskTime, aspect, ind
                 // Display an icon
                 <TouchableOpacity style={styles.taggedBox} onPress={() => setTagModalVisible(true)}>
                     <View>
-                        {isAspect === 'work' && (
+                        {aspect === 'work' && (
                             <Entypo name={'suitcase'} size={SCREEN_WIDTH/15} color="#3a46bf" />
                         )}
-                        {isAspect === 'exercise&nutrition' && (
+                        {aspect === 'exercise&nutrition' && (
                             <MaterialIcons name={'fitness-center'} size={SCREEN_WIDTH/15} color="orange" />
                         )}
-                        {isAspect === 'relaxation' && (
+                        {aspect === 'relaxation' && (
                             <FontAwesome5 name="coffee" size={SCREEN_WIDTH/19} color="#50bfd1" />
                         )}
-                        {isAspect === 'relationships' && (
+                        {aspect === 'relationships' && (
                             <Entypo name={'chat'} size={SCREEN_WIDTH/15} color="#9e32db" />
                         )}
-                        {isAspect === 'sleep' && (
+                        {aspect === 'sleep' && (
                             <MaterialCommunityIcons name={'power-sleep'} size={SCREEN_WIDTH/15} color="#f0ca00" />
                         )}
-                        {isAspect === 'personaldevelopment' && (
+                        {aspect === 'personaldevelopment' && (
                             <MaterialCommunityIcons name={'head-cog'} size={SCREEN_WIDTH/15} color="#21a177" />
                         )}
                     </View>
@@ -91,7 +93,6 @@ const Task = ({item, text, timetableGenerator, taskStatus, taskTime, aspect, ind
                     onRequestClose={() => setTagModalVisible(false)}
                 >
                     <TagModal
-                        setAspect={setAspect}
                         setTagModalVisible={setTagModalVisible}
                         index={index}
                         taskItems={taskItems}
@@ -123,6 +124,7 @@ const Task = ({item, text, timetableGenerator, taskStatus, taskTime, aspect, ind
                     index={index}
                 />
             </View>
+            ) : <View style={styles.fill}></View>}
             
         </View>
   );
@@ -130,11 +132,12 @@ const Task = ({item, text, timetableGenerator, taskStatus, taskTime, aspect, ind
 
 const styles = StyleSheet.create({
     item: { // quote Item
+        flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent:'space-between',
         paddingTop: SCREEN_HEIGHT/1000,
-        paddingHorizontal: SCREEN_HEIGHT/70,
+        paddingRight: SCREEN_HEIGHT/70,
         paddingBottom: SCREEN_HEIGHT/70,
         borderRadius: 5,
         marginBottom: 10,
@@ -152,8 +155,16 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingRight: SCREEN_WIDTH/40,
     },
+    fill: {
+        width: SCREEN_WIDTH/4.5,
+        backgroundColor: 'green',
+    },
     checkbox: {
         marginRight: 15,
+    },
+    checkButton: {
+        paddingVertical: SCREEN_HEIGHT/170, 
+        paddingLeft: SCREEN_HEIGHT/70,
     },
     taskText:{
         maxWidth: '65%',

@@ -29,12 +29,6 @@ const WellBeingScreen = ({navigation}) => { // main function for wellbeing scree
     }
   }
 
-  const formatDateForControlBar = () => {
-    let formattedDate = new Date(new Date(selectedDate))
-  }
-
-  const date = new Date("Wed Sep 20 2023 12:00:00 GMT+1200");
-
   return (
     // SafeAreaView renders content within the visible boundaries of the device (iOS only).
     <SafeAreaView style={styles.container}> 

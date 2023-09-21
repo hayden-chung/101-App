@@ -3,9 +3,8 @@ import {Animated, View, Text, StyleSheet} from 'react-native';
 
 
 const AlertMessage = ({isAlarmMessage, toggleAlarmMessage, text, fontSize, fontColor}) => {
-
+    console.log("ALERT", isAlarmMessage)
     const fadeAnim =useRef (new Animated.Value(0)).current; // useRef is used as it does not cause a re-render when updated. Persists values between renders.
-
     const startFadeAnim = () => { // alert message for when task cannot be selected
         toggleAlarmMessage(false);  // set animation back to false as it has now been toggled once. 
         fadeAnim.setValue(0);       // initial value of fadeAnim
@@ -37,10 +36,8 @@ const AlertMessage = ({isAlarmMessage, toggleAlarmMessage, text, fontSize, fontC
             <Animated.View style={{opacity:fadeAnim}}>
                 {/* 'text' displays when 'startFadeAnim' is toggled, depending on opacity: fadeAnim */}
                 <View style={styles.anim}>
-                    <Text style={styles.anim}>
-                        <Text style={[styles.text, { fontSize, color: fontColor }]} >
-                            {text}
-                        </Text>
+                    <Text style={[styles.text, { fontSize, color: fontColor }]} >
+                        {text}
                     </Text>
                 </View>
             </Animated.View>
@@ -48,7 +45,10 @@ const AlertMessage = ({isAlarmMessage, toggleAlarmMessage, text, fontSize, fontC
 }
 
 const styles = StyleSheet.create({
-   
+    anim: {
+        backgroundColor:'blue',
+        opacity: 0.5,
+    }
 });
 
 export default AlertMessage;
