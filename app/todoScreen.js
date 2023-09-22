@@ -5,6 +5,7 @@ import {addTask, completedTask, getAspectIndex} from '../components/todo/taskCon
 import {TaskItemsList} from '../components/todo/taskItemsList';
 import {updateTaskItems} from "../components/todo/taskItemsList";
 import TabBar from '../components/tabBar';
+import { Ionicons } from '@expo/vector-icons';
 import {EditOrDeleteModal} from '../components/todo/editOrDeleteModal';
 import {EditModal} from '../components/todo/editModal'
 import {savedCalendarData, getCurrentDate} from '../components/wellbeing/calendar/calendarControls'
@@ -29,11 +30,9 @@ const ToDoScreen = ({navigation}) => { // when user clicks on todo button, navig
   }
 
   const updateWellbeingRating = (index) => { // If task is tagged to an aspect, increase the aspect by 1 when task completed. 
-    console.log('it existsss', taskItems, index)
     if (taskItems[index][4] !== null) {
       const currentDate = getCurrentDate()
-      console.log('CURRENT DATE', currentDate)
-      if (savedCalendarData[currentDate] === undefined) {
+      if (savedCalendarData[currentDate] === undefined) { // if data doesn't exist, make default data
         savedCalendarData[currentDate] = [1, 1, 1, 1, 1, 1]
       }
       const aspectIndex = getAspectIndex(index, taskItems)
@@ -43,26 +42,33 @@ const ToDoScreen = ({navigation}) => { // when user clicks on todo button, navig
     }
   };
 
+  // Create a list with incomplete tasks first then complete tasks
   let orderedList = []
 
-  for (let i = 0; i < taskItems.length; i++) {
+  for (let i = 0; i < taskItems.length; i++) { // incomplete tasks first 
     if (taskItems[i][1] === false) {
       orderedList.push(taskItems[i])
     }
   }
-  for (let i = 0; i < taskItems.length; i++) {
+  for (let i = 0; i < taskItems.length; i++) { // complete tasks
     if (taskItems[i][1] === true) {
       orderedList.push(taskItems[i])
     }
   }
-  console.log('ordered', orderedList)
   
   return (
     <View style={styles.container}> 
       <View style={styles.wrapper}> 
 
-        {/* TITLE of screen */}
-        <Text style={styles.taskTitle}>To Do</Text> 
+        <View style={styles.headerRow}>
+          {/* Back button */}
+          <TouchableOpacity style={styles.goBackHomeButton} onPress={() => navigation.goBack()}>  
+              <Ionicons name="chevron-back" size={SCREEN_HEIGHT/20} color="black"/>
+          </TouchableOpacity>
+          {/* TITLE of screen */}
+          <Text style={styles.taskTitle}>To Do</Text> 
+        </View>
+
         {/* Number of tasks remaining */}
         <Text style={styles.subHeaderNumberOfTasksText}>You have {numberOfUncompletedTasks} task(s) today</Text>
 
@@ -141,6 +147,9 @@ const styles = StyleSheet.create({
   container: { // whole screen
     flex: 1, 
     backgroundColor: '#E8EAED',
+  },
+  headerRow: {
+    flexDirection: 'row',
   },
   wrapper: { // Wraps title ('Today's Tasks') and tasks. 
     flex: 1,

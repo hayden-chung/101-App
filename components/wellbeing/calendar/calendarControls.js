@@ -1,4 +1,4 @@
-export let savedCalendarData =  {"2023-08-02": [10, 1, 2, 5, 1, 1]}
+export let savedCalendarData =  {"2023-08-02": [10, 1, 2, 5, 1, 1]} // stored calendar data
 
 export const updateCalendarData = (setCalendarData, date, ratings) => { // send two parameteres (date, ratings)
     setCalendarData((prevData) => ({ // (prevData) = current data (selectedDate)
@@ -15,10 +15,10 @@ export const handlePreviousDay = (selectedDate, setSelectedDate) => { // Go 1 da
   };
 
 export const handleNextDay = (selectedDate, setSelectedDate) => { // Go 1 day forward. 
-      const currentDate = new Date(selectedDate);     // create a copy of current selected date
-      currentDate.setDate(currentDate.getDate() + 1); // add 1 day from current date. 
-      // setSelectedDate(currentDate.toISOString().split('T')[0]); // e.g. 2023-08-03T00:00:00.000Z --> 2023-08-03 
-      setSelectedDate(currentDate.toISOString().split('T')[0]);
+    const currentDate = new Date(selectedDate);     // create a copy of current selected date
+    currentDate.setDate(currentDate.getDate() + 1); // add 1 day from current date. 
+    console.log(currentDate.getDate())
+    setSelectedDate(currentDate.toISOString().split('T')[0]); // e.g. 2023-08-03T00:00:00.000Z --> 2023-08-03 
   };
 
 export const getCurrentDate = () => {

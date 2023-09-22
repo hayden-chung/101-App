@@ -9,9 +9,7 @@ import {updateTag} from './taskControls';
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = (Dimensions.get('window').height);
 
-const TagModal = ({setTagModalVisible, index, taskItems, setTaskItems}) => {
-
-  console.log('taskItems from tagModal', taskItems)
+const TagModal = ({setTagModalVisible, index, taskItems, setTaskItems}) => { // Wellbeing aspect tag modal
 
   const handlePressed = (aspect) => { // return aspect and close modal
     updateTag(index, taskItems, setTaskItems, aspect);
@@ -23,13 +21,17 @@ const TagModal = ({setTagModalVisible, index, taskItems, setTaskItems}) => {
     <View style={styles.container}>
       <View style={styles.wrapper}>
 
+        {/* Close modal button */}
         <TouchableOpacity style={styles.exitContainer} onPress={() => setTagModalVisible(false)}>
           <Text style={styles.exitText}>x</Text>
         </TouchableOpacity>
+
+        {/* Title */}
         <View style={styles.header}>
           <Text style={styles.headerText}>Tag an aspect:</Text>
         </View>
 
+        {/* Aspect Button (work): If this icon is pressed (work), call function to update tag and close modal. */}
         <TouchableOpacity style={styles.aspectBox} onPress={() => handlePressed('work')}>
           <View style={styles.iconBox}>
             <Entypo name={'suitcase'} size={SCREEN_WIDTH/15} color="#3a46bf" />
@@ -38,6 +40,7 @@ const TagModal = ({setTagModalVisible, index, taskItems, setTaskItems}) => {
           <View style={styles.spaceRight}></View>
         </TouchableOpacity>
 
+        {/* Aspect Button (exercise & nutrition) */}
         <TouchableOpacity style={styles.aspectBox} onPress={() => handlePressed('exercise&nutrition')}>
           <View style={styles.iconBox}>
             <MaterialIcons name={'fitness-center'} size={SCREEN_WIDTH/15} color="orange" />
@@ -46,6 +49,7 @@ const TagModal = ({setTagModalVisible, index, taskItems, setTaskItems}) => {
           <View style={styles.spaceRight}></View>
         </TouchableOpacity>
 
+        {/* Aspect Button (relaxation) */}
         <TouchableOpacity style={styles.aspectBox} onPress={() => handlePressed('relaxation')}>
           <View style={styles.iconBox}>
             <FontAwesome5 name="coffee" size={SCREEN_WIDTH/15} color="#50bfd1" />
@@ -54,6 +58,7 @@ const TagModal = ({setTagModalVisible, index, taskItems, setTaskItems}) => {
           <View style={styles.spaceRight}></View>
         </TouchableOpacity>
 
+        {/* Aspect Button (relationships) */}
         <TouchableOpacity style={styles.aspectBox} onPress={() => handlePressed('relationships')}>
           <View style={styles.iconBox}>
             <Entypo name={'chat'} size={SCREEN_WIDTH/15} color="#9e32db" />
@@ -62,6 +67,7 @@ const TagModal = ({setTagModalVisible, index, taskItems, setTaskItems}) => {
           <View style={styles.spaceRight}></View>
         </TouchableOpacity>
 
+        {/* Aspect Button (sleep) */}
         <TouchableOpacity style={styles.aspectBox} onPress={() => handlePressed('sleep')}>
           <View style={styles.iconBox}>
             <MaterialCommunityIcons name={'power-sleep'} size={SCREEN_WIDTH/15} color="#f0ca00" />
@@ -70,6 +76,7 @@ const TagModal = ({setTagModalVisible, index, taskItems, setTaskItems}) => {
           <View style={styles.spaceRight}></View>
         </TouchableOpacity>
 
+        {/* Aspect Button (personal development) */}
         <TouchableOpacity style={styles.aspectBox} onPress={() => handlePressed('personaldevelopment')}>
           <View style={styles.iconBox}>
             <MaterialCommunityIcons name={'head-cog'} size={SCREEN_WIDTH/15} color="#21a177" />
@@ -78,6 +85,7 @@ const TagModal = ({setTagModalVisible, index, taskItems, setTaskItems}) => {
           <View style={styles.spaceRight}></View>
         </TouchableOpacity>
 
+        {/* Aspect Button (remove aspect) */}
         <TouchableOpacity style={styles.aspectBox} onPress={() => handlePressed(null)}>
           <Text style={styles.removeTagText}>X</Text>
         </TouchableOpacity>
@@ -92,10 +100,9 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.60)', // set opacity to 0.6
+    backgroundColor: 'rgba(0, 0, 0, 0.60)', // set opacity to 0.6 (dark background)
   },
   wrapper: {
-    // paddingVertical: SCREEN_HEIGHT/15,
     paddingHorizontal: SCREEN_WIDTH/25,
     justifyContent: 'center',
     alignItems: 'center',
@@ -118,7 +125,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     fontSize: SCREEN_HEIGHT/35,
   },
-  aspectBox: {
+  aspectBox: { // aspect white box
     width: SCREEN_WIDTH/1.2,
     height: SCREEN_HEIGHT/16,
     flexDirection: 'row',
@@ -132,12 +139,12 @@ const styles = StyleSheet.create({
   aspectText: {
     
   },
-  iconBox: {
+  iconBox: { 
     flex: 1,
     alignItems: 'flex-start',
     left: SCREEN_WIDTH/10,
   },
-  spaceRight: {
+  spaceRight: { // to make aspect text go to middle, fill space in right of text.
     flex: 1,
   },
   removeTagText: {

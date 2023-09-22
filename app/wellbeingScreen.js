@@ -142,26 +142,6 @@ const WellBeingScreen = ({navigation}) => { // main function for wellbeing scree
   );
 };
 
-const barColor = '#87c0ff';
-
-const chartConfig = {
-  backgroundGradientFrom: 'white',
-  backgroundGradientTo: 'white',
-  fillShadowGradientFrom: barColor,
-  fillShadowGradientFromOpacity: 1,
-  fillShadowGradientTo: barColor,
-  fillShadowGradientToOpacity: 1,
-  color: () => 'white',
-  labelColor: () => barColor,
-  barPercentage: 1,
-  barRadius: 10,
-  propsForBackgroundLines: { // background stroke line
-    stroke: barColor, 
-    strokeWidth: 0.2,
-    strokeDasharray: null,
-  },
-};
-
 const styles = StyleSheet.create({
   container: { // screen container
     flex: 1, 
@@ -184,14 +164,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
-  headerRowLeft: {
+  headerRowLeft: { // back arrow and wellbeing chart header text
     flexDirection: 'row',
   },
   titleText: {
     fontSize: SCREEN_HEIGHT/30,
     fontWeight: '500',
   },
-  newButtonWrapper: {
+  newButtonWrapper: { // new chart button wrapper
     width: SCREEN_WIDTH/8,
     height: SCREEN_WIDTH/8,
     borderRadius: 10,
@@ -201,7 +181,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  dateControlBar: {
+  dateControlBar: { // calendar date bar 
     width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -211,54 +191,43 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     elevation: 5,
   },
-  leftControlBar: {
+  leftControlBar: { // previous day button
     flex: 1, 
   },
-  middleControlBar: {
+  middleControlBar: { // current date
     flexDirection: 'row',
     justifyContent: 'space-evenly',
     alignItems: 'center',
   },
-  rightControlBar: {
+  rightControlBar: { // next day button
     flex: 1, 
     alignItems: 'center',
   },
-  dateText: {
+  dateText: { // current selected date 
     fontSize: SCREEN_HEIGHT/38,
     paddingHorizontal: SCREEN_WIDTH/10,
-  },
-  calendarButton: {
-    
-  },
-
-  chartTitleText: {
-    fontSize: SCREEN_HEIGHT/35,
-    fontWeight: '500',
   },
   chartWrapper: {
     width: '100%',
   },
-  chart: {
+  chart: { // bar graph
     width: '100%',
     paddingHorizontal: 10,
   },
-  iconRowContainer: {
+  iconRowContainer: { // aspect icons below graph (x-axis)
     flexDirection: 'row',
     justifyContent: 'space-around',
     width: '100%',
     paddingLeft: SCREEN_WIDTH/4.9,
     top: -SCREEN_HEIGHT/30,
   },
-  newButton: {
-    
-  },
-  lineDivider: {
+  lineDivider: { // line divider below chart
     width: '100%',
     height: SCREEN_HEIGHT/500,
     marginTop: SCREEN_HEIGHT/80,
     backgroundColor: '#D1D1D1',
   },
-  noFeedbackWrapper: {
+  noFeedbackWrapper: { // wrapper when no chart
     flex: 1,
     alignItems: 'center',
     width: '80%',
@@ -272,13 +241,13 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     color: '#9B9B9B',
   },
-  noFeedbackImage: {
+  noFeedbackImage: { // Image displays when no feedback
     resizeMode: 'contain',
     height: SCREEN_HEIGHT/4,
     width: SCREEN_WIDTH/2,
     
   },
-  feedbackWrapper: {
+  feedbackWrapper: { // wrapper when feedback exist
     flex: 1,
     width: '100%',
   },

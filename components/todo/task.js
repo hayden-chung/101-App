@@ -13,7 +13,7 @@ const SCREEN_HEIGHT = (Dimensions.get('window').height);
 
 let checkIconSize = SCREEN_HEIGHT/30
 
-const Task = ({text, timetableGenerator, taskStatus, taskTime, aspect, index, taskItems, setTaskItems, completedTask, updateWellbeingRating, miniScreen}) => {
+const Task = ({text, timetableGenerator, taskStatus, taskTime, aspect, index, taskItems, setTaskItems, completedTask, updateWellbeingRating, miniScreen}) => { // Task Item
 
     const [isTagModalVisible, setTagModalVisible] = useState(false);
     const [isEstimatedTimeVisible, setEstimatedTimeVisible] = useState(false);
@@ -144,13 +144,13 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
 
     },
-    itemLeft: { 
+    itemLeft: { // text and checkbox
         paddingTop: SCREEN_HEIGHT/80,
         flexDirection: 'row',
         alignItems: 'center',
         width: '65%',
     },
-    itemsRight: {
+    itemsRight: { // tag and estimated time
         flexDirection: 'row',
         alignItems: 'center',
         paddingRight: SCREEN_WIDTH/40,
@@ -169,15 +169,15 @@ const styles = StyleSheet.create({
     taskText:{
         maxWidth: '65%',
     },
-    estimatedTime: {
+    estimatedTime: { // box
         color: 'gray',
     },
-    addTagContainer: {
+    addTagContainer: { // box
         flexDirection: 'column',
         alignItems: 'center',
         top: SCREEN_HEIGHT/93,
     },
-    addBoxTag: {
+    addBoxTag: {  // add box tag 
         justifyContent: 'center',
         alignItems: 'center',
         width: SCREEN_WIDTH/12,
@@ -194,7 +194,7 @@ const styles = StyleSheet.create({
         borderWidth: SCREEN_HEIGHT/400,
         borderColor: '#d1d1d1',
     },
-    addBoxTime: {
+    addBoxTime: { // time text
         justifyContent: 'center',
         alignItems: 'center',
         width: SCREEN_WIDTH/6.6,
@@ -203,7 +203,7 @@ const styles = StyleSheet.create({
         borderWidth: SCREEN_HEIGHT/400,
         marginLeft: SCREEN_WIDTH/30,
     },
-    timeBox: {
+    timeBox: { // estaimted timetbox
         justifyContent: 'center',
         alignItems: 'center',
         width: SCREEN_WIDTH/6.6,
@@ -213,12 +213,12 @@ const styles = StyleSheet.create({
         borderColor: '#d1d1d1',
         marginLeft: SCREEN_WIDTH/30,    
     },
-    addBoxText: {
+    addBoxText: { // add box label below
         fontSize: SCREEN_HEIGHT/30,
         lineHeight: SCREEN_HEIGHT / 27, 
         textAlignVertical: 'center',
     },
-    belowBoxText: {
+    belowBoxText: { // label below tag and estimated time 
         fontSize: SCREEN_HEIGHT/70,
         marginLeft: SCREEN_WIDTH/40,    
     },

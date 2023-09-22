@@ -12,8 +12,6 @@ const Stopwatch = () => { // Stopwatch function
     const lastUpdate = useRef(0);
     const flatlistRef = useRef();
 
-    console.log('laps', laps.length)
-
     useEffect(() => { // every time timer time changes. 
         let interval = null;
 
@@ -32,23 +30,21 @@ const Stopwatch = () => { // Stopwatch function
             clearInterval(interval);
         };
 
-        
-
     }, [isRunning, currentTimeInMilliseconds]);
 
-    useEffect(() => {
+    useEffect(() => { // if start or pause pressed:
         if (isRunning){
-            lastUpdate.current = Date.now();
+            lastUpdate.current = Date.now(); 
         } 
     }, [isRunning])
 
-    const formatTime = (timeinMilliseconds) => {
+    const formatTime = (timeinMilliseconds) => { // format time to 00:00:00.00
         const hours = Math.floor(timeinMilliseconds/(1000*60*60)) // Math.floor() = round down to nearest integer.
         const minutes = Math.floor((timeinMilliseconds%(1000*60*60))/(1000*60))
         const seconds =Math.floor((timeinMilliseconds%(1000*60))/1000)
         const milliseconds = (Math.floor(timeinMilliseconds%1000/10))
 
-        const formattedHours = String(hours).padStart(2, '0');
+        const formattedHours = String(hours).padStart(2, '0'); // e.g. if 5s --> 05s
         const formattedMinutes = String(minutes).padStart(2, '0');
         const formattedSeconds = String(seconds).padStart(2, '0');
         const formattedMilliseconds = String(milliseconds).padStart(2, '0')
@@ -56,32 +52,32 @@ const Stopwatch = () => { // Stopwatch function
         return `${formattedHours}:${formattedMinutes}:${formattedSeconds}.${formattedMilliseconds}`
     }
 
-
-    const lapOrResetPressed = () => {
+    const lapOrResetPressed = () => { // if lap or reset button pressed. 
         if (isRunning) { // lap pressed
-            setLaps(prevLaps => [...prevLaps, [formatTime(currentTimeInMilliseconds-latestLapTimeInMilliseconds) ,formatTime(currentTimeInMilliseconds)]])
+            setLaps(prevLaps => [...prevLaps, [formatTime(currentTimeInMilliseconds-latestLapTimeInMilliseconds) ,formatTime(currentTimeInMilliseconds)]]) // add lap to list
             setLatestLapTimeInMilliseconds(currentTimeInMilliseconds)
-            setTimeout(() => {
+            setTimeout(() => { // give interval of 0.01ms and scroll to end of list to show new updated lap. 
                 flatlistRef.current.scrollToEnd();
             }, 10);
             
-        } else if (!isRunning) { // reset pressed
+        } else if (!isRunning) { // reset pressed set all to initial value. 
             setCurrentTimeInMilliseconds(0)
             setIsRunning(false)
             setLaps([])
             setLatestLapTimeInMilliseconds(0)
-            console.log('reset')
         }
-        console.log('after', laps)
     }
 
     return (
         <View style={styles.container}>
             <View style={styles.timeDisplayContainer}>
+                {/* Current time */}
                 <Text style={styles.timeText}>{formatTime(currentTimeInMilliseconds)}</Text>
+                {/* Time after lap was pressed */}
                 <Text style={styles.lapTimeText}>{formatTime(currentTimeInMilliseconds-latestLapTimeInMilliseconds)}</Text>
             </View>
             
+            {/* Lap Container */}
             {laps.length !== 0 ? ( 
                 <View style={styles.lapsWrapper}>
                     <View style={styles.lapSubheader}>
@@ -115,11 +111,12 @@ const Stopwatch = () => { // Stopwatch function
             {/* Start/Pause Button */}
             <View style={styles.controlButtons}>
 
-                {/* Reset Button */}
+                {/* Reset/Lap Button */}
                 <TouchableOpacity style={styles.lapOrResetButton} onPress={() => lapOrResetPressed()}>
                     <Text style={styles.lapOrResetText}>{isRunning ? 'Lap' : 'Reset'} </Text>
                 </TouchableOpacity >
 
+                {/* Start/Pause button */}
                 <TouchableOpacity style={styles.startOrPauseButton} onPress={() => setIsRunning(!isRunning)}>
                 <Text style={styles.startOrPauseText}>{isRunning ? 'Pause' : 'Start'} </Text>
                 </TouchableOpacity>
@@ -138,23 +135,25 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: 'white',
     },
-    timeDisplayContainer: {
+    timeDisplayContainer: { // time and lap time
         height: 100,
         justifyContent: 'center',
         alignItems: 'center',
         marginTop: SCREEN_HEIGHT/15,
     },
-    timeText: {
+    timeText: { // main time 
         fontSize: SCREEN_HEIGHT/17,
         fontWeight: '400',
         color: '#8A8FD4',
     },
-    lapTimeText: {
+
+    // Lap components
+    lapTimeText: { // lap time
         fontSize: SCREEN_HEIGHT/23,
         fontWeight: '300',
         color: '#B1B3B9',
     },
-    lapsWrapper: {
+    lapsWrapper: { 
         height: SCREEN_HEIGHT/4,
         marginHorizontal: SCREEN_WIDTH/30,
         marginTop: SCREEN_HEIGHT/22,
@@ -169,6 +168,8 @@ const styles = StyleSheet.create({
     lapSubheaderText: {
         fontSize: SCREEN_WIDTH/22,
     },
+
+    // Divide headers and lap items. 
     lineBetweenSubheaderAndLaps: {
         height: SCREEN_HEIGHT/800,
         backgroundColor: '#C7C7C7',
@@ -185,7 +186,9 @@ const styles = StyleSheet.create({
     lapItemText: {
         fontSize: SCREEN_HEIGHT/50,
     },
-    controlButtons: {
+
+    // Buttons
+    controlButtons: { // Lap/Reset & Start/Pause button
         flexDirection: 'row',
         justifyContent: 'space-evenly',
         alignItems: 'center',

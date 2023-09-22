@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect} from 'react';
 import {StyleSheet, Text, View, FlatList, Dimensions, TouchableOpacity} from 'react-native';
 import { TaskItemsList } from '../todo/taskItemsList';
 import {completedTask, getAspectIndex} from '../todo/taskControls'
@@ -12,6 +12,15 @@ const SCREEN_HEIGHT = Dimensions.get('window').height;
 const MiniTodoList = ({navigation}) => { 
     const {taskItems, setTaskItems} = TaskItemsList();
 
+    useEffect(() => {
+        // This code will run when the component mounts (screen is displayed)
+    
+        // Define a cleanup function to run when leaving the screen
+        return () => {
+          // Perform actions or cleanup here when leaving the screen
+          console.log('Leaving MyScreen');
+        };
+      }, [navigation]);
 
     const updateWellbeingRating = (index) => { // If task is tagged to an aspect, increase the aspect by 1 when task completed. 
         console.log("INDEX", index)

@@ -25,24 +25,28 @@ const TimetableGenerator = ({navigation}) => {
         })
     }
 
-    const onGenerateTimetablePressed = () => {
+    const onGenerateTimetablePressed = () => { // when generate button pressed, make new timetable
         let newTimetable = GenerateTimetable(taskItems, [], setTimetable)
         updateTimetable(newTimetable)
-        callbackToFunction(newTimetable) 
+        callbackToFunction(newTimetable) // go back to main timetable screen. 
     }
 
     return(
         <View style={styles.container}>
             <View style={styles.wrapper}>
                 
+                {/* Header */}
                 <View style={styles.headerContainer}>
 
+                    {/* Back button */}
                     <TouchableOpacity style={styles.goBackHomeButton} onPress={() => navigation.goBack()}>  
                         <Ionicons name="chevron-back" size={SCREEN_HEIGHT/20} color="white"/>
                     </TouchableOpacity>
 
+                    {/* Header Text */}
                     <Text style={styles.header}>Timetable Generator</Text>
 
+                    {/* Settings Button */}
                     <TouchableOpacity style={styles.timetableSettingsButton} onPress={() => navigation.navigate("TimetableSettings")}>
                         <Ionicons name="ios-settings-sharp" size={SCREEN_HEIGHT/23} color="black" />
                     </TouchableOpacity>
@@ -50,6 +54,7 @@ const TimetableGenerator = ({navigation}) => {
 
                 <Text style={styles.subHeader}>Select today's tasks...</Text>
    
+                {/* List of tasks */}
                 <View style={styles.taskWrapper}>
                     <FlatList   
                     data = {taskItems}                   // Data being inputted for flatlist to access.
@@ -66,6 +71,7 @@ const TimetableGenerator = ({navigation}) => {
                     }/>
                 </View>
 
+                {/* When task with no estimated time is selected */}
                 <View style={styles.alertMessage}>
                     <AlertMessage 
                         isAlarmMessage={isAlarmMessage}
@@ -96,15 +102,16 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: '#fdb386',
     },
-    wrapper: {
+    wrapper: { // available space
         paddingTop: SCREEN_HEIGHT/20,
         flexDirection: 'column',
         alignItems: 'center',
         width: '90%',
         height: '75%',
-        // backgroundColor: 'yellow',
     },
-    headerContainer: {
+
+    // TITLE, SETTINGS BUTTON, SUBHEADER
+    headerContainer: { 
         paddingRight: SCREEN_WIDTH/20,
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -121,6 +128,15 @@ const styles = StyleSheet.create({
         fontWeight: '500',
         color: 'white',
     },
+    timetableSettingsButton: {
+        padding: SCREEN_HEIGHT/300,
+        marginLeft: SCREEN_WIDTH/40,
+        borderRadius: 8,
+        borderWidth: 3,
+        backgroundColor: 'white',
+        alignItems: 'center',
+    },
+
     taskWrapper: { // container for list of quotes. 
         width: '100%',
         height: '80%',
@@ -132,27 +148,13 @@ const styles = StyleSheet.create({
         backgroundColor: '#E8EAED',
         borderColor: 'white',
     },
-    alertMessage: {
+
+    alertMessage: { // alert message styling for when taks with no estiimated time is selected. 
         position: 'absolute',
         top: SCREEN_HEIGHT/2,
     },
-    breakCheckBoxWrapper: {
-        flexDirection: 'row',
-        paddingTop: SCREEN_HEIGHT/70,
-    },
-    breakCheckBoxText: {
-        fontSize: SCREEN_HEIGHT/45,
-        paddingRight: SCREEN_WIDTH/30,
-        color: 'white',
-    },
-    timetableSettingsButton: {
-        padding: SCREEN_HEIGHT/300,
-        marginLeft: SCREEN_WIDTH/40,
-        borderRadius: 8,
-        borderWidth: 3,
-        backgroundColor: 'white',
-        alignItems: 'center',
-    },
+
+    // Generate button Styling
     generateButton: {
         marginTop: SCREEN_HEIGHT/60,
         padding: SCREEN_HEIGHT/100,
@@ -167,6 +169,8 @@ const styles = StyleSheet.create({
         paddingTop: SCREEN_HEIGHT/50,
         paddingBottom: SCREEN_HEIGHT/50,
     },
+
+    // Push tab bar to bottom
     pushToBottom: {
         flex: 1,    
     },

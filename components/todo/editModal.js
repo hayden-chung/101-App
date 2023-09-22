@@ -7,8 +7,6 @@ const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = (Dimensions.get('window').height);
 
 // ------------------------ MODAL SCREEN --------------------------------//
-const WIDTH_MODAL = (Dimensions.get('window').width)/1.5;
-const HEIGHT_MODAL = (Dimensions.get('window').height)/4;
 
 export const EditModal = ({setEdit, index, taskItems, setTaskItems}) => { // edit and delete quotes
 
@@ -29,6 +27,8 @@ export const EditModal = ({setEdit, index, taskItems, setTaskItems}) => { // edi
                 <View style={styles.headerContainer}>
                     <Text style={styles.headerText}>Edit Task</Text>
                 </View>
+
+                {/* Text input for editing task  */}
                 <TextInput
                     style={styles.textInput}
                     value={updatedTask}
@@ -36,10 +36,12 @@ export const EditModal = ({setEdit, index, taskItems, setTaskItems}) => { // edi
                 />
 
                 <View style={styles.buttonRow}>
+                    {/* Cancel button */}
                     <TouchableOpacity style={styles.cancelButton} onPress={() => closeModal()}>
                         <Text>Cancel</Text>
                     </TouchableOpacity>
 
+                    {/* Update button, when pressed, change task name */}
                     <TouchableOpacity style={styles.updateButton} onPress={() => {updateTask(updatedTask, index, taskItems, setTaskItems); closeModal()}}>
                         <Text>Update</Text>
                     </TouchableOpacity>

@@ -4,12 +4,12 @@ import { TimerPicker } from "react-native-timer-picker";
 import { LinearGradient } from 'expo-linear-gradient';
 import { TimerPickerModal } from "react-native-timer-picker";
 
-const PickEstimatedTime = ({setEstimatedTimeVisible, isEstimatedTimeVisible, taskItems, setTaskItems, index}) => {
+const PickEstimatedTime = ({setEstimatedTimeVisible, isEstimatedTimeVisible, taskItems, setTaskItems, index}) => { // time picker (hour, minute)
 
     
-    const onConfirmPressed = (pickedDuration) => {
-        console.log('pickedDuration: ', pickedDuration)
-        if ((pickedDuration['hours'] + pickedDuration['minutes']) !== 0) {
+    const onConfirmPressed = (pickedDuration) => { // when confirm pressed, set estimated time of task to selected time. 
+
+        if ((pickedDuration['hours'] + pickedDuration['minutes']) !== 0) { // if selected time is not 0h, update estimated time
             const hours = pickedDuration['hours']
             const minutes = pickedDuration['minutes']
             const timeValue = (hours + minutes/60).toFixed(2)
@@ -21,19 +21,19 @@ const PickEstimatedTime = ({setEstimatedTimeVisible, isEstimatedTimeVisible, tas
     }
 
     return (
-            // https://github.com/troberts-28/react-native-timer-picker#timerpickermodal
+            // Timer picker moda: https://github.com/troberts-28/react-native-timer-picker#timerpickermodal
             <TimerPickerModal
-                modalTitle="Estimated Time"
-                visible={isEstimatedTimeVisible}
+                modalTitle="Estimated Time" 
+                visible={isEstimatedTimeVisible} 
                 hideSeconds
                 setIsVisible={setEstimatedTimeVisible}
                 disableInfiniteScroll={false}
-                onConfirm={(pickedDuration) => {
+                onConfirm={(pickedDuration) => { // when confirm pressed, update estimated time for task
                     onConfirmPressed(pickedDuration)
                     setEstimatedTimeVisible(false);
                 }}
-                onCancel={() => setEstimatedTimeVisible(false)}
-                closeOnOverlayPress
+                onCancel={() => setEstimatedTimeVisible(false)} // if cancel pressed close modal 
+                closeOnOverlayPress // when other area is pressed, close modal. 
                 LinearGradient={LinearGradient}
                 styles={{
                     theme: "light",

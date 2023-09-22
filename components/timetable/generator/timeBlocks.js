@@ -63,7 +63,7 @@ const TimeBlock = ({item, index, miniScreen}) => { // Time block to display on t
     }
 
     return (
-        !miniScreen ? ( // if NOT MINIT SCREEN (hence, main timetable screen)
+        !miniScreen ? ( // if NOT MINI SCREEN (hence, main timetable screen)
 
         // Border color depends on task (red) or break (green)
         <View style={{...styles.item, borderColor: isBreak? '#a1cc9f' : '#f59999', width: '100%'}}> 
@@ -129,7 +129,9 @@ const TimeBlock = ({item, index, miniScreen}) => { // Time block to display on t
 
             <View style={styles.miniTimetableRow}>
                 {/* Task name */}
-                <Text style={styles.taskText}>{item[0]}</Text> 
+                <View style={styles.miniTimetableTextContainer}>
+                    <Text style={styles.taskText}>{item[0]}</Text> 
+                </View>
 
                 {startTime !== 0 && startTime !== undefined && startTime !== null && (
                     <Text>
@@ -156,7 +158,7 @@ const TimeBlock = ({item, index, miniScreen}) => { // Time block to display on t
 }
 
 const styles = StyleSheet.create({
-    item: {
+    item: { // time block item
         flexDirection: 'column',
         padding: SCREEN_HEIGHT/35,
         borderRadius: 10,  
@@ -164,23 +166,26 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         backgroundColor: 'white',
     },
-    row1: {
+    row1: { // top half (task and aspect)
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
         width: '100%',
         paddingBottom: SCREEN_HEIGHT/50,
     },
+    miniTimetableTextContainer: {
+        maxWidth: '50%',
+    },
     taskText: {
         fontWeight: '600',
         fontSize: SCREEN_HEIGHT/50,
     },
-    row2: {
+    row2: { // bottom half (estimated time and period)
         flexDirection: 'row',
         justifyContent: 'space-between',
         width: '100%',
     },
-    miniTimetableRow: {
+    miniTimetableRow: { // row for when displaying in home scree (task and period)
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',

@@ -9,22 +9,21 @@ import {openContactSupport} from '../components/settings/supportContact'
 import {triggerVibration} from '../components/vibration'
 import {vibration, updateVibrationState} from '../components/settings/vibrationState'
 
-const SCREEN_WIDTH = Dimensions.get('window').width;
+const SCREEN_WIDTH = Dimensions.get('window').width; 
 const SCREEN_HEIGHT = (Dimensions.get('window').height);
 
-const ICON_SIZE = SCREEN_WIDTH/12;
-const ARROW_SIZE = SCREEN_WIDTH/11;
+const ICON_SIZE = SCREEN_WIDTH/12; // Icons: vibration, privacy policy, how to use, contact support
+const ARROW_SIZE = SCREEN_WIDTH/11; // arrow of privacy policy, how to use, contact support
 
-const SettingsScreen = ({navigation}) => { 
+const SettingsScreen = ({navigation}) => { // Settings Screen component
 
-    const [vibrationState, setVibrationState] = useState(vibration);
-    
+    const [vibrationState, setVibrationState] = useState(vibration); //
 
-    const toggleVibrationSwitch = (value) => { 
+    const toggleVibrationSwitch = (value) => { // toggle vibration switch on/off
         setVibrationState(value);
         updateVibrationState(value)
-        if (value) {
-            triggerVibration(false)
+        if (value) { // if vibration turns on, vibrate phone
+            triggerVibration(false) // vibrate phone, no infinite vibration
         }
     }
 
@@ -32,7 +31,7 @@ const SettingsScreen = ({navigation}) => {
         <View style={styles.container}>
 
             <View style={styles.wrapper}>
-
+                {/* Header Text */}
                 <Text style={styles.headerText}>Settings</Text>
 
                 {/* ---------- Vibration ---------- */}
@@ -66,14 +65,14 @@ const SettingsScreen = ({navigation}) => {
                 </TouchableOpacity>
                 <View style={styles.lineDivider}></View>
 
-                {/* ---------- How to Use ---------- */}
-                <TouchableOpacity style={styles.buttonRow} onPress={() => navigation.navigate("HowToUseScreen")}>
+                {/* ---------- How to Use ---------- (commented out for now as it is future improvement (not created yet)) */}
+                {/* <TouchableOpacity style={styles.buttonRow} onPress={() => navigation.navigate("HowToUseScreen")}>
                     <Feather style={styles.icon} name="help-circle" size={ICON_SIZE} color="black" />
                     <Text style={styles.text}>How to Use</Text>
                     <View style={styles.fillSpaceBetweenTwoItems}></View>
                     <MaterialIcons name="keyboard-arrow-right" style={styles.arrowRight} size={ARROW_SIZE} color="black" />
                 </TouchableOpacity>
-                <View style={styles.lineDivider}></View>
+                <View style={styles.lineDivider}></View> */}
 
                 {/* ---------- Contact Support ---------- */}
                 <TouchableOpacity style={styles.buttonRow} onPress={() => openContactSupport()}>
@@ -94,58 +93,52 @@ const SettingsScreen = ({navigation}) => {
 }
 
 const styles = StyleSheet.create({
-    container: {
+    container: { // whole screen
         flex: 1, 
         backgroundColor: 'white',
     },
-    wrapper: {
+    wrapper: { // available space. 
         paddingHorizontal: SCREEN_WIDTH/20,
         marginTop: SCREEN_HEIGHT/20,
     },
-    headerText: {
+    headerText: { // Settings title
         textAlign: 'center',
         fontSize: SCREEN_HEIGHT/30,
         marginBottom: SCREEN_HEIGHT/20,
         marginTop: SCREEN_HEIGHT/20,
         fontWeight: '500',
     },
-    buttonRow: {
+    buttonRow: { 
         flexDirection: 'row',
         alignItems: 'center',
         paddingLeft: SCREEN_WIDTH/20,
         marginBottom: SCREEN_HEIGHT/80,
     },
-    icon: {
+    icon: { // button icon
         marginRight: SCREEN_WIDTH/20,
     },
-    text: {
+    text: { // button text
         fontSize: SCREEN_WIDTH/20,
     },
-    switch: {
+    switch: { // vibration switch
         transform: [{ scaleX: 1.2*(SCREEN_WIDTH/360) }, { scaleY: 1.2*(SCREEN_HEIGHT/725)}],
         marginRight: SCREEN_WIDTH/10,
     },
-    fillSpaceBetweenTwoItems:  {
+    fillSpaceBetweenTwoItems:  { // max items stretch to the side. 
         flex: 1,
     },
-    arrowRight: {
+    arrowRight: { // arrow of: privacy policy, how to use, contact support
         marginRight: SCREEN_WIDTH/10,
     },
-    lineDivider: {
+    lineDivider: { // thin line between components
         backgroundColor: '#d9d9d9',
         height: SCREEN_HEIGHT/1000,
         width: '90%',
         marginHorizontal: SCREEN_WIDTH/30,
         marginBottom: SCREEN_HEIGHT/50,
     },
-
-
-
-    pushToBottom: {
+    pushToBottom: { // push tab bar to bottom
         flex: 1,    
-    },
-    navigationBar: {
-        backgroundColor:'red',
     },
 
 });

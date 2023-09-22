@@ -6,8 +6,7 @@ import WellbeingChart from '../wellbeing/wellbeingChart';
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 
-const MiniWellbeingScreen = ({navigation}) => { 
-    const quoteOfTheDay = getRandomQuote()
+const MiniWellbeingScreen = ({navigation}) => { // wellbeing screen in home screen
     return(
         <View style={styles.container}>       
                 <WellbeingChart sizeBig={false}/>
@@ -17,7 +16,7 @@ const MiniWellbeingScreen = ({navigation}) => {
 }
 
 const styles = StyleSheet.create({
-    container: {
+    container: { // style it according appropriate widht in home dashboard. 
         flex: 1,
         padding: SCREEN_WIDTH/50,
         top: -SCREEN_HEIGHT/50,

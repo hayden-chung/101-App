@@ -16,7 +16,6 @@ export const EditDeleteQuoteModal = (props) => { // edit and delete quotes
 
     const deleteQuote = () => { //  delete a quote from quoteList
 
-        console.log('TEST. quoteList:', props.quoteList, 'props.isEditDeleteModalVisible[1]:', props.isEditDeleteModalVisible[1])
         props.quoteList.splice(props.isEditDeleteModalVisible[1], 1); // remove the quote from the array (1 = number of items to remove)
         props.setQuoteList([...props.quoteList]); // update the taskItems array 
         updateQuoteList(props.quoteList)
@@ -26,7 +25,6 @@ export const EditDeleteQuoteModal = (props) => { // edit and delete quotes
     const editQuote = () => { // edit a quote
         props.quoteModalVisible([true, true]); // quoteModal = true ==> display
         updateQuoteList(props.quoteList)
-        console.log('function called')
         closeModal()
     };
     

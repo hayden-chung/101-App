@@ -21,7 +21,7 @@ const WellbeingChart = ({sizeBig}) => { // main function for wellbeing screen
             <BarChart
               data={wellbeingData} // import wellbeing data to display 
               width={SCREEN_WIDTH/1.1} // width of chart
-              height={sizeBig? SCREEN_HEIGHT/3.5 : SCREEN_HEIGHT/4}                    // height of chart
+              height={sizeBig? SCREEN_HEIGHT/3.5 : SCREEN_HEIGHT/4} // height of chart
               yAxisLabel={''}                 // to put in fron of y axis labels (e.g. '$')
               verticalLabelRotation={-20}     // rotate y axis labels.
               fromZero={true}                 // start y axis from 0
@@ -31,6 +31,8 @@ const WellbeingChart = ({sizeBig}) => { // main function for wellbeing screen
               yAxisInterval={1}  
               style={styles.chart}
             />
+
+            {/* Row of icons for x-axis of chart */}
             <View style={sizeBig ? styles.iconRowContainerLarge: styles.iconRowContainerSmall}>
               <Entypo name={'suitcase'} size={ICON_SIZE} color="#3a46bf" />
               <MaterialIcons name={'fitness-center'} size={ICON_SIZE} color="orange" />
@@ -45,9 +47,9 @@ const WellbeingChart = ({sizeBig}) => { // main function for wellbeing screen
   );
 };
 
-const barColor = '#87c0ff';
+const barColor = '#87c0ff'; // color of bar in chart
 
-const chartConfig = {
+const chartConfig = { // bar chart styling
   backgroundGradientFrom: 'white',
   backgroundGradientTo: 'white',
   fillShadowGradientFrom: barColor,
@@ -66,7 +68,7 @@ const chartConfig = {
 };
 
 const styles = StyleSheet.create({
-  chartWrapperLarge: {
+  chartWrapperLarge: { // if chart displaying in main wellbeing screen. 
     overflow: 'hidden',
     alignItems: 'center',
     width: '100%',
@@ -77,7 +79,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     elevation: 5,
   },
-  chartWrapperSmall: {
+  chartWrapperSmall: { // if chart displaying in home sreen. 
     alignItems: 'center',
     width: '100%',
     marginTop: SCREEN_HEIGHT/70,
@@ -88,22 +90,22 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 12,
   },
-  chartTitleTextBig: {
+  chartTitleTextBig: { // title text styling in main wellbeing screen. 
     fontSize: SCREEN_HEIGHT/35,
     fontWeight: '500',
   },
-  chartTitleTextSmall:{
+  chartTitleTextSmall:{ // text in home screen. 
     width: '100%',
     fontSize: SCREEN_HEIGHT/29,
     fontWeight: '500',
     color: '#95baff',
   },
-  chart: {
+  chart: { // bar chart styling. 
     width: '100%',
     paddingHorizontal: 10,
     right: SCREEN_WIDTH/15,
   },
-  iconRowContainerLarge: {
+  iconRowContainerLarge: { // x-axis icon row in wellbeing screen. 
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: '100%',
@@ -112,7 +114,7 @@ const styles = StyleSheet.create({
     top: -SCREEN_HEIGHT/30,
     backgroundColor: 'white',
   },
-  iconRowContainerSmall: {
+  iconRowContainerSmall: { // x-axis icon row in home screen. 
     flexDirection: 'row',
     justifyContent: 'space-around',
     width: SCREEN_WIDTH/1,

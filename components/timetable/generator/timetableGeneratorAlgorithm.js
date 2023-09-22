@@ -12,7 +12,7 @@ const makeSelectedTasksArr = (taskItems) => { // create a list of tasks that are
     return selectedTasks
 }
 
-const subsetSum = (tasksToPutInTimetable, startAndEndTime) => { // 
+const subsetSum = (tasksToPutInTimetable, startAndEndTime) => { // Run subset sum algorithm to find the most optimal solution to fill as much time possible with the selected tasks
 
     // Find available time --> Find target.
     startTime = new Date(startAndEndTime[0]).getTime();
@@ -33,7 +33,6 @@ const subsetSum = (tasksToPutInTimetable, startAndEndTime) => { //
         for (let i = target; i >= capacityOfCurrentTask; i--) { // repeat for amount of available time (e.g. idx 3 of ["Test task", false, true, 100])
             dp[i][0] = dp[i][0] // If dp[i][0] is true, set to true. dp[i][0] is so that on the next outer for loop with the next num, the true values won't be re-set to false. 
             if (dp[i-capacityOfCurrentTask][0]) { // # if current pos - amount of available time of task = true, (dp[i-selectedTasks[num][3]][0] is True), set to True.
-                console.log(i-capacityOfCurrentTask)
                 dp[i][0] = dp[i-capacityOfCurrentTask][0] // set dp[i][0] to true
 
                 // to prevent more tasks being added than the target value. 
@@ -67,7 +66,6 @@ export const getSessions = () => { // get (available) session times apart from b
     let sessionsBetweenBreaks = []
     let breakOrder = []
     breaks = Object.keys(fixedSessionsCopy).filter(type => type !== 'start-finish')
-    console.log('break', breaks)
     timetableStart = fixedSessionsCopy['start-finish'][0]
     timetableEnd = fixedSessionsCopy['start-finish'][1]
 
@@ -140,9 +138,6 @@ export const GenerateTimetable = (taskItems, timetable, setTimetable) => {
         timetable = insertSessions(timetable, breakOrder[i], usedTasks)            // 
         tasksToPutInTimetable = eliminateTasks(tasksToPutInTimetable, usedTasks)   // remaining tasks to put in available times. 
     }
-    console.log('-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------')
-    console.log('final timetable', timetable)
     setTimetable(timetable)
-    console.log('done', timetable)
     return timetable  
 }

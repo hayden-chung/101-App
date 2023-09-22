@@ -7,7 +7,7 @@ import {vibration} from '../settings/vibrationState'
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 
-const Timer = () => {
+const Timer = () => { // Timer component 
   const [seconds, setSeconds] = useState(null); // Initial time in seconds
   const [minutes, setMinutes] = useState(null); // Initial time in minutes
   const [hours, setHours] = useState(null); // Initial time in hours
@@ -15,15 +15,14 @@ const Timer = () => {
   const [isActive, setIsActive] = useState(false);
   const [isReset, setIsReset] = useState(true); // indicate when time setter can appear or not. 
   const [key, setKey] = useState(0);
-
-  console.log('vibration state:', vibration)
+  const [isRinging, setIsRinging] = useState(false);
   
-  const toggleTimer = () => { // 
+  const toggleTimer = () => { // when timer is started/paused
     setIsActive(!isActive);
     setIsReset(false) // Indicate that timer is running now. 
   };
 
-  const resetTimer = () => { // 
+  const resetTimer = () => { // if reset pressed
     setIsReset(true)
     setKey(prevKey => prevKey + 1) // To reset countdown timer back to its intial time value. 
     setIsActive(false); // Timer is not active (running) anymore
@@ -61,31 +60,30 @@ const Timer = () => {
     updateTimerDuration()
   }, [hours, minutes, seconds])
 
-  const updateTimerDuration = () => {
+  const updateTimerDuration = () => { // when initial time input changed, set total timer duration. 
 
     const isIntergerNumbers = (value) => { // check if value = integer
         let intValue = parseInt(value, 10)
 
-        if (!isNaN(intValue)) {
+        if (!isNaN(intValue)) { // if value is a valid number
             return true
         } else {
             return false
         }
     }
 
-    setTimerDuration(0)
+    setTimerDuration(0) // reset timer duration
 
-    if (isIntergerNumbers(hours)) { // if hours is an integer,
+    if (isIntergerNumbers(hours)) { // if hours is an integer, add to timer duration
         setTimerDuration(preivous => preivous + (parseInt(hours)*60*60));
     }
-    if (isIntergerNumbers(minutes)) {
+    if (isIntergerNumbers(minutes)) { // same for if minutes is integer
         setTimerDuration(preivous => preivous + (parseInt(minutes)*60));
     }
-    if (isIntergerNumbers(seconds)) {
+    if (isIntergerNumbers(seconds)) { // same for seconds
         setTimerDuration(preivous => preivous + parseInt(seconds));
     }
 
-    console.log('hours:', hours, 'minutes:', minutes, 'seconds:', seconds, 'duration:', timerDuration)
   };
 
   return (
@@ -94,8 +92,10 @@ const Timer = () => {
         <View style={styles.countdownTimer}>
 
             {isReset? (
+                // if timer not present. 
                 <View style={styles.fillTimer}></View>
             ): 
+            // Timer component
             <CountdownCircleTimer
                 key={key}
                 isPlaying={isActive}
@@ -110,6 +110,7 @@ const Timer = () => {
                 onComplete={() => { // When Timer is Over
                     if (isActive) {
                         setIsActive(false);
+                        setIsRinging(true);
                         if (vibration) {
                             triggerVibration(true)
                         }
@@ -178,14 +179,17 @@ const Timer = () => {
         
         <View style={styles.buttonsContainer}>
             {/* Reset Button */}
-            <TouchableOpacity style={styles.resetButton} onPress={() => {resetTimer(); stopVibration(); }}>
+            <TouchableOpacity style={isRinging ? {backgroundColor: 'white', ...styles.resetButton} : {backgroundColor: 'white', ...styles.resetButton}} onPress={() => {resetTimer(); stopVibration(); setIsRinging(false)}}>
                 <Text style={styles.resetText}>Reset</Text>
             </TouchableOpacity >
 
             {/* Start/Pause Button */}
-            <TouchableOpacity style={timerDuration === 0 ? styles.startNotReady : styles.startOrPauseButton} disabled={timerDuration===0} onPress={toggleTimer}>
-                <Text style={styles.startOrPauseText}>{isActive ? 'Pause' : 'Start'} </Text>
-            </TouchableOpacity>
+            {!isRinging ? (
+                <TouchableOpacity style={timerDuration === 0 ? styles.startNotReady : styles.startOrPauseButton} disabled={timerDuration===0} onPress={toggleTimer}>
+                    <Text style={styles.startOrPauseText}>{isActive ? 'Pause' : 'Start'} </Text>
+                </TouchableOpacity>
+            ): null}
+
         </View>
         
     </View>
@@ -297,7 +301,6 @@ const styles = StyleSheet.create({
         width: BUTTON_WIDTH,
         height: BUTTON_HEIGHT,
         borderRadius: BUTTON_BORDER_RADIUS,
-        backgroundColor: 'white',
         elevation: 4,
     },
     resetText: {

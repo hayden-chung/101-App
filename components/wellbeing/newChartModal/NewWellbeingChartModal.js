@@ -17,7 +17,7 @@ const SCREEN_HEIGHT = (Dimensions.get('window').height);
 
 const currentDate = getCurrentDate();
 
-export const NewWellbeingChartModal = (props) => {
+export const NewWellbeingChartModal = (props) => { // modal to make new wellbeing chart
     
     const [pageNumber, changePageNumber] = useState(0) // starting page number in modal = 1 (0 for index number).
     const [wellbeingRating, updateWellbeingRating] = useState([1, 1, 1, 1, 1, 1]) // set all default ratings to 1.
@@ -69,6 +69,7 @@ export const NewWellbeingChartModal = (props) => {
 
                 <View style={styles.wellbeingNameContainer}>
 
+                    {/* Display icon depending on page (index) number */}
                     <View style={styles.labelIcon}>
                     {pageNumber === 0 && (
                         <Entypo name={'suitcase'} size={SCREEN_WIDTH/15} color="#3a46bf" />
@@ -95,10 +96,12 @@ export const NewWellbeingChartModal = (props) => {
                     )}
                     </View>
 
+                    {/* Rating out of 10 in text */}
                     <Text style={styles.wellbeingNameText}>{props.wellbeingData.label[pageNumber]}: {wellbeingRating[pageNumber]}/10</Text>
 
                 </View>
-
+                
+                {/* Line below header text */}
                 <View style={styles.lineBelowWellbeingName}></View>
 
                 {/* Wellbeing Question */}
@@ -140,11 +143,13 @@ export const NewWellbeingChartModal = (props) => {
                         <AntDesign name="arrowleft" size={SCREEN_WIDTH/15} color="black" />
                     </TouchableOpacity>
 
+                    {/* Next Butotn (with animation) */}
                     <NextButton 
                         changePage={changePage}
                         pagePercentage={((pageNumber+1) * (100/6))}
                     />
 
+                    {/* Padding on the right just to balance out the horizontal padding so next button stays at middle */}
                     <View style={{paddingRight: SCREEN_WIDTH/10.5}}></View>
 
                 </View>

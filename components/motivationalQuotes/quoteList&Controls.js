@@ -4,11 +4,9 @@ import {defaultQuotes} from './defaultQuotes';
 
 export let quoteListSaved = defaultQuotes
  
-export const updateQuoteList = (updatedList) => {
+export const updateQuoteList = (updatedList) => { // update quote list 
     quoteListSaved = updatedList;
-    console.log(quoteListSaved)
 }
-
 
 export const quoteListItems = () => {
     const [quoteList, setQuoteList] = useState(defaultQuotes); // List of quotes
@@ -21,23 +19,20 @@ export const quoteToggle = (index, quoteList, setQuoteList) => { // when task is
     return { quoteList: quoteList}; // return values to update
 };
 
-export const getRandomQuote = () => {
+export const getRandomQuote = () => { // get a random quote to diplsay on home screen. 
     let selectedQuotes = []
     let returnQuote = null
-    for (let i = 0; i < quoteListSaved.length; i++) {
+    for (let i = 0; i < quoteListSaved.length; i++) { // make an array with selected quotes
         if (quoteListSaved[i][2] === true)  {
             selectedQuotes.push(quoteListSaved[i])
         }
     }
-
-
     listLength = selectedQuotes.length;
-    if (listLength !== 0) {
+    if (listLength !== 0) { // if no. of selected quotes is not 0, get a random quote. 
         randomIdx = Math.floor(Math.random()*(listLength-1)) 
         returnQuote = selectedQuotes[randomIdx]
-        console.log(selectedQuotes)
     }
-    
+
     return returnQuote
 };
 

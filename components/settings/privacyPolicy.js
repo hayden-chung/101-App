@@ -6,7 +6,7 @@ import RenderHtml from 'react-native-render-html';
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = (Dimensions.get('window').height);
 
-const PRIVACY_POLICY = {
+const PRIVACY_POLICY = { // convert html generated from privacy policy generator website to react native styling
     html: `
     <p>Last updated: September 11, 2023</p>
     <p>This Privacy Policy describes Our policies and procedures on the collection, use and disclosure of Your information when You use the Service and tells You about Your privacy rights and how the law protects You.</p>
@@ -111,18 +111,18 @@ const styles = StyleSheet.create({
         marginTop: SCREEN_HEIGHT/20,
         marginHorizontal: SCREEN_WIDTH/40,
     },
-    headerRow: {
+    headerRow: { // title text
         flexDirection: 'row',
         alignItems: 'center',
     },
-    headerText: {
+    headerText: { // hjeader text styling
         fontSize: SCREEN_HEIGHT/20,
         fontWeight: '500',
     },
-    pushToBottom: {
+    pushToBottom: { // push tab bar to bottom
         flex: 1,    
     },
-    navigationBar: {
+    navigationBar: { // tab bar 
         backgroundColor:'red',
     },
 

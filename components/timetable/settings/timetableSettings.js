@@ -148,8 +148,8 @@ const styles = StyleSheet.create({
     header: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems: 'center',
-        marginBottom: SCREEN_HEIGHT/40,
+        alignItems: 'center', 
+        marginBottom: SCREEN_HEIGHT/40, 
     },
     headerText: { // style header text (Timetable Settings)
         fontSize: SCREEN_HEIGHT/23,

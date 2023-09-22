@@ -1,10 +1,14 @@
 import React, {useEffect, useRef} from 'react';
-import {View, StyleSheet, TouchableOpacity, Animated} from 'react-native';
+import {View, StyleSheet, TouchableOpacity, Animated, Dimensions} from 'react-native';
 import Svg, {G, Circle} from 'react-native-svg';
 import { AntDesign } from '@expo/vector-icons';
 
-export default NextButton = (props) => {
+const SCREEN_WIDTH = Dimensions.get('window').width;
+const SCREEN_HEIGHT = (Dimensions.get('window').height);
 
+export default NextButton = (props) => { // next button (with animation) for new chart modal
+
+    // Dimensions of button
     const size = 100;
     const strokeWidth = 2;
     const center = size/2;
@@ -66,6 +70,7 @@ export default NextButton = (props) => {
                 </G>
             </Svg>
 
+            {/* Right arrow */}
             <TouchableOpacity style={styles.button} activeOpacity={0.6} onPress={() => props.changePage('right')}>
                 <AntDesign name="arrowright" size={size * 0.27} color="#fff"/>
             </TouchableOpacity>
@@ -78,10 +83,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
-    button: {
+    button: { // inside button styling
         position: 'absolute', 
         backgroundColor: '#f4338f', 
-        borderRadius: 100, 
-        padding: 20,
+        borderRadius: 1000, 
+        padding: SCREEN_HEIGHT/35,
     }
 });

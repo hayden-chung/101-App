@@ -6,9 +6,9 @@ import { updateQuoteList } from './quoteList&Controls';
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = (Dimensions.get('window').height);
 
-export const QuoteModal = (props) => {
+export const QuoteModal = (props) => { // Add new quote modal 
 
-    const quoteIndex = props.isEditDeleteModalVisible[1]
+    const quoteIndex = props.isEditDeleteModalVisible[1] 
     const initialQuote = props.isQuoteModalVisible[1] ? props.quoteList[quoteIndex] : ['', '', false] // grab list if [editing] is true as quote string already exists, else make new empty list for new quote.
     const [quote, setQuote] = useState(initialQuote); // [quote, author, checked/unchecked]
 

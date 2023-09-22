@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { KeyboardAvoidingView, StyleSheet, Text, View, Dimensions, TouchableOpacity, Keyboard, ScrollView, FlatList, SafeAreaView, Modal, Alert} from 'react-native';
+import { StyleSheet, Text, View, Dimensions, TouchableOpacity, Keyboard, ScrollView, FlatList, SafeAreaView, Modal, Alert} from 'react-native';
 import Quote from '../components/motivationalQuotes/quote';
 import { quoteToggle } from '../components/motivationalQuotes/quoteList&Controls';
 import { QuoteModal } from '../components/motivationalQuotes/quoteModal';
@@ -7,13 +7,12 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { EditDeleteQuoteModal } from '../components/motivationalQuotes/edit&deleteQuoteModal';
 import {quoteListItems} from '../components/motivationalQuotes/quoteList&Controls';
-import {quoteListSaved} from '../components/motivationalQuotes/quoteList&Controls'
 import TabBar from '../components/tabBar';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = (Dimensions.get('window').height);
 
-const QuoteScreen = ({navigation}) => { 
+const QuoteScreen = ({navigation}) => { // Quote List Screen (add, select, edit, remove quotes)
     
     const [isQuoteModalVisible, quoteModalVisible] = useState([false, false]); // [modal display (true/false), edit? (true/false)]
     const [isEditDeleteModalVisible, EditDeleteModalVisible] = useState([false, null]); // [edit/delete modal display (true/false), quote index no.]
@@ -30,7 +29,7 @@ const QuoteScreen = ({navigation}) => {
                     <Ionicons name="chevron-back" size={SCREEN_HEIGHT/20} color="black"/>
                 </TouchableOpacity>
 
-                <Text style={styles.quoteTitle}>QUOTE LIST</Text> 
+                <Text style={styles.headerText}>QUOTE LIST</Text>
 
                 {/* Add Quote Button. When button pressed, open modal by setting variable to 'true' */}
                 <TouchableOpacity onPress={() => quoteModalVisible([true, false])}>
@@ -56,6 +55,8 @@ const QuoteScreen = ({navigation}) => {
                     </View>
                 </Modal>
             </View>
+
+            <Text style={styles.subHeaderText}>Choose Your Favourite Quotes for Your Dashboard</Text> 
 
             {/* Quote Container */}
             <View style={styles.quoteWrapper}> 
@@ -94,6 +95,7 @@ const QuoteScreen = ({navigation}) => {
 
         </View>
 
+        {/* Tab Bar */}
         <View style={styles.pushToBottom}></View>
         <TabBar navigation={navigation}/>
     </SafeAreaView>
@@ -117,9 +119,17 @@ const styles = StyleSheet.create({
         paddingBottom: 20,
         paddingHorizontal: 10,
     },
-    quoteTitle: { // Header title
+    headerText: { // Header title
         fontWeight: 'bold',
         fontSize: 24,
+    },
+    subHeaderText: {
+        marginBottom: SCREEN_HEIGHT/90,
+        marginHorizontal: SCREEN_WIDTH/40,
+        textAlign: 'center',
+        fontWeight: '500',
+        fontSize: SCREEN_HEIGHT/45,
+        color: '#8f8f8f'
     },
     quoteWrapper: { // container for list of quotes. 
         height: '75%',
@@ -149,7 +159,7 @@ const styles = StyleSheet.create({
         flex: 1, 
         backgroundColor: 'rgba(0, 0, 0, 0.60)', // set opacity to 0.6
     },
-    pushToBottom: {
+    pushToBottom: { // use this to push tab bar to bottom
         flex: 1,    
     },
 });

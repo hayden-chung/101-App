@@ -28,15 +28,8 @@ const TimetableScreen = ({navigation}) => { // navigation object allows users to
 
     const timetableStartTimeString = formatTime(fixedSessions["start-finish"][0])
     const timetableEndTimeString = formatTime(fixedSessions["start-finish"][1])
-
-    console.log('FIXEDSESSIONS', fixedSessions)
-
     const useTimetable = timetableSaved; // '?' ensures timetable is not null or undefined. 
-    console.log('timetableStartTimeString:',timetableStartTimeString, 'timetableEndTimeString:', timetableEndTimeString)
 
-    if (useTimetable.length === 0) {
-        console.log('true')
-    }
     return(
         <View style={styles.container}>
 
@@ -44,7 +37,6 @@ const TimetableScreen = ({navigation}) => { // navigation object allows users to
             {useTimetable.length === 0 ? (
                 <View style={styles.noTimetableWrapper}>
                     <Image source={require('../assets/images/timetable/noTimetableImage.png')} style={styles.noTimetableImage}/>
-
                     <Text style={styles.noTimetableTextHeader}>No Timetable...</Text>
                     <Text style={styles.noTimetableTextSubheader}>Create a timetable with the tasks you want to complete today</Text>
 
@@ -55,6 +47,7 @@ const TimetableScreen = ({navigation}) => { // navigation object allows users to
                 </View>
             ) : (
                 <View style={styles.timetableWrapper}> 
+                    {/* If timetable exists */}
                     <View style={styles.timetableHeaderRow}>
 
                         <TouchableOpacity style={styles.goBackHomeButton} onPress={() => navigation.goBack()}>  
@@ -98,58 +91,58 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: 'white',
     },
-    noTimetableWrapper: {
+    noTimetableWrapper: {  // Wrappers
         flex: 1,
         width: '90%',
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: 'white',
     },
-    timetableWrapper: {
-        flex: 1,
+    timetableWrapper: { // Wrappers
+        flex: 1, 
         width: '90%',
         marginTop: SCREEN_HEIGHT/7,
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: 'white',
     },
-    timetableHeaderRow: {
+    timetableHeaderRow: { // header container
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
         width: '100%',
         paddingRight: SCREEN_WIDTH/30,
     },
-    noTimetableImage: {
+    noTimetableImage: { // image 
         resizeMode: 'contain',
         height: SCREEN_HEIGHT/4,
         width: SCREEN_WIDTH/2,
     },
-    noTimetableTextHeader: {
+    noTimetableTextHeader: { // No Timetable....
         fontSize: SCREEN_HEIGHT/30,
         fontWeight: '500',
         marginTop: SCREEN_HEIGHT/20,
         marginBottom: SCREEN_HEIGHT/40,
     },
-    noTimetableTextSubheader: {
+    noTimetableTextSubheader: { // create a new timetable...
         fontSize: SCREEN_HEIGHT/50,
         fontWeight: '400',
         textAlign: 'center',
         color: '#969696',
         marginBottom: SCREEN_HEIGHT/20,
     },
-    newTimetableButtonNoTimetable: {
+    newTimetableButtonNoTimetable: { // generate new timetable button
         backgroundColor: '#FF9F60',
         alignItems: 'center',
         padding: SCREEN_HEIGHT/70,
         borderRadius: 10,
         elevation: 5,
     },
-    timetableHeaderText: {
+    timetableHeaderText: { // Timetable Genrator Text
         fontSize: SCREEN_HEIGHT/33,
         fontWeight: '600',
     },
-    newTimetableButton: {
+    newTimetableButton: { // generate timetable button
         justifyContent: 'center',
         alignItems: 'center',
         padding: SCREEN_HEIGHT/400,
@@ -158,18 +151,18 @@ const styles = StyleSheet.create({
         elevation: 10,
         backgroundColor: 'white',
     },
-    subText: {
+    subText: { // when no timetable
         width: '100%',
         marginTop: SCREEN_HEIGHT/50,
         paddingLeft: SCREEN_WIDTH/26,
         color: '#969696',
     },
-    newTimetableButtonText: {
+    newTimetableButtonText: { // generate timetable button text
         color: 'white',
         fontWeight: '600',
         fontSize: SCREEN_HEIGHT/33,
     },
-    sessionsListContainer: {
+    sessionsListContainer: { // container with timetable blocks
         marginTop: SCREEN_HEIGHT/50,
         marginBottom: SCREEN_HEIGHT/10,
     },

@@ -18,11 +18,14 @@ const HomeScreen = ({navigation}) => {
         <View style={styles.container}>
 
             <View style={styles.wrapper}>
+                {/* Home Icon and Text */}
                 <View style={styles.header}>
-                    <AntDesign name="home" size={24} color="black" />
+                    <AntDesign name="home" size={SCREEN_HEIGHT/23} color="black" />
                     <Text style={styles.headerText}>Dashboard</Text>
+                    <View style={{width: SCREEN_HEIGHT/20}}></View>
                 </View>
                 
+                {/* Wellbeing Chart */}
                 <View style={styles.row1Container}>
                     {/* --------------------- WELLBEING --------------------- */}
                     <TouchableOpacity style={styles.wellbeingContainer} onPress={() => navigation.navigate("WellBeingScreen")}>
@@ -30,12 +33,13 @@ const HomeScreen = ({navigation}) => {
                     </TouchableOpacity>
                 </View>
 
-
+                {/* Carousel animation consists of: quote screen, timetable screen, todo screen */}
                 <View style={styles.row2Container}>
                         <Carousel navigation={navigation}/> 
                 </View>
             </View>
 
+            {/* Bottom Tab (navigation) Bar */}
             <TabBar navigation={navigation}/>
         </View>
     )
@@ -48,32 +52,34 @@ const quoteAndWellbeingContainerHeight = SCREEN_HEIGHT/4
 
 const styles = StyleSheet.create({
 
-    container: {
+    container: { // whole screen
         flex: 1,
     },
-    wrapper: {
+    wrapper: { // area where components display
         alignItems: 'center',
         paddingTop: SCREEN_HEIGHT/30,
-        paddingVertical: SCREEN_HEIGHT/40,
         flex: 1, 
         backgroundColor: 'white',
     },
-    header: {
+    header: { // home icon & text
         width: '100%',
         flexDirection: 'row',
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
         alignItems: 'center',
+        paddingLeft: SCREEN_WIDTH/20,
+        paddingVertical: SCREEN_HEIGHT/120,
     },
-    headerText: {
+    headerText: { // Text: 'Dashboard'
         textAlign: 'center',
         fontSize: SCREEN_HEIGHT/25,
         color: 'black',
         paddingLeft: SCREEN_WIDTH/20,
         marginBottom:SCREEN_HEIGHT/80,
+        fontWeight: '400',
     },
 
     // ---------- ROW 1 ---------- // 
-    row1Container: {
+    row1Container: { 
         flex: 1,
         flexDirection: 'row',
         justifyContent: 'center',

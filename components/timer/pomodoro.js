@@ -3,6 +3,7 @@ import { View, Text, Button, StyleSheet, TouchableOpacity, Dimensions, TextInput
 import { CountdownCircleTimer } from 'react-native-countdown-circle-timer';
 import { Feather } from '@expo/vector-icons';
 import {triggerVibration} from '../vibration';
+import {vibration} from '../settings/vibrationState'
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = Dimensions.get('window').height;
@@ -17,7 +18,6 @@ const PomodoroTimer = () => { // Pomodoro timer function.
   const [isReset, setIsReset] = useState(true); // indicate when time setter can appear or not. false = timer is runnning
   const [key, setKey] = useState(0);
   
-  console.log('breakMinutes', breakMinutes, 'workMinutes', workMinutes)
   const toggleTimer = () => { // If start button pressed, change to pause. Vice versa
     setIsActive(!isActive); // inverse boolean state. 
     setIsReset(false) // Indicate that timer is running now and not reset. 
@@ -33,8 +33,10 @@ const PomodoroTimer = () => { // Pomodoro timer function.
   const skipSession = () => { // during break session, if skip button is pressed, skip timer to focus mode. 
     if (workOrBreak === 'break') {
         setKey(prevKey => prevKey + 1)
+        if (vibration) {
+            triggerVibration(false)
+        }
         setSessionsCount(previousCount => previousCount + 1) 
-
     }
   }
 
@@ -78,7 +80,6 @@ const PomodoroTimer = () => { // Pomodoro timer function.
 
   useEffect(() => { // when minutes is changed, update timer duration.
     updateTimerDuration()
-    console.log('changed')
   }, [workMinutes, breakMinutes])
 
 
@@ -135,8 +136,10 @@ const PomodoroTimer = () => { // Pomodoro timer function.
                     }}
 
                     onComplete={() => { // When Timer is Over
-                        console.log('reset Timer')
                         setKey(prevKey => prevKey + 1)
+                        if (vibration) {
+                            triggerVibration(false)
+                        }
                         setSessionsCount(previousCount => previousCount + 1)
                     }}
                 >
@@ -185,6 +188,14 @@ const PomodoroTimer = () => { // Pomodoro timer function.
                             <Text style={styles.timeInputLabelBreak}>BREAK</Text>
                         </View>
 
+                    </View>
+
+                    <View style={{maxWidth: SCREEN_WIDTH/1.8}}>
+                        { !isActive && !(parseInt(workMinutes)) > 0 || !isActive && !(parseInt(breakMinutes)) > 0 ? (
+                            <Text style={{fontSize: SCREEN_HEIGHT/65, textAlign: 'center', color: '#808080', top:SCREEN_HEIGHT/55}}>
+                            Enter a time in both 'WORK' and 'BREAK' to start the timer
+                            </Text>
+                        ): null}
                     </View>
 
                     <View style={styles.totalCycleTime}>

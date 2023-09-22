@@ -11,7 +11,7 @@ const SCREEN_HEIGHT = Dimensions.get('window').height;
 
 const Carousel = ({navigation}) => { 
     const data = [ 
-        {key: 'spacer'}, {key: 'quote'}, {key: 'timetable'},{key: 'todo'},{key: 'spacer'},   
+        {key: 'spacer'}, {key: 'quote'}, {key: 'timetable'},{key: 'todo'},{key: 'spacer'}, // list of carousel
     ];
 
     const {width} = useWindowDimensions(); // width of screen
@@ -38,13 +38,14 @@ const Carousel = ({navigation}) => {
             {/* render list of components (todo and timetable screen) */}
             {data.map((item, index) => {
                 const style= useAnimatedStyle(() => {
+                    // left, middle and right objects
                     const scale = interpolate(
                         x.value, 
                         [(index-2) * SIZE, (index-1) * SIZE, index * SIZE], 
                         [0.8, 1, 0.8]
                     );
                     return{
-                        transform: [{scale}],
+                        transform: [{scale}], // return scale of left, middle and right objects
                     }
                 })
                 if(item.key === 'spacer'){ // if item.object doesn't exist
@@ -53,14 +54,17 @@ const Carousel = ({navigation}) => {
                 return (
                     <View key={index}> 
                         <View style={[styles.container, {width: SIZE}]} key={index}>
+                            {/* Aniamted.View allows smooth carousel animations for the three components. */}
                             <Animated.View style={[styles.componentContainer, style]}>
 
-                                {item.key === 'todo' ? ( // if index num is even, display todo list.
+                                {item.key === 'todo' ? ( 
+                                    // if item.key === todo, display todo 
                                     <MiniTodoList navigation={navigation}/>
                                 ) : item.key === 'timetable' ? (
-                                     // if index num is odd, display timetable. 
+                                    // if item.key === 'timetable', displays timetable
                                     <MiniTimetable navigation={navigation} small={true}/>
                                 ) : item.key === 'quote' ? (
+                                    // if item.key === 'quote', displays quote
                                     <MiniQuote navigation={navigation}/>
                                 ) : null
                                 }
@@ -79,15 +83,14 @@ const styles = StyleSheet.create({
         flex: 1,
         paddingVertical: SCREEN_HEIGHT/80,
         height: SCREEN_HEIGHT/2,
-        
     },
-    componentContainer: {
+    componentContainer: { // contains component 
         borderRadius: 30, 
         overflow: 'hidden',
         elevation: 5,
         backgroundColor: 'white',
     },
-    componentTitle: {
+    componentTitle: { // title (timetable e.g.)
         textAlign: 'center',
     },
 });

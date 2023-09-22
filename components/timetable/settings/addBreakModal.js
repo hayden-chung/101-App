@@ -28,7 +28,6 @@ const addBreakIfAvailable = (breakName) => { // Add break if there is available 
     let endTime = 0 // Initialize an end time. 
       
     if (remainingTimeInMinutes > 10 && breakOrder.length >= 1) { // can a new break session fit in the timetable (is more than 10min available)
-        console.log('option 1')
         for (i=0; i < breakOrder.length+1; i++){ // repeat for the number of breaks
             let availableTime = new Date(sessionsBetweenBreaks[i][1]) - new Date(sessionsBetweenBreaks[i][0]) // available time in between one break time to another. 
             let availableTimeInMinutes = availableTime/(1000*60) // convert from ms to minutes. 
@@ -39,12 +38,10 @@ const addBreakIfAvailable = (breakName) => { // Add break if there is available 
             }
         }
     } else if (breakOrder.length === 0){ // if there are no breaks, a break can be added. 
-        console.log('option 2')
         startTime = new Date(fixedSessions['start-finish'][0]) 
         endTime = new Date(startTime.getTime() + 1*60*1000) // set end time to 1 min more than start time. 
         fixedSessions[breakName] = [startTime, endTime]    // add [current time, time 10min after current] to set the break session in the beginning.
     }
-    console.log('-================================================================================================================================================================================================')
 }
 
 export const AddBreakModal = (props) => { // Add a new break session. 

@@ -4,7 +4,7 @@ import { StyleSheet, Text, View, TouchableOpacity, Dimensions} from 'react-nativ
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = (Dimensions.get('window').height);
 
-const HowToUseScreen = ({navigation}) => { 
+const HowToUseScreen = ({navigation}) => { // Future Improvement: not developed yet. 
 
     return(
         <View style={styles.container}>
