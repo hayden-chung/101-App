@@ -1,5 +1,4 @@
-import React, {useState} from 'react';
-import {useNavigation, useRoute} from "@react-navigation/native"
+import React, {useEffect} from 'react';
 import { Dimensions, StyleSheet, Text, View, FlatList, TouchableOpacity, Image} from 'react-native';
 import {timetableSaved} from '../components/timetable/timetableStore'
 import {fixedSessions} from '../components/timetable/settings/timetableSettingsData'
@@ -29,6 +28,12 @@ const TimetableScreen = ({navigation}) => { // navigation object allows users to
     const timetableStartTimeString = formatTime(fixedSessions["start-finish"][0])
     const timetableEndTimeString = formatTime(fixedSessions["start-finish"][1])
     const useTimetable = timetableSaved; // '?' ensures timetable is not null or undefined. 
+
+    useEffect(() => { // refresh code whenever navigation changes. 
+    
+        return () => {
+        };
+      }, [navigation]);
 
     return(
         <View style={styles.container}>

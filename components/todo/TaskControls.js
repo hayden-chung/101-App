@@ -5,8 +5,7 @@ export const addTask = (task, taskItems, setTaskItems, setTask) => { // add a ne
     setTaskItems([...taskItems]); // assign taskItems with the pre-existing values in the array and the additional 'task'
     setTask([null, false, false, null, null]); // task = [null, false, false, null] (reasign task to default value)
     updateTaskItems(taskItems);
-    console.log('udaptged', taskItems)
-    return { task: [null, false, false, null, null], taskItems: [...taskItems, task] }; // return values to update 
+    return { task: [null, false, false, null, null], taskItems: taskItems }; // return values to update 
 };
 
 export const updateTask = (updatedTask, index, taskItems, setTaskItems) => {
@@ -24,8 +23,6 @@ export const completedTask = (index, taskItems, setTaskItems) => { // (To Do Scr
 };
 
 export const deleteTask = (index, taskItems, setTaskItems) => { //  delete a task from to-do list
-    console.log('test')
-    console.log('test', index, taskItems, setTaskItems)
     taskItems.splice(index, 1); // remove the task from the array (1 = number of items to remove)
     setTaskItems([...taskItems]); // update the taskItems array 
     updateTaskItems(taskItems);

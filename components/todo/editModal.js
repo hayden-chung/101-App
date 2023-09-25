@@ -10,7 +10,6 @@ const SCREEN_HEIGHT = (Dimensions.get('window').height);
 
 export const EditModal = ({setEdit, index, taskItems, setTaskItems}) => { // edit and delete quotes
 
-
     const [updatedTask, setUpdatedTask] = useState(taskItems[index][0]);
 
     const closeModal = () => { // Close modal 

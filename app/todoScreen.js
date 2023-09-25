@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { KeyboardAvoidingView, StyleSheet, Text, View, TextInput, TouchableOpacity, Dimensions, FlatList, Modal, ScrollView} from 'react-native';
 import Task from '../components/todo/task';
 import {addTask, completedTask, getAspectIndex} from '../components/todo/taskControls'; // import taskControl functions
@@ -20,6 +20,12 @@ const ToDoScreen = ({navigation}) => { // when user clicks on todo button, navig
   const [isEditOrDeleteModalVisible, setEditOrDeleteModalVisible] = useState(false);
   const [isEdit, setEdit] = useState(false);
   const [editingIndex, setEditingIndex] = useState(null);
+
+  useEffect(() => { // refresh code whenever navigation changes. 
+    
+    return () => {
+    };
+  }, [navigation]);
 
   // Find number of uncompleted tasks
   let numberOfUncompletedTasks = 0 
@@ -46,15 +52,22 @@ const ToDoScreen = ({navigation}) => { // when user clicks on todo button, navig
   let orderedList = []
 
   for (let i = 0; i < taskItems.length; i++) { // incomplete tasks first 
-    if (taskItems[i][1] === false) {
-      orderedList.push(taskItems[i])
+    if (taskItems[i][1] === false && taskItems[i].length < 6) {
+      let pushItem = [...taskItems[i]]
+      pushItem.push(i)
+      console.log('PUSHITEM', pushItem)
+      orderedList.push(pushItem)
     }
   }
   for (let i = 0; i < taskItems.length; i++) { // complete tasks
-    if (taskItems[i][1] === true) {
-      orderedList.push(taskItems[i])
+    if (taskItems[i][1] === true && taskItems[i].length < 6) {
+      let pushItem = [...taskItems[i]]
+      pushItem.push(i)
+      orderedList.push(pushItem)
     }
   }
+
+  console.log('orderedList', orderedList)
   
   return (
     <View style={styles.container}> 
@@ -85,7 +98,7 @@ const ToDoScreen = ({navigation}) => { // when user clicks on todo button, navig
                 onLongPress={() => {setEditOrDeleteModalVisible(true); setEditingIndex(index)}}
                 > 
                 {/* Task component displays task item. Parameters 'text' (task text) and 'taskState' (checkbox)*/}
-                <Task item={item} text={item[0]} timetableGenerator={false} taskStatus={orderedList[index][1]} taskTime={orderedList[index][3]} aspect={orderedList[index][4]} index={index} taskItems={orderedList} setTaskItems={setTaskItems} completedTask={completedTask} updateWellbeingRating={updateWellbeingRating} /> 
+                <Task item={item} text={item[0]} timetableGenerator={false} taskStatus={taskItems[item[5]][1]} taskTime={taskItems[item[5]][3]} aspect={taskItems[item[5]][4]} index={item[5]} taskItems={taskItems} setTaskItems={setTaskItems} completedTask={completedTask} updateWellbeingRating={updateWellbeingRating} /> 
               </TouchableOpacity> 
           }/>
         </View>

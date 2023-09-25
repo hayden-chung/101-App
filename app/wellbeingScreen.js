@@ -63,6 +63,7 @@ const WellBeingScreen = ({navigation}) => { // main function for wellbeing scree
                 wellbeingData={wellbeingData}               // 
                 setCalendarData={setCalendarData}
                 calendarData={calendarData}
+                setSelectedDate={setSelectedDate}
               />
 
             </Modal>

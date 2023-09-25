@@ -12,38 +12,38 @@ const MiniTimetable = ({navigation, small}) => {
 
     const useTimetable = timetableSaved; // copy current timetable
 
-return (
-    <View style={small ? styles.containerSmall : styles.containerBig}>
-        <Text style={styles.headerText}>Timetable</Text>
+    return (
+        <View style={small ? styles.containerSmall : styles.containerBig}>
+            <Text style={styles.headerText}>Timetable</Text>
 
-        {/* Display list of timetable while iterating over it */}
-        {useTimetable.length !== 0 ? ( // Use curly braces for the condition
-            <View style={styles.timetableWrapper}>
-                <FlatList
-                    data={useTimetable || []}
-                    showsVerticalScrollIndicator={false}
-                    renderItem={({ item, index }) => (
-                        // individual time blocks of timetable
-                        <TimeBlock
-                            item={item}
-                            index={index}
-                            miniScreen={true}
-                        />
-                    )}
-                />
-            </View>
-            // if timetable doesn't exist, don't display anything
-        ) : 
-        <View style={styles.blank}>
-            <Text style={{fontSize: SCREEN_HEIGHT/35, fontWeight: '300'}}>No Timetable</Text>
-        </View>}
+            {/* Display list of timetable while iterating over it */}
+            {useTimetable.length !== 0 ? ( // Use curly braces for the condition
+                <View style={styles.timetableWrapper}>
+                    <FlatList
+                        data={useTimetable || []}
+                        showsVerticalScrollIndicator={false}
+                        renderItem={({ item, index }) => (
+                            // individual time blocks of timetable
+                            <TimeBlock
+                                item={item}
+                                index={index}
+                                miniScreen={true}
+                            />
+                        )}
+                    />
+                </View>
+                // if timetable doesn't exist, don't display anything
+            ) : 
+            <View style={styles.blank}>
+                <Text style={{fontSize: SCREEN_HEIGHT/35, fontWeight: '300'}}>No Timetable</Text>
+            </View>}
 
-        {/* open button at bottom */}
-        <TouchableOpacity style={styles.openButtonRow} onPress={() => navigation.navigate("TimetableScreen")}>
-            <Text style={styles.buttonText}>Open</Text> 
-        </TouchableOpacity>
-    </View>
-);
+            {/* open button at bottom */}
+            <TouchableOpacity style={styles.openButtonRow} onPress={() => navigation.navigate("TimetableScreen")}>
+                <Text style={styles.buttonText}>Open</Text> 
+            </TouchableOpacity>
+        </View>
+    );
 }
 
 const styles = StyleSheet.create({

@@ -1,37 +1,36 @@
 import React, {useEffect} from 'react';
 import {StyleSheet, Text, View, FlatList, Dimensions, TouchableOpacity} from 'react-native';
-import { TaskItemsList } from '../todo/taskItemsList';
+import { taskItemsSaved, TaskItemsList } from '../todo/taskItemsList';
 import {completedTask, getAspectIndex} from '../todo/taskControls'
 import {savedCalendarData, getCurrentDate} from '../wellbeing/calendar/calendarControls'
-
 import Task from '../todo/task';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 
-const MiniTodoList = ({navigation}) => { 
-    const {taskItems, setTaskItems} = TaskItemsList();
+const MiniTodoList = ({navigation}) => { // Todo list in Home Dashbaord
 
-    useEffect(() => {
-        // This code will run when the component mounts (screen is displayed)
-    
-        // Define a cleanup function to run when leaving the screen
+    const usingThisTaskList = taskItemsSaved
+
+    const {taskItems, setTaskItems} = TaskItemsList(true);
+
+
+
+    console.log('inside function', usingThisTaskList)
+
+    useEffect(() => { // refresh code whenever navigation changes. 
+        console.log('reset')
         return () => {
-          // Perform actions or cleanup here when leaving the screen
-          console.log('Leaving MyScreen');
         };
-      }, [navigation]);
+      }, []);
 
     const updateWellbeingRating = (index) => { // If task is tagged to an aspect, increase the aspect by 1 when task completed. 
-        console.log("INDEX", index)
-        if (taskItems[index][4] !== null) { // if task is tagged to aspect, increase it by one. 
-            console.log("CONFIRMED")
+        if (usingThisTaskList[index][4] !== null) { // if task is tagged to aspect, increase it by one. 
             const currentDate = getCurrentDate()
           if (savedCalendarData[currentDate] === undefined) {
             savedCalendarData[currentDate] = [1, 1, 1, 1, 1, 1]
           }
-          console.log("BEFORE", taskItems)
-          const aspectIndex = getAspectIndex(index, taskItems)
+          const aspectIndex = getAspectIndex(index, usingThisTaskList)
           if (savedCalendarData[currentDate][aspectIndex] !== 10) {
             savedCalendarData[currentDate][aspectIndex] = savedCalendarData[currentDate][aspectIndex]+1
           }
@@ -44,13 +43,13 @@ const MiniTodoList = ({navigation}) => {
             {/* To Do Tasks */}
             <View style={styles.todoListWrapper}> 
                 <FlatList   
-                    data = {taskItems} // Data being inputted for flatlist to access.
+                    data = {usingThisTaskList} // Data being inputted for flatlist to access.
                     showsVerticalScrollIndicator={false} // Hide scroll bar.
                     renderItem={({item, index}) =>       // Item and index no. of task in array. 
-                    taskItems[index][1] === false ? (
+                    usingThisTaskList[index][1] === false ? (
                     <View                  // Task is responsive to touches
                         > 
-                        <Task text={item[0]} timetableGenerator={false} taskStatus={item[1]} taskTime={item[3]} aspect={item[4]} index={index} taskItems={taskItems} setTaskItems={setTaskItems} miniScreen={true} completedTask={completedTask} updateWellbeingRating={updateWellbeingRating}/> 
+                        <Task text={item[0]} timetableGenerator={false} taskStatus={item[1]} taskTime={item[3]} aspect={item[4]} index={index} taskItems={usingThisTaskList} setTaskItems={setTaskItems} miniScreen={true} completedTask={completedTask} updateWellbeingRating={updateWellbeingRating}/> 
                     </View>
                     ) : null
                 }/>

@@ -3,9 +3,12 @@
     "version": ">= 5.2.0"
   },
   "build": {
+
     "preview": {
+      "distribution": "internal",
       "android": {
-        "buildType": "apk"
+        "buildType": "apk",
+        "distribution": "internal"
       }
     },
     "preview2": {

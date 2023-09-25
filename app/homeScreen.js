@@ -1,8 +1,7 @@
-import React, {useState} from 'react';
+import React, {useEffect} from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Dimensions} from 'react-native';
 import { useIsFocused } from '@react-navigation/native'; 
 import { AntDesign } from '@expo/vector-icons';
-import MiniQuote from '../components/homeScreen/miniQuote'
 import MiniWellbeingScreen from '../components/homeScreen/miniWellbeingScreen'
 import TabBar from '../components/tabBar'
 import Carousel from '../components/homeScreen/carousel';
@@ -13,6 +12,12 @@ const SCREEN_HEIGHT = Dimensions.get('window').height;
 
 const HomeScreen = ({navigation}) => { 
     const isFocused = useIsFocused(); // determine current focus state of screen. 
+
+    useEffect(() => { // refresh code whenever navigation changes. 
+    
+        return () => {
+        };
+      }, [navigation]);
 
     return(
         <View style={styles.container}>

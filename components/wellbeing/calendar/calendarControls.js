@@ -16,8 +16,8 @@ export const handlePreviousDay = (selectedDate, setSelectedDate) => { // Go 1 da
 
 export const handleNextDay = (selectedDate, setSelectedDate) => { // Go 1 day forward. 
     const currentDate = new Date(selectedDate);     // create a copy of current selected date
+    console.log(currentDate)
     currentDate.setDate(currentDate.getDate() + 1); // add 1 day from current date. 
-    console.log(currentDate.getDate())
     setSelectedDate(currentDate.toISOString().split('T')[0]); // e.g. 2023-08-03T00:00:00.000Z --> 2023-08-03 
   };
 

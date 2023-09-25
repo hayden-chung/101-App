@@ -197,7 +197,6 @@ const styles = StyleSheet.create({
     startOrPauseButton: {
         justifyContent: 'center',
         alignItems: 'center',
-        fontFamily: 'OpenSans-Regular',
         width: BUTTON_WIDTH,
         height: BUTTON_HEIGHT,
         borderRadius: BUTTON_BORDER_RADIUS,
@@ -212,7 +211,6 @@ const styles = StyleSheet.create({
     lapOrResetButton: {
         justifyContent: 'center',
         alignItems: 'center',
-        fontFamily: 'OpenSans-Regular',
         width: BUTTON_WIDTH,
         height: BUTTON_HEIGHT,
         borderRadius: BUTTON_BORDER_RADIUS,

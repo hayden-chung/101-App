@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { KeyboardAvoidingView, StyleSheet, Text, View, Dimensions, TouchableOpacity, FlatList, Animated} from 'react-native';
 import Task from '../../todo/task';
 import {TaskItemsList} from '../../todo/taskItemsList';
@@ -24,6 +24,12 @@ const TimetableGenerator = ({navigation}) => {
             timetable: timetable // reference variable: variable to send
         })
     }
+
+    useEffect(() => { // refresh code whenever navigation changes. 
+        console.log('changed')
+        return () => {
+        };
+      }, [navigation]);
 
     const onGenerateTimetablePressed = () => { // when generate button pressed, make new timetable
         let newTimetable = GenerateTimetable(taskItems, [], setTimetable)

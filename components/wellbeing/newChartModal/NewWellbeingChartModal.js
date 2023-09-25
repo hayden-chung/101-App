@@ -42,6 +42,7 @@ export const NewWellbeingChartModal = (props) => { // modal to make new wellbein
             } else if (pageNumber === 5) {                          // if pg number is 6 (5 for index number)                
                 props.wellbeingData.datasets[0].data = wellbeingRating  // Update graph data.
                 updateCalendarData(props.setCalendarData, currentDate, wellbeingRating)  // Save wellbeing rating data into current date.
+                props.setSelectedDate(new Date().toISOString().split('T')[0])
                 closeModal()                                            // close modal (and update graph).
             }
             

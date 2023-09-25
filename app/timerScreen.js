@@ -1,7 +1,5 @@
-import React, {useState, useEffect, useCallback } from 'react';
-import { useFonts } from 'expo-font';
-import { KeyboardAvoidingView, StyleSheet, Text, View, TextInput, TouchableOpacity, Keyboard, Dimensions} from 'react-native';
-import * as SplashScreen from 'expo-splash-screen';
+import React, {useState} from 'react';
+import { StyleSheet, Text, View, TouchableOpacity, Dimensions} from 'react-native';
 import Timer from '../components/timer/timer'
 import Stopwatch from '../components/timer/stopwatch';
 import PomodoroTimer from '../components/timer/pomodoro';
@@ -13,25 +11,6 @@ const SCREEN_HEIGHT = Dimensions.get('window').height;
 const TimerScreen = ({navigation}) => { // Timer Screen (Timer, Stopwatch, Pomodoro)
 
     const [activeTab, setActiveTab] = useState('stopwatch') // current timer
-
-    // --- Load Font --- //
-    const [fontsLoaded] = useFonts({ // load font from file
-        "OpenSans-Regular": require("../assets/fonts/OpenSans-Regular.ttf")
-    });
-
-    useEffect(() => {
-        async function prepare() {
-            await SplashScreen.preventAutoHideAsync();
-        }
-        prepare();
-    }, [])
-
-    if (!fontsLoaded) {
-        return undefined;
-    } else {
-        SplashScreen.hideAsync();
-    }
-    // ---------------- //
 
     return(
         <View style={styles.container}>
@@ -131,11 +110,9 @@ const styles = StyleSheet.create({
     },
     selectedTabText: { // text of selected tab
         color: textBlack,
-        fontFamily: 'OpenSans-Regular',
     },
     notSelectedTabText: { // text of not selected tab 
         color: textGray,
-        fontFamily: 'OpenSans-Regular',
     },
     pushToBottom: { // for tab bar to go bottom. 
         flex: 1,    

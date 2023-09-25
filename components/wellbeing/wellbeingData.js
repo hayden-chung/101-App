@@ -10,6 +10,8 @@ export const wellbeingData = { // Stored wellbeing data.
 
 export const updateWellbeingData = (selectedDate, calendarData) => { // Provide currently selected date. check if there is stored wellbeing data in that date and update the graph data. 
     const displayData = calendarData[selectedDate] || [1, 1, 1, 1, 1, 1]; 
+    console.log('imported data', selectedDate, calendarData)
+    console.log('new data', displayData);
     wellbeingData.datasets[0].data = displayData // set datasets.data to wellbeing data currently to display. 
 };
 
